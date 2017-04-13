@@ -1,7 +1,7 @@
 package net.lidongdong.bearoil.db;
 
 
-import net.lidongdong.bearoildemo.app.BearApplication;
+import net.lidongdong.bearoil.app.BearApplication;
 
 /**
  * @author lidongdong(一个帅的惊天动地的男人)
@@ -23,10 +23,12 @@ public class DatabaseTool {
 
     private BearSQLiteHelper mHelper;
     private TableCarOperation mTableCarOperation;
+    private TableRecordOperation mTableRecordOperation;
 
     private DatabaseTool() {
         mHelper = new BearSQLiteHelper(BearApplication.getContext());
         mTableCarOperation = new CarOperationAndroid(mHelper);
+        mTableRecordOperation=new RecordOperationAndroid(mHelper);
     }
 
     public void addCar(CarEntity car) {

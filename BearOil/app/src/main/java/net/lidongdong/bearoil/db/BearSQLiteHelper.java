@@ -22,6 +22,7 @@ class BearSQLiteHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(BearSQLiteValues.SQL_CAR);
+        db.execSQL(BearSQLiteValues.SQL_RECORD);
     }
 
     @Override

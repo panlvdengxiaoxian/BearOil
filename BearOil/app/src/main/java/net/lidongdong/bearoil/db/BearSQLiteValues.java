@@ -48,9 +48,13 @@ package net.lidongdong.bearoil.db;
             DATE + " date not null," +
             ODOMETER + " integer not null," +
             PRICE + " integer not null," +
-            PRICE + " integer not null," +
-            PRICE + " integer not null," +
-            PRICE + " integer not null," +
-            PRICE + " integer not null," +
-            UUID + " integer);";
+            YUAN + " integer not null," +
+            TYPE + " integer not null," +
+            GASSUP + " integer not null," +
+            REMARK + " text," +
+            CARID + " integer not null," +
+            FORGET + " integer not null," +
+            LIGHTON + " integer not null," +
+            LIGHTON + " integer not null," +
+            STATIONID + " integer not null);";
 }
