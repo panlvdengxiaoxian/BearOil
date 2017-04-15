@@ -1,4 +1,4 @@
-package net.lidongdong.bearoil.db;
+package net.lidongdong.bearoil.entity;
 
 /**
 *

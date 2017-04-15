@@ -30,7 +30,7 @@ package net.lidongdong.bearoil.db;
             MODEL + " integer," +
             UUID + " integer);";
     //records 相关
-    static final String RECORD_ID="record_id";
+    static final String RECORD_ID="recordId";
     static final String DATE="date";
     static final String ODOMETER="odometer";
     static final String PRICE="price";
@@ -38,10 +38,10 @@ package net.lidongdong.bearoil.db;
     static final String TYPE="type";
     static final String GASSUP="gasSup";
     static final String REMARK="remark";
-    static final String CARID="carID";
+    static final String CARID="carId";
     static final String FORGET="forget";
     static final String LIGHTON="lightOn";
-    static final String STATIONID="station_id";
+    static final String STATIONID="stationId";
     //建表语句
     static final String SQL_RECORD= "create table " + RECORDS_TBL + " (" + RECORD_ID +
             " integer primary key autoincrement," +

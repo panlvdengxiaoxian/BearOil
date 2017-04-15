@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import net.lidongdong.bearoil.entity.CarEntity;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,10 +20,10 @@ import java.util.List;
 *  @version 1.0
 *
 */
-public class CarOperationAndroid implements TableCarOperation {
+ class CarOperationAndroid implements TableCarOperation {
     private SQLiteOpenHelper mHelper;
 
-    public CarOperationAndroid(SQLiteOpenHelper helper) {
+     CarOperationAndroid(SQLiteOpenHelper helper) {
         mHelper = helper;
     }
 

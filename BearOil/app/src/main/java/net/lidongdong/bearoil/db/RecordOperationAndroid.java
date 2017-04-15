@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import net.lidongdong.bearoil.entity.RecordEntity;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +25,7 @@ public class RecordOperationAndroid implements TableRecordOperation {
     }
 
     @Override
-    public void addCar(RecordEntity record) {
+    public void addRecord(RecordEntity record) {
         SQLiteDatabase db = mHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         if (record.get_id() != 0) {
@@ -45,7 +47,7 @@ public class RecordOperationAndroid implements TableRecordOperation {
     }
 
     @Override
-    public void removeCar(int id) {
+    public void removeRecord(int id) {
         SQLiteDatabase db = mHelper.getWritableDatabase();
         String whereClause = BearSQLiteValues._ID + " =?";
         String[] whereArgs = new String[]{String.valueOf(id)};
@@ -54,11 +56,11 @@ public class RecordOperationAndroid implements TableRecordOperation {
     }
 
     @Override
-    public void updateCar(RecordEntity record) {
-           updateCar(openDatabase(),true,record);
+    public void updateRecords(RecordEntity record) {
+           updateRecord(openDatabase(),true,record);
     }
 
-    private void updateCar(SQLiteDatabase db, boolean isClose, RecordEntity record) {
+    private void updateRecord(SQLiteDatabase db, boolean isClose, RecordEntity record) {
         ContentValues values = new ContentValues();
         values.put(BearSQLiteValues.DATE, record.getDate());
         values.put(BearSQLiteValues.ODOMETER, record.getOdometer());
@@ -82,7 +84,7 @@ public class RecordOperationAndroid implements TableRecordOperation {
     }
 
     @Override
-    public List<RecordEntity> queryCars() {
+    public List<RecordEntity> queryRecords() {
         List<RecordEntity> records=new ArrayList<>();
         SQLiteDatabase db = mHelper.getWritableDatabase();
         Cursor cursor = db.query(BearSQLiteValues.RECORDS_TBL, null, null, null, null, null, null);
@@ -135,7 +137,7 @@ public class RecordOperationAndroid implements TableRecordOperation {
     }
 
     @Override
-    public RecordEntity querySelectedCar() {
+    public RecordEntity querySelectedRecords() {
         return querySelectedCar(openDatabase(),true);
     }
     private RecordEntity querySelectedCar(SQLiteDatabase db,boolean isClose){
@@ -189,7 +191,7 @@ public class RecordOperationAndroid implements TableRecordOperation {
     }
 
     @Override
-    public void changeSelectedCar(int carId) {
+    public void changeSelectedRecord(int carId) {
 
     }
 

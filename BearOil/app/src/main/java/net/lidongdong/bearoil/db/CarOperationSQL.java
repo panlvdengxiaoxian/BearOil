@@ -1,5 +1,7 @@
 package net.lidongdong.bearoil.db;
 
+import net.lidongdong.bearoil.entity.CarEntity;
+
 import java.util.List;
 
 /**

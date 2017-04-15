@@ -2,6 +2,11 @@ package net.lidongdong.bearoil.db;
 
 
 import net.lidongdong.bearoil.app.BearApplication;
+import net.lidongdong.bearoil.entity.CarEntity;
+import net.lidongdong.bearoil.entity.MoneyEntity;
+import net.lidongdong.bearoil.entity.RecordEntity;
+
+import java.util.List;
 
 /**
  * @author lidongdong(一个帅的惊天动地的男人)
@@ -11,7 +16,8 @@ import net.lidongdong.bearoil.app.BearApplication;
  * @function
  */
 
-public class DatabaseTool {
+public class DatabaseTool implements TableRecordOperation,TableCarOperation {
+
 
     private static class SingletonHolder {
         private static final DatabaseTool INSTANCE = new DatabaseTool();
@@ -21,19 +27,73 @@ public class DatabaseTool {
         return SingletonHolder.INSTANCE;
     }
 
-    private BearSQLiteHelper mHelper;
+    private BearSQLiteHelper mLiteHelper;
     private TableCarOperation mTableCarOperation;
-    private TableRecordOperation mTableRecordOperation;
+    private final RecordOperationSQL mOperationSQL;
+
 
     private DatabaseTool() {
-        mHelper = new BearSQLiteHelper(BearApplication.getContext());
-        mTableCarOperation = new CarOperationAndroid(mHelper);
-        mTableRecordOperation=new RecordOperationAndroid(mHelper);
+        mLiteHelper = new BearSQLiteHelper(BearApplication.getContext());
+        mTableCarOperation = new CarOperationAndroid(mLiteHelper);
+        mOperationSQL = new RecordOperationSQL(mLiteHelper);
     }
+
+    //记录表相关
+
+
+    @Override
+    public void addRecord(RecordEntity record) {
+       mOperationSQL.addRecord(record);
+    }
+
+    @Override
+    public void removeRecord(int id) {
+       mOperationSQL.removeRecord(id);
+    }
+
+    @Override
+    public void updateRecords(RecordEntity record) {
+       updateRecords(record);
+    }
+
+    @Override
+    public List<RecordEntity> queryRecords() {
+        return mOperationSQL.queryRecords();
+    }
+
+    @Override
+    public List<RecordEntity> queryRecordsEachYear() {
+        return mOperationSQL.queryRecordsEachYear();
+    }
+
+    @Override
+    public List<RecordEntity> queryRecordsEachHalfOfYear() {
+        return mOperationSQL.queryRecordsEachHalfOfYear();
+    }
+
+    @Override
+    public List<RecordEntity> queryRecordsThreeMonth() {
+        return mOperationSQL.queryRecordsThreeMonth();
+    }
+
+    @Override
+    public List<MoneyEntity> queryRecordsMoneyEachYear() {
+        return mOperationSQL.queryRecordsMoneyEachYear();
+    }
+
+    @Override
+    public List<MoneyEntity> queryRecordMoneyEachMonth() {
+        return mOperationSQL.queryRecordMoneyEachMonth();
+    }
+
+
+
+    //汽车表相关
 
     public void addCar(CarEntity car) {
         mTableCarOperation.addCar(car);
     }
+
 
     public void removeCar(int id) {
         mTableCarOperation.removeCar(id);
@@ -43,19 +103,24 @@ public class DatabaseTool {
         mTableCarOperation.updateCar(car);
     }
 
+    @Override
+    public List<CarEntity> queryCars() {
+        return null;
+    }
+
 
     public CarEntity querySelectedCar() {
-       return mTableCarOperation.querySelectedCar();
+        return mTableCarOperation.querySelectedCar();
     }
 
 
     // 更改选中的车辆
     public void changeSelectedCar(int id) {
-          mTableCarOperation.changeSelectedCar(id);
+        mTableCarOperation.changeSelectedCar(id);
     }
 
     public void changeSelectedCar(CarEntity newSelectedCar) {
-           mTableCarOperation.changeSelectedCar(newSelectedCar);
+        mTableCarOperation.changeSelectedCar(newSelectedCar);
     }
 
 }
