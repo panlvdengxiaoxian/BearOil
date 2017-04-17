@@ -28,7 +28,7 @@ class RecordOperationSQL implements TableRecordOperation {
     /**
      * 对 record 的操作
      *
-     * @param sql
+     * @param sql SQL 语句
      */
 
     private void record(String sql) {
@@ -41,13 +41,13 @@ class RecordOperationSQL implements TableRecordOperation {
     @Override
     public void addRecord(RecordEntity record) {
         String sql;
-        if (record.getCarId() == 0) {
-            sql = "insert into cars_tbl (date, odometer, price, yuan, type, gasSup, remark, carId, forget, lightOn, stationId) values (" +
+        if (record.get_id() == 0) {
+            sql = "insert into records_tbl (date, odometer, price, yuan, type, gasSup, remark, carId, forget, lightOn, stationId) values (" +
                     record.getDate() + ", " + record.getOdometer() + ", " + record.getPrice() + ", " + record.getYuan() + ", " + record.getType()
                     + ", " + record.getGasSup() + ", " + record.getRemark() + ", " + record.getCarId() + ", " + record.getForget() + ", " +
                     record.getLightOn() + ", " + record.getStationId() + ");";
         } else {
-            sql = "insert into cars_tbl values (" + record.get_id() + ", " +
+            sql = "insert into records_tbl values (" + record.get_id() + ", " +
                     record.getDate() + ", " + record.getOdometer() + ", " + record.getPrice() + ", " + record.getYuan() + ", " + record.getType()
                     + ", " + record.getGasSup() + ", " + record.getRemark() + ", " + record.getCarId() + ", " + record.getForget() + ", " +
                     record.getLightOn() + ", " + record.getStationId() + ");";
@@ -58,12 +58,14 @@ class RecordOperationSQL implements TableRecordOperation {
 
     @Override
     public void removeRecord(int id) {
-        String sql = "delete from records_tbl ";
+        String sql = "delete from records_tbl where recordId = " + id + " ";
+        record(sql);
     }
 
     @Override
     public void updateRecords(RecordEntity record) {
-
+        String sql = "update records_tbl set odometer = " + record.getOdometer() + ", price = " +record.getPrice() + ", where id = " + record.get_id() + " ";
+        record(sql);
     }
 
     /**
@@ -131,12 +133,13 @@ class RecordOperationSQL implements TableRecordOperation {
 
     @Override
     public List<RecordEntity> queryRecords() {
-        String sql = "SELECT A.*" +
-                "FROM records_tbl as A, cars_tbl AS B" +
-                "where" +
-                "A.carId = B._id" +
-                "AND" +
-                "B.selected = 1;";
+//        String sql = "select A *" +
+//                "from records_tbl as A, cars_tbl as B" +
+//                "where" +
+//                "A.carId = B._id" +
+//                "and" +
+//                "B.selected = 1;";
+        String sql = "select * from records_tbl where records_tbl.carId";
         return queryRecords(sql);
     }
 

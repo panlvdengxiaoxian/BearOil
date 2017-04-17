@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import net.lidongdong.bearoil.entity.MoneyEntity;
 import net.lidongdong.bearoil.entity.RecordEntity;
 
 import java.util.ArrayList;
@@ -137,9 +138,30 @@ public class RecordOperationAndroid implements TableRecordOperation {
     }
 
     @Override
-    public RecordEntity querySelectedRecords() {
-        return querySelectedCar(openDatabase(),true);
+    public List<RecordEntity> queryRecordsEachYear() {
+        return null;
     }
+
+    @Override
+    public List<RecordEntity> queryRecordsEachHalfOfYear() {
+        return null;
+    }
+
+    @Override
+    public List<RecordEntity> queryRecordsThreeMonth() {
+        return null;
+    }
+
+    @Override
+    public List<MoneyEntity> queryRecordsMoneyEachYear() {
+        return null;
+    }
+
+    @Override
+    public List<MoneyEntity> queryRecordMoneyEachMonth() {
+        return null;
+    }
+
     private RecordEntity querySelectedCar(SQLiteDatabase db,boolean isClose){
         String selection=BearSQLiteValues.CARID + " =?";
         String[] selectionArgs=new String[]{String.valueOf(DatabaseTool.getInstance().querySelectedCar().get_id())};
@@ -187,16 +209,6 @@ public class RecordOperationAndroid implements TableRecordOperation {
             closeDatabase(db);
         }
         return null;
-
-    }
-
-    @Override
-    public void changeSelectedRecord(int carId) {
-
-    }
-
-    @Override
-    public void changeSelectedRecord(RecordEntity newRecordEntity) {
 
     }
 

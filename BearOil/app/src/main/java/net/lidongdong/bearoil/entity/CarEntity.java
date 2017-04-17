@@ -23,6 +23,12 @@ public class CarEntity {
         this._id = _id;
     }
 
+    public CarEntity(int _id, String name, int selected) {
+        this._id = _id;
+        this.name = name;
+        this.selected = selected;
+    }
+
     @Override
     public String toString () {
         return "CarEntity{" +
@@ -49,7 +55,7 @@ public class CarEntity {
         return selected;
     }
 
-    public void setSelected (int selected) {
+    public void setSelected(int selected) {
         this.selected = selected;
     }
 

@@ -7,6 +7,7 @@ import net.lidongdong.bearoil.entity.MoneyEntity;
 import net.lidongdong.bearoil.entity.RecordEntity;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author lidongdong(一个帅的惊天动地的男人)
@@ -16,44 +17,64 @@ import java.util.List;
  * @function
  */
 
-public class DatabaseTool implements TableRecordOperation,TableCarOperation {
+public class DatabaseTool implements TableRecordOperation, TableCarOperation {
 
+    /**
+     * 静态内部类单例写法
+     */
+//    private static class SingletonHolder {
+//        private static final DatabaseTool INSTANCE = new DatabaseTool();
+//    }
+//
+//    public static DatabaseTool getInstance() {
+//        return SingletonHolder.INSTANCE;
+//    }
 
-    private static class SingletonHolder {
-        private static final DatabaseTool INSTANCE = new DatabaseTool();
-    }
+    /**
+     * 另外一种单例的写法
+     */
+    private static final AtomicReference<DatabaseTool> INSTANCE = new AtomicReference<>();
 
     public static DatabaseTool getInstance() {
-        return SingletonHolder.INSTANCE;
+        for (; ; ) {
+            DatabaseTool current = INSTANCE.get();
+            if (current != null) {
+                return current;
+            }
+            current = new DatabaseTool();
+            if (INSTANCE.compareAndSet(null, current)) {
+                return current;
+            }
+        }
     }
 
-    private BearSQLiteHelper mLiteHelper;
+
+    private BearSQLiteHelper mHelper;
     private TableCarOperation mTableCarOperation;
     private final RecordOperationSQL mOperationSQL;
 
-
+    //单例私有构造方法
     private DatabaseTool() {
-        mLiteHelper = new BearSQLiteHelper(BearApplication.getContext());
-        mTableCarOperation = new CarOperationAndroid(mLiteHelper);
-        mOperationSQL = new RecordOperationSQL(mLiteHelper);
+        mHelper = new BearSQLiteHelper(BearApplication.getContext());
+        mTableCarOperation = new CarOperationAndroid(mHelper);
+        mOperationSQL = new RecordOperationSQL(mHelper);
     }
 
     //记录表相关
 
-
     @Override
     public void addRecord(RecordEntity record) {
-       mOperationSQL.addRecord(record);
+        mOperationSQL.addRecord(record);
     }
 
     @Override
     public void removeRecord(int id) {
-       mOperationSQL.removeRecord(id);
+        mOperationSQL.removeRecord(id);
     }
 
     @Override
     public void updateRecords(RecordEntity record) {
-       updateRecords(record);
+        updateRecords(record);
     }
 
     @Override
@@ -87,7 +108,6 @@ public class DatabaseTool implements TableRecordOperation,TableCarOperation {
     }
 
 
-
     //汽车表相关
 
     public void addCar(CarEntity car) {
@@ -105,14 +125,13 @@ public class DatabaseTool implements TableRecordOperation,TableCarOperation {
 
     @Override
     public List<CarEntity> queryCars() {
-        return null;
+        return mTableCarOperation.queryCars();
     }
 
 
     public CarEntity querySelectedCar() {
         return mTableCarOperation.querySelectedCar();
     }
-
 
     // 更改选中的车辆
     public void changeSelectedCar(int id) {

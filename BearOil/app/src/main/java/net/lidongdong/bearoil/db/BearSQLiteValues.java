@@ -45,7 +45,7 @@ package net.lidongdong.bearoil.db;
     //建表语句
     static final String SQL_RECORD= "create table " + RECORDS_TBL + " (" + RECORD_ID +
             " integer primary key autoincrement," +
-            DATE + " date not null," +
+            DATE + " integer not null," +
             ODOMETER + " integer not null," +
             PRICE + " integer not null," +
             YUAN + " integer not null," +
@@ -54,7 +54,6 @@ package net.lidongdong.bearoil.db;
             REMARK + " text," +
             CARID + " integer not null," +
             FORGET + " integer not null," +
-            LIGHTON + " integer not null," +
             LIGHTON + " integer not null," +
             STATIONID + " integer not null);";
 }
