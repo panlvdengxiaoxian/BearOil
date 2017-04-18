@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import net.lidongdong.bearoil.R;
 import net.lidongdong.bearoil.adapter.DialogAdapter;
+import net.lidongdong.bearoil.adapter.DialogDeleteListener;
 import net.lidongdong.bearoil.adapter.PopupWindowAdapter;
 import net.lidongdong.bearoil.db.DatabaseTool;
 import net.lidongdong.bearoil.db.ObservableSQLite;
@@ -36,8 +37,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -90,18 +89,19 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     private void initData() {
 
 
-        ObservableSQLite.querySelectedCar()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<CarEntity>() {
-                    @Override
-                    public void accept(@NonNull CarEntity carEntity) throws Exception {
-                        if (carEntity!=null){
-                            mainToolbarCarNameTv.setText(carEntity.getName());
-                        }
-                    }
-                });
+        //此处用rxJava 会空指针
 
+//        ObservableSQLite.querySelectedCar()
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Consumer<CarEntity>() {
+//                    @Override
+//                    public void accept(@NonNull CarEntity carEntity) throws Exception {
+//                        mainToolbarCarNameTv.setText(carEntity.getName());
+//                    }
+//                });
+
+        setQueryCarName();
 
 
 
@@ -129,6 +129,13 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         mainTl.setupWithViewPager(mainVp);
         mainTl.setTabTextColors(Color.WHITE, Color.WHITE);
         mainTl.setSelectedTabIndicatorColor(Color.GREEN);
+    }
+   //设置查询到的小车名
+    private void setQueryCarName() {
+        CarEntity carEntity = DatabaseTool.getInstance().querySelectedCar();
+        if (carEntity != null) {
+            mainToolbarCarNameTv.setText(carEntity.getName());
+        }
     }
 
     private void initView(View v) {
@@ -254,7 +261,15 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         DialogAdapter adapter = new DialogAdapter(getContext());
         adapter.setCars(mCarEntities);
         listView.setAdapter(adapter);
-        adapter.setListener(id -> ObservableSQLite.removeCar(id));
+        adapter.setListener(new DialogDeleteListener() {
+            @Override
+            public void setDeleteListener(int id) {
+                ObservableSQLite.removeCar(id);
+                mCarEntities.clear();
+                mCarEntities.addAll(DatabaseTool.getInstance().queryCars());
+                adapter.notifyDataSetChanged();
+            }
+        });
         bottomSheetDialog.show();
 
         //删除车辆
