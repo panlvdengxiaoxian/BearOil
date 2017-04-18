@@ -51,7 +51,6 @@
                         android:layout_centerInParent="true"
                         android:maxLines="1"
                         android:paddingRight="@dimen/main_toolbar_margin"
-                        android:text="@string/toolbar_car_default_name"
                         android:textColor="@color/main_toolbar_tv"
                         android:textSize="@dimen/main_toolbar_car_name_sp"/>
 

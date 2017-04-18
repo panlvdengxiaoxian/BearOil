@@ -5,4 +5,9 @@
     <dimen name="main_toolbar_margin">5dp</dimen>
     <dimen name="main_RadioGroup_height">40dp</dimen>
 
+
+    <dimen name="addCar_padding">7dp</dimen>
+    <dimen name="main_tv_width">50dp</dimen>
+
+
 </resources>

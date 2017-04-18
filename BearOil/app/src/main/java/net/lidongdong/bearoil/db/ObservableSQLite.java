@@ -40,7 +40,7 @@ public class ObservableSQLite {
             @Override
             public String apply(@NonNull Integer integer) throws Exception {
                 DatabaseTool.getInstance().removeCar(integer);
-                return null;
+                return "mm";
             }
         }).subscribeOn(Schedulers.io()).subscribe();
     }
@@ -62,17 +62,17 @@ public class ObservableSQLite {
     }
 
     //query 当前选中的车
-    public static Observable<CarEntity> querySelecteCar(){
+    public static Observable<CarEntity> querySelectedCar(){
         return Observable.just("").map(s -> DatabaseTool.getInstance().querySelectedCar());
     }
 
     //change 当前选中的车(通过 id)
     public static void changeSelectCar(int id){
-        Observable.just(id).map(new Function<Integer, String>() {
+        Observable.just(id).map(new Function<Integer, Integer>() {
             @Override
-            public String apply(@NonNull Integer integer) throws Exception {
+            public Integer apply(@NonNull Integer integer) throws Exception {
                 DatabaseTool.getInstance().changeSelectedCar(integer);
-                return null;
+                return integer;
             }
         }).subscribeOn(Schedulers.io()).subscribe();
     }
@@ -83,7 +83,7 @@ public class ObservableSQLite {
             @Override
             public String apply(@NonNull CarEntity carEntity) throws Exception {
                 DatabaseTool.getInstance().changeSelectedCar(carEntity);
-                return null;
+                return "fff";
             }
         }).subscribeOn(Schedulers.io()).subscribe();
     }

@@ -23,4 +23,14 @@
         <item name="android:layout_gravity">center</item>
     </style>
 
+    <style name="car_manager_name">
+        <item name="android:layout_width">@dimen/main_tv_width</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/main_toolbar_tv</item>
+        <item name="android:paddingLeft">@dimen/addCar_padding</item>
+        <item name="android:paddingRight">@dimen/addCar_padding</item>
+        <item name="android:textSize">@dimen/main_toolbar_car_name_sp</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
+
 </resources>
