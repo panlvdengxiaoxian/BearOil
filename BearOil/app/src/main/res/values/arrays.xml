@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="main_titles">
+        <item>油耗</item>
+        <item>排名</item>
+        <item>油费</item>
+        <item>费用</item>
+    </string-array>
+</resources>

@@ -1,0 +1,121 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context="net.lidongdong.bearoil.ui.fragment.MainFragment">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimaryDark">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:id="@+id/main_account_rl"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3.1">
+
+                    <ImageView
+                        android:id="@+id/img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:src="@mipmap/ic_launcher"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/img"
+                        android:text="@string/toolbar_name_tv"
+                        android:textColor="@color/main_toolbar_tv"
+                        android:textSize="@dimen/main_toolbar_name_sp"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/main_car_name_rl"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.2">
+
+                    <TextView
+                        android:id="@+id/main_toolbar_car_name_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:maxLines="1"
+                        android:paddingRight="@dimen/main_toolbar_margin"
+                        android:text="@string/toolbar_car_default_name"
+                        android:textColor="@color/main_toolbar_tv"
+                        android:textSize="@dimen/main_toolbar_car_name_sp"/>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="@dimen/main_toolbar_margin"
+                        android:src="#a37676"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="@dimen/main_toolbar_margin"
+                        android:src="@mipmap/right_down"/>
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+        </android.support.v7.widget.Toolbar>
+
+
+        <LinearLayout
+            android:id="@+id/main_rl"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/main_RadioGroup_height"
+            android:layout_alignParentBottom="true"
+            android:background="@color/main_rg_background"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/main_add_btn"
+                style="@style/style_main_Button"/>
+
+            <ImageButton
+                android:id="@+id/main_content_btn"
+                style="@style/style_main_Button"/>
+
+            <ImageButton
+                android:id="@+id/main_more_btn"
+                style="@style/style_main_Button"/>
+
+            <ImageButton
+                android:id="@+id/main_share_btn"
+                style="@style/style_main_Button"/>
+
+        </LinearLayout>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/main_tl"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/main_RadioGroup_height"
+            android:layout_below="@id/toolbar"/>
+
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/main_vp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/main_rl"
+            android:layout_below="@id/main_tl"/>
+    </RelativeLayout>
+

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="main_toolbar_name_sp">20sp</dimen>
+    <dimen name="main_toolbar_car_name_sp">17sp</dimen>
+    <dimen name="main_toolbar_margin">5dp</dimen>
+    <dimen name="main_RadioGroup_height">40dp</dimen>
+
+</resources>
