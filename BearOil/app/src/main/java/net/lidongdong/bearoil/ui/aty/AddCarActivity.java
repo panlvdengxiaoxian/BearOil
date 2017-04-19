@@ -41,6 +41,10 @@ public class AddCarActivity extends AppCompatActivity {
                  ObservableSQLite.addCar(carEntity);
             }
 
+            Intent updateUIIntent=new Intent();
+            updateUIIntent.setAction("UPDATE_UI");
+            sendBroadcast(updateUIIntent);
+
             Intent intent=new Intent(AddCarActivity.this,MainActivity.class);
             intent.putExtra("flag",2);
             finish();

@@ -1,8 +1,10 @@
 package net.lidongdong.bearoil.ui.fragment;
 
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -26,7 +28,6 @@ import android.widget.TextView;
 
 import net.lidongdong.bearoil.R;
 import net.lidongdong.bearoil.adapter.DialogAdapter;
-import net.lidongdong.bearoil.adapter.DialogDeleteListener;
 import net.lidongdong.bearoil.adapter.PopupWindowAdapter;
 import net.lidongdong.bearoil.db.DatabaseTool;
 import net.lidongdong.bearoil.db.ObservableSQLite;
@@ -63,6 +64,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     private List<CarEntity> mCarEntities;
     private PopupWindow mPopupWindow;
+    private DialogAdapter mDialogAdapter;
 
     public MainFragment() {
     }
@@ -102,8 +104,6 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 //                });
 
         setQueryCarName();
-
-
 
         mFragments.add(new FuelConsumptionsFragment());
         mFragments.add(new RankFragment());
@@ -161,7 +161,10 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
         titles = getResources().getStringArray(R.array.main_titles);
 
+        AddCarBroadcastReceiver receiver=new AddCarBroadcastReceiver();
 
+        IntentFilter filter=new IntentFilter("UPDATE_UI");
+        getActivity().registerReceiver(receiver,filter);
     }
 
     @Override
@@ -258,17 +261,15 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         listView.addHeaderView(headerView);
         bottomSheetDialog.setContentView(layout);
         mCarEntities.remove(mCarEntities.size() - 1);
-        DialogAdapter adapter = new DialogAdapter(getContext());
-        adapter.setCars(mCarEntities);
-        listView.setAdapter(adapter);
-        adapter.setListener(new DialogDeleteListener() {
-            @Override
-            public void setDeleteListener(int id) {
-                ObservableSQLite.removeCar(id);
-                mCarEntities.clear();
-                mCarEntities.addAll(DatabaseTool.getInstance().queryCars());
-                adapter.notifyDataSetChanged();
-            }
+        mDialogAdapter = new DialogAdapter(getContext());
+        mDialogAdapter.setCars(mCarEntities);
+        listView.setAdapter(mDialogAdapter);
+
+        mDialogAdapter.setListener(id -> {
+            ObservableSQLite.removeCar(id);
+            mCarEntities.clear();
+            mCarEntities.addAll(DatabaseTool.getInstance().queryCars());
+            mDialogAdapter.notifyDataSetChanged();
         });
         bottomSheetDialog.show();
 
@@ -290,6 +291,16 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                         adapter.setCars(carEntities);
                         listView.setAdapter(adapter);
                     });
+        }
+    }
+
+    public class AddCarBroadcastReceiver extends BroadcastReceiver{
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            mCarEntities.clear();
+            mCarEntities.addAll(DatabaseTool.getInstance().queryCars());
+            mDialogAdapter.notifyDataSetChanged();
         }
     }
 }

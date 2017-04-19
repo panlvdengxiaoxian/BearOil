@@ -8,6 +8,11 @@
 
     <dimen name="addCar_padding">7dp</dimen>
     <dimen name="main_tv_width">50dp</dimen>
+    <dimen name="oil_sp">15sp</dimen>
+
+    <dimen name="oil_margin">10dp</dimen>
+    <dimen name="oil_unit_sp">10sp</dimen>
+
 
 
 </resources>

@@ -33,4 +33,36 @@
         <item name="android:layout_centerVertical">true</item>
     </style>
 
+    <style name="oil_data">
+        <item name="android:layout_marginLeft">@dimen/oil_margin</item>
+        <item name="android:layout_marginRight">@dimen/oil_margin</item>
+        <item name="android:textColor">@color/main_toolbar_tv</item>
+        <item name="android:textSize">@dimen/oil_sp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="oil_tv">
+        <item name="android:textSize">@dimen/oil_sp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/main_toolbar_tv</item>
+    </style>
+
+    <style name="linearLayout_oil_data">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginLeft">40dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="linearLayout_left">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginLeft">25dp</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
 </resources>
