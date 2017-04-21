@@ -26,6 +26,7 @@ class CarOperationAndroid implements TableCarOperation {
 
     @Override
     public void addCar(CarEntity car) {
+
         SQLiteDatabase db = mHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         if (car.get_id() != 0) {
@@ -36,7 +37,7 @@ class CarOperationAndroid implements TableCarOperation {
         values.put(BearSQLiteValues.MODEL, car.getModel());
         values.put(BearSQLiteValues.UUID, car.getUuid());
         db.insert(BearSQLiteValues.CARS_TBL, null, values);
-        db.close();
+      //  closeDatabase(db);
     }
 
     @Override
@@ -45,7 +46,7 @@ class CarOperationAndroid implements TableCarOperation {
         String whereClause = BearSQLiteValues._ID + " = ?";
         String[] whereArgs = new String[]{String.valueOf(id)};
         db.delete(BearSQLiteValues.CARS_TBL, whereClause, whereArgs);
-        db.close();
+      //  closeDatabase(db);
     }
 
     @Override
@@ -63,9 +64,9 @@ class CarOperationAndroid implements TableCarOperation {
         String whereClause = BearSQLiteValues._ID + " = ?";
         String[] whereArgs = new String[]{String.valueOf(car.get_id())};
         db.update(BearSQLiteValues.CARS_TBL, values, whereClause, whereArgs);
-        if (isClose) {
-            closeDatabase(db);
-        }
+//        if (isClose) {
+//            closeDatabase(db);
+//        }
     }
 
     @Override
@@ -96,7 +97,7 @@ class CarOperationAndroid implements TableCarOperation {
             } while (cursor.moveToNext());
             cursor.close();
         }
-        db.close();
+     //   closeDatabase(db);
         return cars;
     }
 
@@ -137,9 +138,10 @@ class CarOperationAndroid implements TableCarOperation {
             cursor.close();
             return car;
         }
-        if (isClose) {
-            closeDatabase(db);
-        }
+
+//        if (isClose) {
+//            closeDatabase(db);
+//        }
         return null;
     }
 
@@ -161,7 +163,7 @@ class CarOperationAndroid implements TableCarOperation {
                 values,
                 whereClause,
                 whereArgs);
-        closeDatabase(db);
+   //     closeDatabase(db);
     }
 
     @Override
@@ -176,7 +178,7 @@ class CarOperationAndroid implements TableCarOperation {
         // 将新选中的车设置为选中状态
         newSelectedCar.setSelect(1);
         updateCar(db, false, newSelectedCar);
-        closeDatabase(db);
+   //     closeDatabase(db);
     }
 
     private SQLiteDatabase openDatabase() {

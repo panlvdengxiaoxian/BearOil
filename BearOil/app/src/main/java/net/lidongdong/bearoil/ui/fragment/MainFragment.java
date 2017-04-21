@@ -33,6 +33,7 @@ import net.lidongdong.bearoil.db.DatabaseTool;
 import net.lidongdong.bearoil.db.ObservableSQLite;
 import net.lidongdong.bearoil.entity.CarEntity;
 import net.lidongdong.bearoil.ui.aty.AddCarActivity;
+import net.lidongdong.bearoil.ui.aty.InputOilRecordsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,8 +66,11 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     private List<CarEntity> mCarEntities;
     private PopupWindow mPopupWindow;
     private DialogAdapter mDialogAdapter;
+    private AddCarBroadcastReceiver mReceiver;
+    private RemoveCarBroadcastReceiver mRemoveCarBroadcastReceiver;
 
     public MainFragment() {
+
     }
 
 
@@ -89,19 +93,6 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initData() {
-
-
-        //此处用rxJava 会空指针
-
-//        ObservableSQLite.querySelectedCar()
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Consumer<CarEntity>() {
-//                    @Override
-//                    public void accept(@NonNull CarEntity carEntity) throws Exception {
-//                        mainToolbarCarNameTv.setText(carEntity.getName());
-//                    }
-//                });
 
         setQueryCarName();
 
@@ -130,7 +121,8 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         mainTl.setTabTextColors(Color.WHITE, Color.WHITE);
         mainTl.setSelectedTabIndicatorColor(Color.GREEN);
     }
-   //设置查询到的小车名
+
+    //设置查询到的小车名
     private void setQueryCarName() {
         CarEntity carEntity = DatabaseTool.getInstance().querySelectedCar();
         if (carEntity != null) {
@@ -161,10 +153,13 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
         titles = getResources().getStringArray(R.array.main_titles);
 
-        AddCarBroadcastReceiver receiver=new AddCarBroadcastReceiver();
+        mReceiver = new AddCarBroadcastReceiver();
+        IntentFilter filter = new IntentFilter("UPDATE_UI");
+        getContext().registerReceiver(mReceiver, filter);
 
-        IntentFilter filter=new IntentFilter("UPDATE_UI");
-        getActivity().registerReceiver(receiver,filter);
+        mRemoveCarBroadcastReceiver = new RemoveCarBroadcastReceiver();
+        IntentFilter removeFilter = new IntentFilter("REMOVE_UPDATE_UI");
+        getContext().registerReceiver(mRemoveCarBroadcastReceiver, removeFilter);
     }
 
     @Override
@@ -177,6 +172,11 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 showPopupWindow(v);
                 break;
             case R.id.main_add_btn:
+
+                //输入当前车的加油记录
+                Intent intent = new Intent(getContext(), InputOilRecordsActivity.class);
+                startActivity(intent);
+
                 break;
             case R.id.main_content_btn:
                 break;
@@ -235,7 +235,10 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             if (id == -1) {
                 showBottomSheet();
             } else {
-                DatabaseTool.getInstance().changeSelectedCar((int) id);
+                ObservableSQLite.changeSelectCar((int) id);
+                Intent intent=new Intent();
+                intent.setAction("UPDATE_CHART");
+                getContext().sendBroadcast(intent);
                 mainToolbarCarNameTv.setText(mCarEntities.get(position).getName());
             }
 
@@ -266,41 +269,64 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         listView.setAdapter(mDialogAdapter);
 
         mDialogAdapter.setListener(id -> {
+
+            //删除车辆
             ObservableSQLite.removeCar(id);
-            mCarEntities.clear();
-            mCarEntities.addAll(DatabaseTool.getInstance().queryCars());
-            mDialogAdapter.notifyDataSetChanged();
+            Intent intent = new Intent();
+            intent.setAction("REMOVE_UPDATE_UI");
+            getContext().sendBroadcast(intent);
         });
         bottomSheetDialog.show();
 
-        //删除车辆
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == 1000) {
+
+    private class AddCarBroadcastReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
 
             ObservableSQLite.queryAllCar()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(carEntities -> {
-                        View layout = LayoutInflater.from(getContext()).inflate(R.layout.list_popup_window, null);
-                        ListView listView = (ListView) layout.findViewById(R.id.lv_dialog);
-                        PopupWindowAdapter adapter = new PopupWindowAdapter(getContext());
-                        adapter.setCars(carEntities);
-                        listView.setAdapter(adapter);
+                        mCarEntities.clear();
+                        mCarEntities.addAll(carEntities);
+                        mDialogAdapter.notifyDataSetChanged();
+
                     });
+
         }
     }
 
-    public class AddCarBroadcastReceiver extends BroadcastReceiver{
+    private class RemoveCarBroadcastReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            mCarEntities.clear();
-            mCarEntities.addAll(DatabaseTool.getInstance().queryCars());
-            mDialogAdapter.notifyDataSetChanged();
+
+            ObservableSQLite.queryAllCar()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(carEntities -> {
+                        mCarEntities.clear();
+                        mCarEntities.addAll(carEntities);
+                        mDialogAdapter.notifyDataSetChanged();
+
+                    });
+
+//            DatabaseTool.getInstance().changeSelectedCar(1);
+//            ObservableSQLite.querySelectedCar().subscribeOn(Schedulers.io())
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe(carEntity -> mainToolbarCarNameTv.setText(carEntity.getName()));
+
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getContext().unregisterReceiver(mReceiver);
+        getContext().unregisterReceiver(mRemoveCarBroadcastReceiver);
+
     }
 }

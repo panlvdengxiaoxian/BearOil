@@ -104,12 +104,12 @@ public class RecordOperationAndroid implements TableRecordOperation {
             int indexStationID=cursor.getColumnIndex(BearSQLiteValues.STATIONID);
             do {
                 int id=cursor.getInt(indexId);
-                int date=cursor.getInt(indexDate);
-                int odometer=cursor.getInt(indexOdometer);
-                int price=cursor.getInt(indexPrice);
-                int yuan=cursor.getInt(indexYuan);
+                String date=cursor.getString(indexDate);
+                String odometer=cursor.getString(indexOdometer);
+                String price=cursor.getString(indexPrice);
+                float yuan=cursor.getInt(indexYuan);
                 int type=cursor.getInt(indexType);
-                int gassup=cursor.getInt(indexGassup);
+                String gassup=cursor.getString(indexGassup);
                 String remark=cursor.getString(indexRemark);
                 int carId=cursor.getInt(indexCarId);
                 int forget=cursor.getInt(indexForget);
@@ -179,13 +179,14 @@ public class RecordOperationAndroid implements TableRecordOperation {
             int indexForget=cursor.getColumnIndex(BearSQLiteValues.FORGET);
             int indexLightOn=cursor.getColumnIndex(BearSQLiteValues.LIGHTON);
             int indexStationID=cursor.getColumnIndex(BearSQLiteValues.STATIONID);
+
             int id=cursor.getInt(indexId);
-            int date=cursor.getInt(indexDate);
-            int odometer=cursor.getInt(indexOdometer);
-            int price=cursor.getInt(indexPrice);
-            int yuan=cursor.getInt(indexYuan);
+            String date=cursor.getString(indexDate);
+            String odometer=cursor.getString(indexOdometer);
+            String price=cursor.getString(indexPrice);
+            float yuan=cursor.getInt(indexYuan);
             int type=cursor.getInt(indexType);
-            int gassup=cursor.getInt(indexGassup);
+            String gassup=cursor.getString(indexGassup);
             String remark=cursor.getString(indexRemark);
             int carId=cursor.getInt(indexCarId);
             int forget=cursor.getInt(indexForget);

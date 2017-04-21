@@ -8,6 +8,8 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
+import net.lidongdong.bearoil.entity.RecordEntity;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,9 +22,10 @@ import java.util.List;
  */
 
 public class LinearChartView extends View {
-    private float[] values = new float[5];
+
     private int[] nums;
-    private List<ChartValue> valueList;
+
+    private List<RecordEntity> mRecordEntities;
     private int mWidth;
     private int mHeight;
     private int tvSizes=3;
@@ -43,6 +46,10 @@ public class LinearChartView extends View {
         super(context, attrs, defStyle);
         init();
 
+    }
+
+    public void setRecordEntities(List<RecordEntity> recordEntities) {
+        mRecordEntities = recordEntities;
     }
 
     public void setTvSizes(int tvSizes) {
@@ -68,23 +75,14 @@ public class LinearChartView extends View {
     private List<Point> mPoints;
 
     private void init() {
-        values[0] = 12.5f;
-        values[1] = 10.8f;
-        values[2] = 9.2f;
-        values[3] = 22.0f;
-        values[4] = 18.5f;
+
         mPoints = new ArrayList<>();
         nums=new int[]{15,14,13,12,11,10,9,8,7,6,5,4,3,2,1};
         names=new String[]{"2016","2017","2018"};
 
 
-
     }
 
-    public void setValueList(List<ChartValue> valueList) {
-        this.valueList = valueList;
-        invalidate();
-    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -110,8 +108,8 @@ public class LinearChartView extends View {
         drawTextX(canvas, paint);
         drawMarkX(canvas, paint);
         drawMarkY(canvas, paint);
-       // drawPoint(canvas, paint);
-     //   drawLine(canvas, paint);
+        drawPoint(canvas, paint);
+        drawLine(canvas, paint);
 
 
     }
@@ -132,10 +130,10 @@ public class LinearChartView extends View {
         float length = (mWidth - PADDING_WIDTH * 2) / (tvSizes + 1);
         float heightY = mHeight - PADDING_HEIGHT * 2;
         mPoints.clear();
-        for (int i = 0; i < tvSizes; i++) {
+        for (int i = 0; i < mRecordEntities.size(); i++) {
 
             float cx = PADDING_WIDTH + length * (i + 1);
-            float cy = (30 - values[i]) * heightY / 30 + PADDING_HEIGHT;
+            float cy = (30 - mRecordEntities.get(i).getYuan()) * heightY / 30 + PADDING_HEIGHT;
             float radius = 5;
             canvas.drawCircle(cx, cy, radius, paint);
             mPoints.add(new Point(cx, cy));
@@ -226,33 +224,14 @@ public class LinearChartView extends View {
     }
 
     private static class Point {
-        public final float x;
-        public final float y;
+         final float x;
+         final float y;
 
-        public Point(float x, float y) {
+         Point(float x, float y) {
             this.x = x;
             this.y = y;
         }
     }
 
-    public static class ChartValue {
-        private String name;
-        private float value;
 
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public float getValue() {
-            return value;
-        }
-
-        public void setValue(float value) {
-            this.value = value;
-        }
-    }
 }

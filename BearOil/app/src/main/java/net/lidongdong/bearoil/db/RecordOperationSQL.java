@@ -34,7 +34,7 @@ class RecordOperationSQL implements TableRecordOperation {
     private void record(String sql) {
         SQLiteDatabase db = mHelper.getWritableDatabase();
         db.execSQL(sql);
-        db.close();
+  //      db.close();
     }
 
 
@@ -97,12 +97,12 @@ class RecordOperationSQL implements TableRecordOperation {
             do {
 
                 int id = cursor.getInt(indexId);
-                int date = cursor.getInt(indexDate);
-                int odometer = cursor.getInt(indexOdometer);
-                int price = cursor.getInt(indexPrice);
-                int yuan = cursor.getInt(indexYuan);
+                 String date = cursor.getString(indexDate);
+                String odometer = cursor.getString(indexOdometer);
+                String price = cursor.getString(indexPrice);
+                float yuan = cursor.getFloat(indexYuan);
                 int type = cursor.getInt(indexType);
-                int gassup = cursor.getInt(indexGassup);
+                String gassup = cursor.getString(indexGassup);
                 String remark = cursor.getString(indexRemark);
                 int carId = cursor.getInt(indexCarId);
                 int forget = cursor.getInt(indexForget);
@@ -127,19 +127,18 @@ class RecordOperationSQL implements TableRecordOperation {
             cursor.close();
         }
 
-        db.close();
+     //   db.close();
         return recordEntities;
     }
 
     @Override
     public List<RecordEntity> queryRecords() {
-//        String sql = "select A *" +
-//                "from records_tbl as A, cars_tbl as B" +
-//                "where" +
-//                "A.carId = B._id" +
-//                "and" +
-//                "B.selected = 1;";
-        String sql = "select * from records_tbl where records_tbl.carId";
+        String sql = "SELECT A.*\n" +
+                "FROM records_tbl as A, cars_tbl AS B\n" +
+                "where\n" +
+                "A.carId = B.\"_id\"\n" +
+                "AND\n" +
+                "B.selected = 1";
         return queryRecords(sql);
     }
 
@@ -213,7 +212,7 @@ class RecordOperationSQL implements TableRecordOperation {
             } while (cursor.moveToNext());
             cursor.close();
         }
-        db.close();
+     //   db.close();
 
         return entities;
     }

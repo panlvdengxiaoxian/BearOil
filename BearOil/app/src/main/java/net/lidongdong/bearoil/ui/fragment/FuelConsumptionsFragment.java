@@ -1,6 +1,10 @@
 package net.lidongdong.bearoil.ui.fragment;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,19 +15,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import net.lidongdong.bearoil.R;
+import net.lidongdong.bearoil.db.ObservableSQLite;
 import net.lidongdong.bearoil.ui.view.LinearChartView;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * @author lidongdong(一个帅的惊天动地的男人)
  * @version 1.0
- * @date 17/4/19
- * @explain
- * @function
+ * @ date 17/4/19
+ * @ explain
+ * @ function
  */
 public class FuelConsumptionsFragment extends Fragment implements View.OnClickListener {
 
     private TextView fuelConsumptionsNameTv;
-    private ImageView fuelConsumptionsLeftIv;
+    private ImageView fuelLeftIv;
     private ImageView fuelConsumptionsRightIv;
     private LinearChartView chartView;
     private TextView defaultName;
@@ -41,6 +49,7 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
     private ImageView fuelImg3;
     private ImageView fuelImg4;
     private ImageView fuelImg5;
+    private UpdateChartBroadcastReceiver mReceiver;
 
     public FuelConsumptionsFragment() {
 
@@ -50,7 +59,6 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_main, container, false);
     }
 
@@ -60,7 +68,7 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
 
 
         fuelConsumptionsNameTv = (TextView) view.findViewById(R.id.fuel_consumptions_name_tv);
-        fuelConsumptionsLeftIv = (ImageView) view.findViewById(R.id.fuel_consumptions_left_iv);
+        fuelLeftIv = (ImageView) view.findViewById(R.id.fuel_consumptions_left_iv);
         fuelConsumptionsRightIv = (ImageView) view.findViewById(R.id.fuel_consumptions_right_iv);
         chartView = (LinearChartView) view.findViewById(R.id.chart_view);
         defaultName = (TextView) view.findViewById(R.id.default_name);
@@ -81,15 +89,21 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
         fuelImg5 = (ImageView) view.findViewById(R.id.fuel_img5);
 
 
-        fuelConsumptionsLeftIv.setOnClickListener(this);
+        fuelLeftIv.setOnClickListener(this);
         fuelConsumptionsRightIv.setOnClickListener(this);
+
+        mReceiver = new UpdateChartBroadcastReceiver();
+        IntentFilter filter=new IntentFilter("UPDATE_CHART");
+        getContext().registerReceiver(mReceiver,filter);
 
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        queryAllRecords();
     }
+
 
     int count = 1;
     int num=4;
@@ -175,6 +189,8 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
             chartView.setNames(name);
             chartView.setTvSizes(3);
             chartView.setxNums(18);
+            queryAllRecords();
+
 
         } else if (count == 1) {
             fuelImg1.setImageResource(R.mipmap.shixinxiaoyuandian);
@@ -187,6 +203,7 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
             chartView.setNames(name);
             chartView.setTvSizes(12);
             chartView.setxNums(12);
+            
         } else if (count == 2) {
             fuelImg1.setImageResource(R.mipmap.shixinxiaoyuandian);
             fuelImg2.setImageResource(R.mipmap.shixinxiaoyuandian);
@@ -225,4 +242,30 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
 
     }
 
+    private void queryAllRecords() {
+        //查询当前车所有信息
+        ObservableSQLite.queryRecords()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(recordEntities -> {
+                    if (recordEntities!=null) {
+                        chartView.setRecordEntities(recordEntities);
+                    }
+                });
+    }
+
+
+    private class UpdateChartBroadcastReceiver extends BroadcastReceiver{
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            queryAllRecords();
+        }
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getContext().unregisterReceiver(mReceiver);
+    }
 }

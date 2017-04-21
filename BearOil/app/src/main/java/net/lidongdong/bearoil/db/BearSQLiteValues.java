@@ -45,15 +45,15 @@ package net.lidongdong.bearoil.db;
     //建表语句
     static final String SQL_RECORD= "create table " + RECORDS_TBL + " (" + RECORD_ID +
             " integer primary key autoincrement," +
-            DATE + " integer not null," +
-            ODOMETER + " integer not null," +
-            PRICE + " integer not null," +
-            YUAN + " integer not null," +
-            TYPE + " integer not null," +
-            GASSUP + " integer not null," +
+            DATE + " text not null," +
+            ODOMETER + " text not null," +
+            PRICE + " text not null," +
+            YUAN + " Integer not null," +
+            TYPE + " integer," +
+            GASSUP + " text not null," +
             REMARK + " text," +
-            CARID + " integer not null," +
-            FORGET + " integer not null," +
-            LIGHTON + " integer not null," +
-            STATIONID + " integer not null);";
+            CARID + " text not null," +
+            FORGET + " integer," +
+            LIGHTON + " integer," +
+            STATIONID + " integer );";
 }

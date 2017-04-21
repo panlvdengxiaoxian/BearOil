@@ -93,18 +93,18 @@ public class ObservableSQLite {
      * record表相关
      **/
 
-    //添加当前record表
+    //添加当前record
     public static void addRecord(RecordEntity record) {
         Observable.just(record).map(new Function<RecordEntity, String>() {
             @Override
             public String apply(@NonNull RecordEntity recordEntity) throws Exception {
                 DatabaseTool.getInstance().addRecord(recordEntity);
-                return null;
+                return "我的大爷";
             }
         }).subscribeOn(Schedulers.io()).subscribe();
     }
 
-    //删除当前record 表
+    //删除当前record
     public static void deleteRecord(int id) {
         Observable.just(id).map(integer -> {
             DatabaseTool.getInstance().removeRecord(integer);
@@ -112,7 +112,7 @@ public class ObservableSQLite {
         }).subscribeOn(Schedulers.io()).subscribe();
     }
 
-    //update当前的 record 表
+    //update当前的 record
     public static void update(RecordEntity record) {
         Observable.just(record).map(new Function<RecordEntity, String>() {
             @Override

@@ -19,6 +19,8 @@
         </activity>
         <activity android:name=".ui.aty.AddCarActivity">
         </activity>
+        <activity android:name=".ui.aty.InputOilRecordsActivity">
+        </activity>
     </application>
 
 </manifest>

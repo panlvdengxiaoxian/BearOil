@@ -13,66 +13,67 @@ package net.lidongdong.bearoil.entity;
 public class RecordEntity {
 
     private int _id;
-    private int date;
-    private int price;
-    private int yuan;
+    private String date;
+    private String price;
+    private float yuan;
     private int type;
-    private int gasSup;
+    private String gasSup;
     private String remark;
     private int carId;
     private int forget;
     private int lightOn;
     private int stationId;
-    private int odometer;
+    private String odometer;
+
+    public RecordEntity(int _id) {
+        this._id = _id;
+    }
+
+    public RecordEntity() {
+    }
 
     @Override
     public String toString() {
         return "RecordEntity{" +
                 "_id=" + _id +
-                ", date=" + date +
-                ", price=" + price +
-                ", carId=" + carId +
-                ", lightOn=" + lightOn +
+                ", date='" + date + '\'' +
+                ", price='" + price + '\'' +
+                ", yuan='" + yuan + '\'' +
+                ", gasSup='" + gasSup + '\'' +
+                ", carId='" + carId + '\'' +
+                ", odometer='" + odometer + '\'' +
                 '}';
-    }
-
-    public int getOdometer() {
-        return odometer;
-    }
-
-    public void setOdometer(int odometer) {
-        this.odometer = odometer;
-    }
-
-    public RecordEntity(int _id) {
-        this._id = _id;
     }
 
     public int get_id() {
         return _id;
     }
 
-    public int getDate() {
+    public void set_id(int _id) {
+        this._id = _id;
+    }
+
+    public String getDate() {
         return date;
     }
 
-    public void setDate(int date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
-    public int getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 
-    public int getYuan() {
+    public float getYuan() {
         return yuan;
     }
 
-    public void setYuan(int yuan) {
+    public void setYuan(float yuan) {
         this.yuan = yuan;
     }
 
@@ -84,11 +85,11 @@ public class RecordEntity {
         this.type = type;
     }
 
-    public int getGasSup() {
+    public String getGasSup() {
         return gasSup;
     }
 
-    public void setGasSup(int gasSup) {
+    public void setGasSup(String gasSup) {
         this.gasSup = gasSup;
     }
 
@@ -130,5 +131,13 @@ public class RecordEntity {
 
     public void setStationId(int stationId) {
         this.stationId = stationId;
+    }
+
+    public String getOdometer() {
+        return odometer;
+    }
+
+    public void setOdometer(String odometer) {
+        this.odometer = odometer;
     }
 }
