@@ -34,6 +34,7 @@ import net.lidongdong.bearoil.db.ObservableSQLite;
 import net.lidongdong.bearoil.entity.CarEntity;
 import net.lidongdong.bearoil.ui.aty.AddCarActivity;
 import net.lidongdong.bearoil.ui.aty.InputOilRecordsActivity;
+import net.lidongdong.bearoil.ui.aty.ShowAllRecordsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -179,6 +180,11 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
                 break;
             case R.id.main_content_btn:
+
+                //显示当前小车的所有信息
+                Intent showAllRecordsIntent = new Intent(getContext(), ShowAllRecordsActivity.class);
+                startActivity(showAllRecordsIntent);
+
                 break;
             case R.id.main_more_btn:
                 break;
@@ -195,11 +201,11 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
         //数据
         ObservableSQLite.queryAllCar().map(carEntities -> {
-            CarEntity car = new CarEntity(-1);
+            CarEntity car = new CarEntity(50);
             car.setName("车辆管理");
             carEntities.add(car);
             if (carEntities.size() == 1) {
-                CarEntity myCar = new CarEntity(0);
+                CarEntity myCar = new CarEntity(1);
                 myCar.setName("我的小车");
                 myCar.setSelect(1);
                 carEntities.add(0, myCar);
@@ -230,13 +236,17 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         mPopupWindow.showAsDropDown(parent, xPos, 0);
 
         listView.setOnItemClickListener((parent1, view, position, id) -> {
+
             mPopupWindow.dismiss();
             mPopupWindow = null;
-            if (id == -1) {
+
+            if (id == 50) {
+
                 showBottomSheet();
+
             } else {
                 ObservableSQLite.changeSelectCar((int) id);
-                Intent intent=new Intent();
+                Intent intent = new Intent();
                 intent.setAction("UPDATE_CHART");
                 getContext().sendBroadcast(intent);
                 mainToolbarCarNameTv.setText(mCarEntities.get(position).getName());
@@ -313,11 +323,6 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                         mDialogAdapter.notifyDataSetChanged();
 
                     });
-
-//            DatabaseTool.getInstance().changeSelectedCar(1);
-//            ObservableSQLite.querySelectedCar().subscribeOn(Schedulers.io())
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .subscribe(carEntity -> mainToolbarCarNameTv.setText(carEntity.getName()));
 
         }
     }

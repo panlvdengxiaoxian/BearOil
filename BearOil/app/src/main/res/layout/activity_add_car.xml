@@ -17,8 +17,8 @@
 
         <TextView
             android:id="@+id/tv"
-            android:text="@string/carName"
-            style="@style/car_manager_name"/>
+            style="@style/car_manager_name"
+            android:text="@string/carName"/>
 
         <EditText
             android:id="@+id/add_name_et"
@@ -33,14 +33,17 @@
 
         <TextView
             android:id="@+id/tv1"
-            android:text="@string/carBrand"
-            style="@style/car_manager_name"/>
+            style="@style/car_manager_name"
+            android:layout_centerVertical="true"
+            android:text="@string/carBrand"/>
 
-        <EditText
+        <TextView
             android:id="@+id/add_brand_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/tv1"/>
+            android:layout_centerInParent="true"
+            android:layout_toRightOf="@id/tv1"
+            android:text="未选"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -52,11 +55,12 @@
             style="@style/car_manager_name"
             android:text="@string/carCategory"/>
 
-        <EditText
+        <TextView
             android:id="@+id/add_category_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/tv2"/>
+            android:layout_toRightOf="@id/tv2"
+            android:text="未选"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -65,15 +69,43 @@
 
         <TextView
             android:id="@+id/tv3"
-            android:text="@string/carModel"
-            style="@style/car_manager_name"/>
+            style="@style/car_manager_name"
+            android:text="@string/carModel"/>
 
-        <EditText
+        <TextView
             android:id="@+id/add_model_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/tv3"/>
+            android:layout_toRightOf="@id/tv3"
+            android:text="未选"/>
     </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:gravity="center"
+            android:id="@+id/engine"
+            android:layout_width="0dp"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/main_toolbar_tv"
+            android:textSize="30sp"/>
+
+        <TextView
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:id="@+id/transmission"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/main_toolbar_tv"
+            android:textSize="30sp"/>
+    </LinearLayout>
 
 
 </LinearLayout>

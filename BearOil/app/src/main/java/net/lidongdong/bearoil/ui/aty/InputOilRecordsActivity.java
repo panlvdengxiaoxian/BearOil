@@ -1,7 +1,9 @@
 package net.lidongdong.bearoil.ui.aty;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
@@ -12,6 +14,7 @@ import android.widget.Toast;
 import net.lidongdong.bearoil.R;
 import net.lidongdong.bearoil.db.ObservableSQLite;
 import net.lidongdong.bearoil.entity.RecordEntity;
+import net.lidongdong.bearoil.utils.TimeUntil;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -47,6 +50,7 @@ public class InputOilRecordsActivity extends AppCompatActivity implements View.O
         saveIv.setOnClickListener(this);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void initView() {
 
         titleName = (TextView) findViewById(R.id.title_name);
@@ -56,6 +60,7 @@ public class InputOilRecordsActivity extends AppCompatActivity implements View.O
         recordsPriceEt = (EditText) findViewById(R.id.records_price_et);
         recordsYuanEt = (EditText) findViewById(R.id.records_yuan_et);
         recordsGassupEt = (EditText) findViewById(R.id.records_gassup_et);
+        recordsDateEt.setText(TimeUntil.getCurrentTime());
 
     }
 
@@ -71,7 +76,7 @@ public class InputOilRecordsActivity extends AppCompatActivity implements View.O
     }
 
     private void saveData() {
-        RecordEntity recordEntity = new RecordEntity(0);
+        RecordEntity recordEntity = new RecordEntity();
 
         if (recordsGassupEt.getText() != null &&
                 recordsOdometerEt.getText() != null &&
@@ -81,7 +86,7 @@ public class InputOilRecordsActivity extends AppCompatActivity implements View.O
 
             recordEntity.setDate(recordsDateEt.getText().toString());
             recordEntity.setOdometer(recordsOdometerEt.getText().toString());
-            recordEntity.setPrice(recordsPriceEt.getText().toString());
+            recordEntity.setPrice(Float.parseFloat(recordsPriceEt.getText().toString()));
             recordEntity.setYuan(Float.parseFloat(recordsYuanEt.getText().toString()));
             recordEntity.setGasSup(recordsGassupEt.getText().toString());
             ObservableSQLite.querySelectedCar()

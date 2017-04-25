@@ -52,4 +52,6 @@
     <string name="forget">forget</string>
     <string name="lightOn">lightOn</string>
     <string name="stationId">stationId</string>
+    <string name="item_records_odometer_unit">公里</string>
+    <string name="item_records_km">升/百公里</string>
 </resources>

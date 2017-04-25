@@ -18,7 +18,6 @@
         <item name="android:background">@color/main_rg_background</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:src">@mipmap/ic_launcher</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>
     </style>
@@ -30,7 +29,6 @@
         <item name="android:paddingLeft">@dimen/addCar_padding</item>
         <item name="android:paddingRight">@dimen/addCar_padding</item>
         <item name="android:textSize">@dimen/main_toolbar_car_name_sp</item>
-        <item name="android:layout_centerVertical">true</item>
     </style>
 
     <style name="oil_data">
@@ -72,6 +70,13 @@
         <item name="android:layout_centerVertical">true</item>
         <item name="android:textColor">@color/main_toolbar_tv</item>
         <item name="android:textSize">@dimen/oil_sp</item>
+    </style>
+
+    <style name="item_records_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/item_records_content_sp</item>
+        <item name="android:textColor">#f7f3f3</item>
     </style>
 
 </resources>

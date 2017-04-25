@@ -249,7 +249,6 @@
             </LinearLayout>
         </RelativeLayout>
 
-
             <LinearLayout
                 style="@style/linearLayout_oil_data">
                 <TextView

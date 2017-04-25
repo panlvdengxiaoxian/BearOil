@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="net.lidongdong.bearoil">
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:name=".app.BearApplication"
@@ -20,6 +21,8 @@
         <activity android:name=".ui.aty.AddCarActivity">
         </activity>
         <activity android:name=".ui.aty.InputOilRecordsActivity">
+        </activity>
+        <activity android:name=".ui.aty.ShowAllRecordsActivity">
         </activity>
     </application>
 

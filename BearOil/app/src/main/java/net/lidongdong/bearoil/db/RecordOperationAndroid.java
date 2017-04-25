@@ -30,7 +30,7 @@ public class RecordOperationAndroid implements TableRecordOperation {
         SQLiteDatabase db = mHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         if (record.get_id() != 0) {
-            values.put(BearSQLiteValues._ID, record.get_id());
+            values.put(BearSQLiteValues.CAR_ID, record.get_id());
         }
         values.put(BearSQLiteValues.DATE, record.getDate());
         values.put(BearSQLiteValues.ODOMETER, record.getOdometer());
@@ -50,7 +50,7 @@ public class RecordOperationAndroid implements TableRecordOperation {
     @Override
     public void removeRecord(int id) {
         SQLiteDatabase db = mHelper.getWritableDatabase();
-        String whereClause = BearSQLiteValues._ID + " =?";
+        String whereClause = BearSQLiteValues.CAR_ID + " =?";
         String[] whereArgs = new String[]{String.valueOf(id)};
         db.delete(BearSQLiteValues.RECORDS_TBL, whereClause, whereArgs);
         db.close();
@@ -59,6 +59,11 @@ public class RecordOperationAndroid implements TableRecordOperation {
     @Override
     public void updateRecords(RecordEntity record) {
            updateRecord(openDatabase(),true,record);
+    }
+
+    @Override
+    public RecordEntity queryRecord(int id) {
+        return null;
     }
 
     private void updateRecord(SQLiteDatabase db, boolean isClose, RecordEntity record) {
@@ -75,7 +80,7 @@ public class RecordOperationAndroid implements TableRecordOperation {
         values.put(BearSQLiteValues.LIGHTON, record.getLightOn());
         values.put(BearSQLiteValues.STATIONID, record.getStationId());
         db.insert(BearSQLiteValues.RECORDS_TBL, null, values);
-        String whereClause = BearSQLiteValues._ID + " =?";
+        String whereClause = BearSQLiteValues.CAR_ID + " =?";
         String[] whereArgs = new String[]{String.valueOf(record.get_id())};
         db.update(BearSQLiteValues.RECORDS_TBL, values, whereClause, whereArgs);
         if (isClose) {
@@ -90,7 +95,7 @@ public class RecordOperationAndroid implements TableRecordOperation {
         SQLiteDatabase db = mHelper.getWritableDatabase();
         Cursor cursor = db.query(BearSQLiteValues.RECORDS_TBL, null, null, null, null, null, null);
         if (cursor!=null&&cursor.moveToFirst()) {
-            int indexId=cursor.getColumnIndex(BearSQLiteValues._ID);
+            int indexId=cursor.getColumnIndex(BearSQLiteValues.CAR_ID);
             int indexDate=cursor.getColumnIndex(BearSQLiteValues.DATE);
             int indexOdometer=cursor.getColumnIndex(BearSQLiteValues.ODOMETER);
             int indexPrice=cursor.getColumnIndex(BearSQLiteValues.PRICE);
@@ -106,7 +111,7 @@ public class RecordOperationAndroid implements TableRecordOperation {
                 int id=cursor.getInt(indexId);
                 String date=cursor.getString(indexDate);
                 String odometer=cursor.getString(indexOdometer);
-                String price=cursor.getString(indexPrice);
+                float price=cursor.getFloat(indexPrice);
                 float yuan=cursor.getInt(indexYuan);
                 int type=cursor.getInt(indexType);
                 String gassup=cursor.getString(indexGassup);
@@ -167,7 +172,7 @@ public class RecordOperationAndroid implements TableRecordOperation {
         String[] selectionArgs=new String[]{String.valueOf(DatabaseTool.getInstance().querySelectedCar().get_id())};
         Cursor cursor = db.query(BearSQLiteValues.RECORDS_TBL, null, selection, selectionArgs, null, null, null);
         if (cursor!=null&&cursor.moveToFirst()){
-            int indexId=cursor.getColumnIndex(BearSQLiteValues._ID);
+            int indexId=cursor.getColumnIndex(BearSQLiteValues.CAR_ID);
             int indexDate=cursor.getColumnIndex(BearSQLiteValues.DATE);
             int indexOdometer=cursor.getColumnIndex(BearSQLiteValues.ODOMETER);
             int indexPrice=cursor.getColumnIndex(BearSQLiteValues.PRICE);
@@ -183,7 +188,7 @@ public class RecordOperationAndroid implements TableRecordOperation {
             int id=cursor.getInt(indexId);
             String date=cursor.getString(indexDate);
             String odometer=cursor.getString(indexOdometer);
-            String price=cursor.getString(indexPrice);
+            float price=cursor.getFloat(indexPrice);
             float yuan=cursor.getInt(indexYuan);
             int type=cursor.getInt(indexType);
             String gassup=cursor.getString(indexGassup);

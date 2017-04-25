@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+
+    <TextView
+        android:layout_centerVertical="true"
+        android:id="@+id/item_records_date"
+        android:layout_marginLeft="@dimen/item_records_time_marginLeft"
+        style="@style/item_records_style"/>
+
+    <TextView
+        android:id="@+id/item_records_odometer"
+        style="@style/item_records_style"
+        android:layout_centerInParent="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/item_records_time_marginLeft"
+        android:layout_toRightOf="@id/item_records_odometer"
+        android:text="@string/item_records_odometer_unit"
+        android:textColor="#a37c7c"/>
+
+    <TextView
+        android:id="@+id/km"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/item_records_time_marginLeft"
+        android:text="@string/item_records_km"
+        android:textColor="#a37c7c"/>
+
+    <TextView
+        android:id="@+id/item_records_km"
+        style="@style/item_records_style"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/km"/>
+
+
+</RelativeLayout>

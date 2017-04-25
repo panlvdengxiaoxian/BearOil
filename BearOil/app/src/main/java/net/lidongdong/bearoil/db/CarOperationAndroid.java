@@ -30,7 +30,7 @@ class CarOperationAndroid implements TableCarOperation {
         SQLiteDatabase db = mHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         if (car.get_id() != 0) {
-            values.put(BearSQLiteValues._ID, car.get_id());
+            values.put(BearSQLiteValues.CAR_ID, car.get_id());
         }
         values.put(BearSQLiteValues.NAME, car.getName());
         values.put(BearSQLiteValues.SELECTED, car.getSelect());
@@ -43,7 +43,7 @@ class CarOperationAndroid implements TableCarOperation {
     @Override
     public void removeCar(int id) {
         SQLiteDatabase db = mHelper.getWritableDatabase();
-        String whereClause = BearSQLiteValues._ID + " = ?";
+        String whereClause = BearSQLiteValues.CAR_ID + " = ?";
         String[] whereArgs = new String[]{String.valueOf(id)};
         db.delete(BearSQLiteValues.CARS_TBL, whereClause, whereArgs);
       //  closeDatabase(db);
@@ -61,7 +61,7 @@ class CarOperationAndroid implements TableCarOperation {
         values.put(BearSQLiteValues.SELECTED, car.getSelect());
         values.put(BearSQLiteValues.MODEL, car.getModel());
         values.put(BearSQLiteValues.UUID, car.getUuid());
-        String whereClause = BearSQLiteValues._ID + " = ?";
+        String whereClause = BearSQLiteValues.CAR_ID + " = ?";
         String[] whereArgs = new String[]{String.valueOf(car.get_id())};
         db.update(BearSQLiteValues.CARS_TBL, values, whereClause, whereArgs);
 //        if (isClose) {
@@ -76,7 +76,7 @@ class CarOperationAndroid implements TableCarOperation {
         Cursor cursor = db.query(BearSQLiteValues.CARS_TBL, null, null, null, null, null, null);
 
         if (cursor != null && cursor.moveToFirst()) {
-            int indexId = cursor.getColumnIndex(BearSQLiteValues._ID);
+            int indexId = cursor.getColumnIndex(BearSQLiteValues.CAR_ID);
             int indexName = cursor.getColumnIndex(BearSQLiteValues.NAME);
             int indexSelected = cursor.getColumnIndex(BearSQLiteValues.SELECTED);
             int indexModel = cursor.getColumnIndex(BearSQLiteValues.MODEL);
@@ -120,7 +120,7 @@ class CarOperationAndroid implements TableCarOperation {
                 null
         );
         if (cursor != null && cursor.moveToFirst()) {
-            int indexId = cursor.getColumnIndex(BearSQLiteValues._ID);
+            int indexId = cursor.getColumnIndex(BearSQLiteValues.CAR_ID);
             int indexName = cursor.getColumnIndex(BearSQLiteValues.NAME);
             int indexSelected = cursor.getColumnIndex(BearSQLiteValues.SELECTED);
             int indexModel = cursor.getColumnIndex(BearSQLiteValues.MODEL);
@@ -157,7 +157,7 @@ class CarOperationAndroid implements TableCarOperation {
         // 将新选中的车设置为选中状态
         ContentValues values = new ContentValues();
         values.put(BearSQLiteValues.SELECTED, 1);
-        String whereClause = BearSQLiteValues._ID + " = ?";
+        String whereClause = BearSQLiteValues.CAR_ID + " = ?";
         String[] whereArgs = new String[]{String.valueOf(id)};
         db.update(BearSQLiteValues.CARS_TBL,
                 values,

@@ -5,8 +5,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +19,14 @@ import android.widget.TextView;
 
 import net.lidongdong.bearoil.R;
 import net.lidongdong.bearoil.db.ObservableSQLite;
+import net.lidongdong.bearoil.entity.RecordEntity;
 import net.lidongdong.bearoil.ui.view.LinearChartView;
+import net.lidongdong.bearoil.utils.DataCalculationUntil;
+import net.lidongdong.bearoil.utils.TimeUntil;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -31,7 +41,7 @@ import io.reactivex.schedulers.Schedulers;
 public class FuelConsumptionsFragment extends Fragment implements View.OnClickListener {
 
     private TextView fuelConsumptionsNameTv;
-    private ImageView fuelLeftIv;
+    private ImageView fuelConsumptionsLeftIv;
     private ImageView fuelConsumptionsRightIv;
     private LinearChartView chartView;
     private TextView defaultName;
@@ -50,6 +60,7 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
     private ImageView fuelImg4;
     private ImageView fuelImg5;
     private UpdateChartBroadcastReceiver mReceiver;
+    private List<RecordEntity> mRecordEntityList;
 
     public FuelConsumptionsFragment() {
 
@@ -68,7 +79,7 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
 
 
         fuelConsumptionsNameTv = (TextView) view.findViewById(R.id.fuel_consumptions_name_tv);
-        fuelLeftIv = (ImageView) view.findViewById(R.id.fuel_consumptions_left_iv);
+        fuelConsumptionsLeftIv = (ImageView) view.findViewById(R.id.fuel_consumptions_left_iv);
         fuelConsumptionsRightIv = (ImageView) view.findViewById(R.id.fuel_consumptions_right_iv);
         chartView = (LinearChartView) view.findViewById(R.id.chart_view);
         defaultName = (TextView) view.findViewById(R.id.default_name);
@@ -89,25 +100,31 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
         fuelImg5 = (ImageView) view.findViewById(R.id.fuel_img5);
 
 
-        fuelLeftIv.setOnClickListener(this);
+        fuelConsumptionsLeftIv.setOnClickListener(this);
         fuelConsumptionsRightIv.setOnClickListener(this);
 
+        mRecordEntityList = new ArrayList<>();
+
         mReceiver = new UpdateChartBroadcastReceiver();
-        IntentFilter filter=new IntentFilter("UPDATE_CHART");
-        getContext().registerReceiver(mReceiver,filter);
+        IntentFilter filter = new IntentFilter("UPDATE_CHART");
+        getContext().registerReceiver(mReceiver, filter);
+
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         queryAllRecords();
+
     }
 
 
     int count = 1;
-    int num=4;
+    int num = 4;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onClick(View v) {
         String[] strings = getResources().getStringArray(R.array.oil_chart);
@@ -118,29 +135,29 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
                 if (count == 0) {
                     switchRound(count);
                     fuelConsumptionsNameTv.setText(strings[count]);
-                    num=4;
-                    count=1;
+                    num = 4;
+                    count = 1;
 
                 } else if (count == 1) {
                     switchRound(count);
                     fuelConsumptionsNameTv.setText(strings[count]);
-                    num=0;
-                    count=2;
+                    num = 0;
+                    count = 2;
 
                 } else if (count == 2) {
                     switchRound(count);
                     fuelConsumptionsNameTv.setText(strings[count]);
-                    num=1;
+                    num = 1;
                     count = 3;
                 } else if (count == 3) {
                     switchRound(count);
                     fuelConsumptionsNameTv.setText(strings[count]);
-                    num=2;
+                    num = 2;
                     count = 4;
                 } else if (count == 4) {
                     switchRound(count);
                     fuelConsumptionsNameTv.setText(strings[count]);
-                    num=3;
+                    num = 3;
                     count = 0;
                 }
 
@@ -150,34 +167,36 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
                 if (num == 0) {
                     switchRound(num);
                     fuelConsumptionsNameTv.setText(strings[num]);
-                    count=1;
+                    count = 1;
                     num = 4;
                 } else if (num == 4) {
                     switchRound(num);
                     fuelConsumptionsNameTv.setText(strings[num]);
-                    count=0;
+                    count = 0;
                     num = 3;
                 } else if (num == 3) {
                     switchRound(num);
                     fuelConsumptionsNameTv.setText(strings[num]);
-                    count=4;
+                    count = 4;
                     num = 2;
                 } else if (num == 2) {
                     switchRound(num);
                     fuelConsumptionsNameTv.setText(strings[num]);
-                    count=3;
+                    count = 3;
                     num = 1;
                 } else if (num == 1) {
                     switchRound(num);
                     fuelConsumptionsNameTv.setText(strings[num]);
-                    count=2;
+                    count = 2;
                     num = 0;
                 }
                 break;
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void switchRound(int count) {
+
         if (count == 0) {
             fuelImg1.setImageResource(R.mipmap.baisexiaoyuandian);
             fuelImg2.setImageResource(R.mipmap.shixinxiaoyuandian);
@@ -185,10 +204,6 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
             fuelImg4.setImageResource(R.mipmap.shixinxiaoyuandian);
             fuelImg5.setImageResource(R.mipmap.shixinxiaoyuandian);
 
-            String[] name=new String[]{"2016","2017","2018"};
-            chartView.setNames(name);
-            chartView.setTvSizes(3);
-            chartView.setxNums(18);
             queryAllRecords();
 
 
@@ -199,22 +214,14 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
             fuelImg4.setImageResource(R.mipmap.shixinxiaoyuandian);
             fuelImg5.setImageResource(R.mipmap.shixinxiaoyuandian);
 
-            String[] name=new String[]{"5","6","7","8","9","10","11","12","2017","2","3","4"};
-            chartView.setNames(name);
-            chartView.setTvSizes(12);
-            chartView.setxNums(12);
-            
+            queryRecordsEachYear();
+
         } else if (count == 2) {
             fuelImg1.setImageResource(R.mipmap.shixinxiaoyuandian);
             fuelImg2.setImageResource(R.mipmap.shixinxiaoyuandian);
             fuelImg3.setImageResource(R.mipmap.baisexiaoyuandian);
             fuelImg4.setImageResource(R.mipmap.shixinxiaoyuandian);
             fuelImg5.setImageResource(R.mipmap.shixinxiaoyuandian);
-
-            String[] name=new String[]{"11","12","2017","2","3","4"};
-            chartView.setNames(name);
-            chartView.setTvSizes(6);
-            chartView.setxNums(6);
 
         } else if (count == 3) {
             fuelImg1.setImageResource(R.mipmap.shixinxiaoyuandian);
@@ -223,10 +230,7 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
             fuelImg4.setImageResource(R.mipmap.baisexiaoyuandian);
             fuelImg5.setImageResource(R.mipmap.shixinxiaoyuandian);
 
-            String[] name=new String[]{"2","3","4"};
-            chartView.setNames(name);
-            chartView.setTvSizes(3);
-            chartView.setxNums(3);
+
         } else if (count == 4) {
             fuelImg1.setImageResource(R.mipmap.shixinxiaoyuandian);
             fuelImg2.setImageResource(R.mipmap.shixinxiaoyuandian);
@@ -234,38 +238,147 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
             fuelImg4.setImageResource(R.mipmap.shixinxiaoyuandian);
             fuelImg5.setImageResource(R.mipmap.baisexiaoyuandian);
 
-            String[] name=new String[]{"5","6","7","8","9","10","11","12","2017","2","3","4"};
-            chartView.setNames(name);
-            chartView.setTvSizes(12);
-            chartView.setxNums(12);
         }
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void queryAllRecords() {
-        //查询当前车所有信息
         ObservableSQLite.queryRecords()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(recordEntities -> {
-                    if (recordEntities!=null) {
-                        chartView.setRecordEntities(recordEntities);
+                    if (recordEntities.size() > 0) {
+
+                        chartView.setTimeUnit(TimeUntil.unitChartTime(recordEntities));
+                        chartView.setList(TimeUntil.unixTimeUnit(recordEntities));
+
+                        float data[] = new float[recordEntities.size()];
+                        float sum = 0;
+                        float max = data[0];
+                        float min = data[0];
+                        float kmSum = 0;
+                        for (int i = 0; i < recordEntities.size(); i++) {
+                            if (i > 1) {
+                                String currentOdometer = recordEntities.get(i).getOdometer();
+                                float nextYuan = recordEntities.get(i - 1).getYuan();
+                                float nextPrice = recordEntities.get(i - 1).getPrice();
+                                String nextOdometer = recordEntities.get(i - 1).getOdometer();
+                                data[i] = DataCalculationUntil.kmData(nextYuan, nextPrice, currentOdometer, nextOdometer);
+                                //求油耗和
+                                sum = sum + data[i];
+
+                                //最大值
+                                if (data[i] > max) {
+                                    max = data[i];
+                                }
+                                //最小值
+                                if (min>0) {
+                                    if (data[i] < min) {
+                                        min = data[i];
+                                    }
+                                }
+                                //求公里数之和
+                                kmSum = kmSum + Float.valueOf(recordEntities.get(i).getOdometer());
+
+                                //最近油耗
+
+                                recentOilTv.setText(String.valueOf(new DecimalFormat(".00").format(data[2])));
+
+
+                            }
+                        }
+                        for (int stat = 0, end = data.length - 1; stat < end; stat++, end--) {
+                            float temp = data[end];
+                            data[end] = data[stat];
+                            data[stat] = temp;
+                        }
+
+                        //数据插入
+                        chartView.setDatas(data);
+
+                        //求平均数
+                        avgOilTv.setTextColor(Color.YELLOW);
+                        avgOilTv.setText(String.valueOf(new DecimalFormat(".00").format(sum / data.length)));
+
+                        //当前里程数
+                        currentKmTv.setText(recordEntities.get(0).getOdometer());
+
+                        //油耗的最大值
+                        maxOilTv.setText(String.valueOf(new DecimalFormat(".00").format(max)));
+
+                        //油耗最小值
+                        minOilTv.setText(String.valueOf(new DecimalFormat(".00").format(min)));
+
+                        //总的里程数
+                        allKmTv.setText(String.valueOf(Float.valueOf(recordEntities.get(0).getOdometer())-10));
+
+                        //加油总量
+                        allOilTv.setText(String.valueOf(new DecimalFormat(".00").format(
+                                (sum/data.length)*(Float.valueOf(recordEntities.get(0).getOdometer())/100))));
+
+                        //里程平均
+                        avgKmTv.setText(String.valueOf(new DecimalFormat(".00").format(
+                                ((Float.valueOf(recordEntities.get(0).getOdometer()))-10)
+                                /(float)(365*2+31))));
+
                     }
                 });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void queryRecordsEachYear() {
+        ObservableSQLite.queryRecordsEachYear()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(recordEntities -> {
+                    if (recordEntities.size() > 0) {
+                        chartView.setTimeUnit(TimeUntil.unitChartTime(recordEntities));
+                        chartView.setList(TimeUntil.unixTimeUnit(recordEntities));
+                        float data[] = new float[recordEntities.size()];
+                        for (int i = 0; i < recordEntities.size(); i++) {
 
-    private class UpdateChartBroadcastReceiver extends BroadcastReceiver{
+                            if (i > 1) {
+
+                                String currentOdometer = recordEntities.get(i).getOdometer();
+                                float nextYuan = recordEntities.get(i - 1).getYuan();
+                                float nextPrice = recordEntities.get(i - 1).getPrice();
+                                String nextOdometer = recordEntities.get(i - 1).getOdometer();
+                                data[i] = DataCalculationUntil.kmData(nextYuan, nextPrice, currentOdometer, nextOdometer);
+                            }
+                        }
+                        //数组倒序
+                        for (int stat = 0, end = data.length - 1; stat < end; stat++, end--) {
+                            float temp = data[end];
+                            data[end] = data[stat];
+                            data[stat] = temp;
+                        }
+
+                        chartView.setDatas(data);
+                    }
+                });
+
+    }
+
+
+    private class UpdateChartBroadcastReceiver extends BroadcastReceiver {
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         public void onReceive(Context context, Intent intent) {
-            queryAllRecords();
+            mRecordEntityList.clear();
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         getContext().unregisterReceiver(mReceiver);
     }
+
 }

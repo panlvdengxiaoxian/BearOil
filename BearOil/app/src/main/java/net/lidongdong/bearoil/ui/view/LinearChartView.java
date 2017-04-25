@@ -25,12 +25,17 @@ public class LinearChartView extends View {
 
     private int[] nums;
 
-    private List<RecordEntity> mRecordEntities;
+    private String[] mTimeUnit ;
     private int mWidth;
     private int mHeight;
-    private int tvSizes=3;
-    private int xNums=18;
-    private String[] names ;
+
+
+
+    private List<RecordEntity> mRecordEntities;
+
+    private float[] datas;
+
+    private List<String> mList;
 
 
     public LinearChartView(Context context) {
@@ -48,38 +53,32 @@ public class LinearChartView extends View {
 
     }
 
-    public void setRecordEntities(List<RecordEntity> recordEntities) {
-        mRecordEntities = recordEntities;
+    public void setDatas(float[] datas) {
+        this.datas = datas;
     }
 
-    public void setTvSizes(int tvSizes) {
-        this.tvSizes = tvSizes;
-        invalidate();
+    public void setList(List<String> list) {
+        mList = list;
     }
 
-    public void setxNums(int xNums) {
-        this.xNums = xNums;
-        invalidate();
+
+    public void setTimeUnit(String[] timeUnit) {
+        mTimeUnit = timeUnit;
     }
 
-    public void setNames(String[] names) {
-        this.names = names;
-        invalidate();
-    }
+
 
     // 这两个数据是随便写的, 实际上应该根据不同的屏幕确定不同的值
     private static final int PADDING_WIDTH = 40;
     private static final int PADDING_HEIGHT = 50;
-    private static final int COUNT_Y_MARK = 15;
+    private static final int COUNT_Y_MARK = 17;
 
     private List<Point> mPoints;
 
     private void init() {
 
         mPoints = new ArrayList<>();
-        nums=new int[]{15,14,13,12,11,10,9,8,7,6,5,4,3,2,1};
-        names=new String[]{"2016","2017","2018"};
-
+        nums=new int[]{17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1};
 
     }
 
@@ -106,6 +105,7 @@ public class LinearChartView extends View {
         drawAxisY(canvas, paint);
         //x字
         drawTextX(canvas, paint);
+
         drawMarkX(canvas, paint);
         drawMarkY(canvas, paint);
         drawPoint(canvas, paint);
@@ -115,7 +115,7 @@ public class LinearChartView extends View {
     }
 
     private void drawLine(Canvas canvas, Paint paint) {
-
+        paint.setColor(Color.RED);
         Point lastPoint = null;
         for (int i = 0; i < mPoints.size(); i++) {
             Point currentP = mPoints.get(i);
@@ -127,13 +127,13 @@ public class LinearChartView extends View {
     }
 
     private void drawPoint(Canvas canvas, Paint paint) {
-        float length = (mWidth - PADDING_WIDTH * 2) / (tvSizes + 1);
+        paint.setColor(Color.YELLOW);
+        float length = (mWidth - PADDING_WIDTH * 2) / (datas.length + 1);
         float heightY = mHeight - PADDING_HEIGHT * 2;
         mPoints.clear();
-        for (int i = 0; i < mRecordEntities.size(); i++) {
-
+        for (int i = 0; i < datas.length; i++) {
             float cx = PADDING_WIDTH + length * (i + 1);
-            float cy = (30 - mRecordEntities.get(i).getYuan()) * heightY / 30 + PADDING_HEIGHT;
+            float cy = (18 - datas[i]) * heightY / 18 + PADDING_HEIGHT;
             float radius = 5;
             canvas.drawCircle(cx, cy, radius, paint);
             mPoints.add(new Point(cx, cy));
@@ -143,9 +143,9 @@ public class LinearChartView extends View {
 
     private void drawMarkX(Canvas canvas, Paint paint) {
 
-        float length = (mWidth - PADDING_WIDTH * 2) / (xNums + 2);
+        float length = (mWidth - PADDING_WIDTH * 2) / (mList.size() + 1);
 
-        for (int i = 0; i < xNums; i++) {
+        for (int i = 0; i < mList.size(); i++) {
             float startX = PADDING_WIDTH + length * (i + 1);
             float startY = mHeight - PADDING_HEIGHT - 10;
             float stopY = mHeight - PADDING_HEIGHT;
@@ -164,20 +164,17 @@ public class LinearChartView extends View {
     }
 
     private void drawTextX(Canvas canvas, Paint paint) {
-        float length = (mWidth - PADDING_WIDTH * 2) / (tvSizes + 1);
-
-        for (int i = 0; i < tvSizes; i++) {
-            float startX = PADDING_WIDTH + length * (i + 1);
+        float length = (mWidth - PADDING_WIDTH * 2) / (mTimeUnit.length );
+    //    Log.d("xxx", "mTimeUnit.length:" + mTimeUnit.length);
+        for (int i = 0; i < mTimeUnit.length; i++) {
+            float startX = PADDING_WIDTH + length * (i);
             float stopY = mHeight - PADDING_HEIGHT;
-            float x = startX - 20;
+            float x = startX - 15;
             float y = stopY + 35;
-            paint.setTextSize(30);
-            canvas.drawText(names[i], x, y, paint);
+            paint.setTextSize(25);
+
+            canvas.drawText(mTimeUnit[i], x, y, paint);
         }
-        //加入0
-        float y=mHeight-PADDING_HEIGHT+30;
-        paint.setTextSize(30);
-        canvas.drawText("0",PADDING_WIDTH-30,y,paint);
 
 
     }

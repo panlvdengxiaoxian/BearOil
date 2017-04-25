@@ -21,6 +21,8 @@ public interface TableRecordOperation {
 
     void updateRecords(RecordEntity record);
 
+    RecordEntity queryRecord(int id);
+
     List<RecordEntity> queryRecords();
 
     List<RecordEntity> queryRecordsEachYear();

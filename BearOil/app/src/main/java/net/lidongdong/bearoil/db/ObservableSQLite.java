@@ -56,6 +56,8 @@ public class ObservableSQLite {
         }).subscribeOn(Schedulers.io()).subscribe();
     }
 
+
+
     //query所有车
     public static Observable<List<CarEntity>> queryAllCar() {
         return Observable.just("").map(s -> DatabaseTool.getInstance().queryCars());
@@ -122,6 +124,11 @@ public class ObservableSQLite {
             }
         }).subscribeOn(Schedulers.io()).subscribe();
 
+    }
+    //根据 id 查询车的记录表
+
+    public static Observable<RecordEntity> queryRecord(int id){
+        return Observable.just(id).map(integer -> DatabaseTool.getInstance().queryRecord(integer));
     }
 
     //查询当前选中车辆的所有信息

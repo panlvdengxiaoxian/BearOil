@@ -34,24 +34,23 @@ class RecordOperationSQL implements TableRecordOperation {
     private void record(String sql) {
         SQLiteDatabase db = mHelper.getWritableDatabase();
         db.execSQL(sql);
-  //      db.close();
     }
 
 
     @Override
     public void addRecord(RecordEntity record) {
         String sql;
-        if (record.get_id() == 0) {
-            sql = "insert into records_tbl (date, odometer, price, yuan, type, gasSup, remark, carId, forget, lightOn, stationId) values (" +
-                    record.getDate() + ", " + record.getOdometer() + ", " + record.getPrice() + ", " + record.getYuan() + ", " + record.getType()
-                    + ", " + record.getGasSup() + ", " + record.getRemark() + ", " + record.getCarId() + ", " + record.getForget() + ", " +
-                    record.getLightOn() + ", " + record.getStationId() + ");";
-        } else {
+//        if (record.get_id() == 0) {
+//            sql = "insert into records_tbl (date, odometer, price, yuan, type, gasSup, remark, carId, forget, lightOn, stationId) values (" +
+//                    record.getDate() + ", " + record.getOdometer() + ", " + record.getPrice() + ", " + record.getYuan() + ", " + record.getType()
+//                    + ", " + record.getGasSup() + ", " + record.getRemark() + ", " + record.getCarId() + ", " + record.getForget() + ", " +
+//                    record.getLightOn() + ", " + record.getStationId() + ");";
+//        } else {
             sql = "insert into records_tbl values (" + record.get_id() + ", " +
                     record.getDate() + ", " + record.getOdometer() + ", " + record.getPrice() + ", " + record.getYuan() + ", " + record.getType()
                     + ", " + record.getGasSup() + ", " + record.getRemark() + ", " + record.getCarId() + ", " + record.getForget() + ", " +
                     record.getLightOn() + ", " + record.getStationId() + ");";
-        }
+//        }
         record(sql);
 
     }
@@ -99,7 +98,7 @@ class RecordOperationSQL implements TableRecordOperation {
                 int id = cursor.getInt(indexId);
                  String date = cursor.getString(indexDate);
                 String odometer = cursor.getString(indexOdometer);
-                String price = cursor.getString(indexPrice);
+                float price = cursor.getFloat(indexPrice);
                 float yuan = cursor.getFloat(indexYuan);
                 int type = cursor.getInt(indexType);
                 String gassup = cursor.getString(indexGassup);
@@ -127,7 +126,6 @@ class RecordOperationSQL implements TableRecordOperation {
             cursor.close();
         }
 
-     //   db.close();
         return recordEntities;
     }
 
@@ -142,30 +140,88 @@ class RecordOperationSQL implements TableRecordOperation {
         return queryRecords(sql);
     }
 
+   @Override
+    public RecordEntity queryRecord(int id) {
+
+        RecordEntity recordEntity=new RecordEntity();
+        SQLiteDatabase db = mHelper.getWritableDatabase();
+        String selection = BearSQLiteValues.RECORD_ID + " = ? ";
+        String[] selectionArgs = new String[]{String.valueOf(id)};
+        Cursor cursor = db.query(BearSQLiteValues.RECORDS_TBL,null,selection,selectionArgs,null,null,null);
+        if (null != cursor && cursor.moveToFirst()) {
+
+            int indexDate = cursor.getColumnIndex(BearSQLiteValues.DATE);
+            int indexOdometer = cursor.getColumnIndex(BearSQLiteValues.ODOMETER);
+            int indexPrice = cursor.getColumnIndex(BearSQLiteValues.PRICE);
+            int indexYuan = cursor.getColumnIndex(BearSQLiteValues.YUAN);
+            int indexType = cursor.getColumnIndex(BearSQLiteValues.TYPE);
+            int indexGassup = cursor.getColumnIndex(BearSQLiteValues.GASSUP);
+            int indexRemark = cursor.getColumnIndex(BearSQLiteValues.REMARK);
+            int indexCarId = cursor.getColumnIndex(BearSQLiteValues.CARID);
+            int indexForget = cursor.getColumnIndex(BearSQLiteValues.FORGET);
+            int indexLightOn = cursor.getColumnIndex(BearSQLiteValues.LIGHTON);
+            int indexStationId = cursor.getColumnIndex(BearSQLiteValues.STATIONID);
+
+            do {
+
+                String date = cursor.getString(indexDate);
+                String odometer = cursor.getString(indexOdometer);
+                float price = cursor.getFloat(indexPrice);
+                float yuan = cursor.getFloat(indexYuan);
+                int type = cursor.getInt(indexType);
+                String gassup = cursor.getString(indexGassup);
+                String remark = cursor.getString(indexRemark);
+                int carId = cursor.getInt(indexCarId);
+                int forget = cursor.getInt(indexForget);
+                int lightOn = cursor.getInt(indexLightOn);
+                int stationId = cursor.getInt(indexStationId);
+
+                recordEntity.setDate(date);
+                recordEntity.setOdometer(odometer);
+                recordEntity.setPrice(price);
+                recordEntity.setYuan(yuan);
+                recordEntity.setType(type);
+                recordEntity.setGasSup(gassup);
+                recordEntity.setRemark(remark);
+                recordEntity.setCarId(carId);
+                recordEntity.setForget(forget);
+                recordEntity.setLightOn(lightOn);
+                recordEntity.setStationId(stationId);
+
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+
+        return recordEntity;
+
+    }
+
+
+
     @Override
     public List<RecordEntity> queryRecordsEachYear() {
-        String sql = "SELECT A.date, A.odometer, A.price, A.yuan, A.carId, datetime(A.date / 1000, 'unixepoch')" +
-                "from records_tbl as A, cars_tbl as B" +
-                "WHERE A.date > (" +
-                "    strftime('%s', datetime('now', '-12 month')) * 1000" +
-                ")" +
-                "AND" +
-                "A.carId = B._id" +
-                "AND" +
+        String sql = "SELECT A.date, A.odometer, A.price, A.yuan, A.carId, datetime(A.date / 1000, 'unixepoch')\n" +
+                "from records_tbl as A, cars_tbl as B\n" +
+                "WHERE A.date > (\n" +
+                "    strftime('%s', datetime('now', '-12 month')) * 1000\n" +
+                ")\n" +
+                "AND\n" +
+                "A.carId = B.\"_id\"\n" +
+                "AND\n" +
                 "B.selected = 1;";
         return queryRecords(sql);
     }
 
     @Override
     public List<RecordEntity> queryRecordsEachHalfOfYear() {
-        String sql = "SELECT A.date, A.odometer, A.price, A.yuan, A.carId, datetime(A.date / 1000, 'unixepoch')" +
-                "from records_tbl as A, cars_tbl as B" +
-                "WHERE A.date > (" +
-                "    strftime('%s', datetime('now', '-6 month')) * 1000" +
-                ")" +
-                "AND" +
-                "A.carId = B._id" +
-                "AND" +
+        String sql = "SELECT A.date, A.odometer, A.price, A.yuan, A.carId, datetime(A.date / 1000, 'unixepoch')\n" +
+                "from records_tbl as A, cars_tbl as B\n" +
+                "WHERE A.date > (\n" +
+                "    strftime('%s', datetime('now', '-18month')) * 1000\n" +
+                ")\n" +
+                "AND\n" +
+                "A.carId = B.\"_id\"\n" +
+                "AND\n" +
                 "B.selected = 1;";
         return queryRecords(sql);
     }
@@ -175,7 +231,7 @@ class RecordOperationSQL implements TableRecordOperation {
         String sql = "SELECT A.date, A.odometer, A.price, A.yuan, A.carId, datetime(A.date / 1000, 'unixepoch')" +
                 "from records_tbl as A, cars_tbl as B" +
                 "WHERE A.date > (" +
-                "    strftime('%s', datetime('now', '-3 month')) * 1000" +
+                "    strftime('%s', datetime('now', '-22 month')) * 1000" +
                 ")" +
                 "AND" +
                 "A.carId = B._id" +
@@ -212,7 +268,6 @@ class RecordOperationSQL implements TableRecordOperation {
             } while (cursor.moveToNext());
             cursor.close();
         }
-     //   db.close();
 
         return entities;
     }

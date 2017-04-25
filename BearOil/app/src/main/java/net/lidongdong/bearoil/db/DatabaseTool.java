@@ -78,6 +78,11 @@ public class DatabaseTool implements TableRecordOperation, TableCarOperation {
     }
 
     @Override
+    public RecordEntity queryRecord(int id) {
+        return mOperationSQL.queryRecord(id);
+    }
+
+    @Override
     public List<RecordEntity> queryRecords() {
         return mOperationSQL.queryRecords();
     }
