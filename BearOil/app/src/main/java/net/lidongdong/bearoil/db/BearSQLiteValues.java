@@ -42,6 +42,7 @@ package net.lidongdong.bearoil.db;
     static final String FORGET="forget";
     static final String LIGHTON="lightOn";
     static final String STATIONID="stationId";
+
     //建表语句
     static final String SQL_RECORD= "create table " + RECORDS_TBL + " (" + RECORD_ID +
             " integer primary key autoincrement," +

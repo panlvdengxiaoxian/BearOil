@@ -7,7 +7,6 @@ import net.lidongdong.bearoil.entity.MoneyEntity;
 import net.lidongdong.bearoil.entity.RecordEntity;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author lidongdong(一个帅的惊天动地的男人)
@@ -22,31 +21,31 @@ public class DatabaseTool implements TableRecordOperation, TableCarOperation {
     /**
      * 静态内部类单例写法
      */
-//    private static class SingletonHolder {
-//        private static final DatabaseTool INSTANCE = new DatabaseTool();
-//    }
-//
-//    public static DatabaseTool getInstance() {
-//        return SingletonHolder.INSTANCE;
-//    }
+    private static class SingletonHolder {
+        private static final DatabaseTool INSTANCE = new DatabaseTool();
+    }
+
+    public static DatabaseTool getInstance() {
+        return SingletonHolder.INSTANCE;
+    }
 
     /**
      * 另外一种单例的写法
      */
-    private static final AtomicReference<DatabaseTool> INSTANCE = new AtomicReference<>();
-
-    public static DatabaseTool getInstance() {
-        for (; ; ) {
-            DatabaseTool current = INSTANCE.get();
-            if (current != null) {
-                return current;
-            }
-            current = new DatabaseTool();
-            if (INSTANCE.compareAndSet(null, current)) {
-                return current;
-            }
-        }
-    }
+//    private static final AtomicReference<DatabaseTool> INSTANCE = new AtomicReference<>();
+//
+//    public static DatabaseTool getInstance() {
+//        for (; ; ) {
+//            DatabaseTool current = INSTANCE.get();
+//            if (current != null) {
+//                return current;
+//            }
+//            current = new DatabaseTool();
+//            if (INSTANCE.compareAndSet(null, current)) {
+//                return current;
+//            }
+//        }
+//    }
 
 
     private BearSQLiteHelper mHelper;

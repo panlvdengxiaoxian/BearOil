@@ -11,12 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author lidongdong(一个帅的惊天动地的男人)
- * @version 1.0
- * @ date 17/4/13
- * @ explain
- * @ function
- */
+*
+*
+*  @authorlidongdong(A handsome man)
+*  @ date 17/4/25
+*  @ explain 
+*  @ function 
+*  @ version 1.0
+*   
+*/
 class CarOperationAndroid implements TableCarOperation {
     private SQLiteOpenHelper mHelper;
 
@@ -37,7 +40,6 @@ class CarOperationAndroid implements TableCarOperation {
         values.put(BearSQLiteValues.MODEL, car.getModel());
         values.put(BearSQLiteValues.UUID, car.getUuid());
         db.insert(BearSQLiteValues.CARS_TBL, null, values);
-      //  closeDatabase(db);
     }
 
     @Override
@@ -46,16 +48,15 @@ class CarOperationAndroid implements TableCarOperation {
         String whereClause = BearSQLiteValues.CAR_ID + " = ?";
         String[] whereArgs = new String[]{String.valueOf(id)};
         db.delete(BearSQLiteValues.CARS_TBL, whereClause, whereArgs);
-      //  closeDatabase(db);
     }
 
     @Override
     public void updateCar(CarEntity car) {
-        updateCar(openDatabase(), true, car);
+        updateCar(openDatabase(), car);
 
     }
 
-    private void updateCar(SQLiteDatabase db, boolean isClose, CarEntity car) {
+    private void updateCar(SQLiteDatabase db, CarEntity car) {
         ContentValues values = new ContentValues();
         values.put(BearSQLiteValues.NAME, car.getName());
         values.put(BearSQLiteValues.SELECTED, car.getSelect());
@@ -64,9 +65,6 @@ class CarOperationAndroid implements TableCarOperation {
         String whereClause = BearSQLiteValues.CAR_ID + " = ?";
         String[] whereArgs = new String[]{String.valueOf(car.get_id())};
         db.update(BearSQLiteValues.CARS_TBL, values, whereClause, whereArgs);
-//        if (isClose) {
-//            closeDatabase(db);
-//        }
     }
 
     @Override
@@ -97,17 +95,16 @@ class CarOperationAndroid implements TableCarOperation {
             } while (cursor.moveToNext());
             cursor.close();
         }
-     //   closeDatabase(db);
         return cars;
     }
 
     @Override
     public CarEntity querySelectedCar() {
-        return querySelectedCar(openDatabase(), true);
+        return querySelectedCar(openDatabase());
     }
 
     // 查询出当前选中的小车
-    private CarEntity querySelectedCar(SQLiteDatabase db, boolean isClose) {
+    private CarEntity querySelectedCar(SQLiteDatabase db) {
         String selection = BearSQLiteValues.SELECTED + " = ?";
         String[] selectionArgs = new String[]{String.valueOf(1)};
         Cursor cursor = db.query(
@@ -139,9 +136,6 @@ class CarOperationAndroid implements TableCarOperation {
             return car;
         }
 
-//        if (isClose) {
-//            closeDatabase(db);
-//        }
         return null;
     }
 
@@ -149,10 +143,10 @@ class CarOperationAndroid implements TableCarOperation {
     public void changeSelectedCar(int id) {
         SQLiteDatabase db = openDatabase();
         // 先把原来选中的车辆设置为不选中
-        CarEntity currentSelectedCar = querySelectedCar(db, false);
+        CarEntity currentSelectedCar = querySelectedCar(db);
         if (currentSelectedCar != null) {
             currentSelectedCar.setSelect(0);
-            updateCar(db, false, currentSelectedCar);
+            updateCar(db,  currentSelectedCar);
         }
         // 将新选中的车设置为选中状态
         ContentValues values = new ContentValues();
@@ -163,32 +157,26 @@ class CarOperationAndroid implements TableCarOperation {
                 values,
                 whereClause,
                 whereArgs);
-   //     closeDatabase(db);
     }
 
     @Override
     public void changeSelectedCar(CarEntity newSelectedCar) {
         SQLiteDatabase db = openDatabase();
         // 先把原来选中的车辆设置为不选中
-        CarEntity currentSelectedCar = querySelectedCar(db, false);
+        CarEntity currentSelectedCar = querySelectedCar(db);
         if (currentSelectedCar != null) {
             currentSelectedCar.setSelect(0);
         }
-        updateCar(db, false, currentSelectedCar);
+        updateCar(db, currentSelectedCar);
         // 将新选中的车设置为选中状态
         newSelectedCar.setSelect(1);
-        updateCar(db, false, newSelectedCar);
-   //     closeDatabase(db);
+        updateCar(db,newSelectedCar);
     }
 
     private SQLiteDatabase openDatabase() {
         return mHelper.getWritableDatabase();
     }
 
-    private void closeDatabase(SQLiteDatabase db) {
-        if (db != null) {
-            db.close();
-        }
-    }
+
 
 }

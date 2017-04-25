@@ -54,4 +54,5 @@
     <string name="stationId">stationId</string>
     <string name="item_records_odometer_unit">公里</string>
     <string name="item_records_km">升/百公里</string>
+    <string name="add_car_noSelected">未选</string>
 </resources>

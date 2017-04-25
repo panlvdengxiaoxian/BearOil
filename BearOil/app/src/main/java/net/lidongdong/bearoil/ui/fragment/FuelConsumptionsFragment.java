@@ -308,7 +308,7 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
                         maxOilTv.setText(String.valueOf(new DecimalFormat(".00").format(max)));
 
                         //油耗最小值
-                        minOilTv.setText(String.valueOf(new DecimalFormat(".00").format(min)));
+                        minOilTv.setText(String.valueOf(new DecimalFormat("0.00").format(min)));
 
                         //总的里程数
                         allKmTv.setText(String.valueOf(Float.valueOf(recordEntities.get(0).getOdometer())-10));
