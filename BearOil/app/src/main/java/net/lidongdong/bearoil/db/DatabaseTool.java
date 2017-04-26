@@ -50,7 +50,7 @@ public class DatabaseTool implements TableRecordOperation, TableCarOperation {
 
     private BearSQLiteHelper mHelper;
     private TableCarOperation mTableCarOperation;
-    private final RecordOperationSQL mOperationSQL;
+    private  RecordOperationSQL mOperationSQL;
 
     //单例私有构造方法
     private DatabaseTool() {
@@ -73,17 +73,19 @@ public class DatabaseTool implements TableRecordOperation, TableCarOperation {
 
     @Override
     public void updateRecords(RecordEntity record) {
-        updateRecords(record);
+        mOperationSQL.updateRecords(record);
     }
 
     @Override
     public RecordEntity queryRecord(int id) {
         return mOperationSQL.queryRecord(id);
+
     }
 
     @Override
     public List<RecordEntity> queryRecords() {
         return mOperationSQL.queryRecords();
+
     }
 
     @Override

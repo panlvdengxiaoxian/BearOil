@@ -16,7 +16,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 class BearSQLiteHelper extends SQLiteOpenHelper {
 
     BearSQLiteHelper(Context context) {
-        super(context,BearSQLiteValues .NAME_DB,null,BearSQLiteValues.VERSION);
+        super(context,BearSQLiteValues.NAME_DB,null,BearSQLiteValues.VERSION);
     }
 
     @Override

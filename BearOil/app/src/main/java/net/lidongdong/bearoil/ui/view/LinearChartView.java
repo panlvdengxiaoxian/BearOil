@@ -55,6 +55,7 @@ public class LinearChartView extends View {
 
     public void setDatas(float[] datas) {
         this.datas = datas;
+        invalidate();
     }
 
     public void setList(List<String> list) {

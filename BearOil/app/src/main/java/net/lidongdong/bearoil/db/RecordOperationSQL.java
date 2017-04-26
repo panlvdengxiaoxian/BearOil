@@ -2,6 +2,7 @@ package net.lidongdong.bearoil.db;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 
 import net.lidongdong.bearoil.entity.MoneyEntity;
 import net.lidongdong.bearoil.entity.RecordEntity;
@@ -10,20 +11,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author lidongdong(一个帅的惊天动地的男人)
- * @version 1.0
- * @ date 17/4/14
+ * @authorlidongdong(A handsome man)
+ * @ date 17/4/26
  * @ explain
  * @ function
+ * @ version 1.0
  */
 
-class RecordOperationSQL implements TableRecordOperation {
-    private BearSQLiteHelper mHelper;
+public class RecordOperationSQL implements TableRecordOperation {
 
-    RecordOperationSQL(BearSQLiteHelper helper) {
-        mHelper = helper;
+
+    private DatabaseManager mDatabaseManager;
+
+    public RecordOperationSQL(SQLiteOpenHelper helper) {
+        mDatabaseManager = DatabaseManager.getInstance(helper);
     }
-
 
     /**
      * 对 record 的操作
@@ -32,18 +34,19 @@ class RecordOperationSQL implements TableRecordOperation {
      */
 
     private void record(String sql) {
-        SQLiteDatabase db = mHelper.getWritableDatabase();
+        SQLiteDatabase db = mDatabaseManager.getWritableDatabase();
         db.execSQL(sql);
+        mDatabaseManager.closeDatabase();
     }
 
 
     @Override
     public void addRecord(RecordEntity record) {
         String sql;
-            sql = "insert into records_tbl values (" + record.get_id() + ", " +
-                    record.getDate() + ", " + record.getOdometer() + ", " + record.getPrice() + ", " + record.getYuan() + ", " + record.getType()
-                    + ", " + record.getGasSup() + ", " + record.getRemark() + ", " + record.getCarId() + ", " + record.getForget() + ", " +
-                    record.getLightOn() + ", " + record.getStationId() + ");";
+        sql = "insert into records_tbl values (" + record.get_id() + ", " +
+                record.getDate() + ", " + record.getOdometer() + ", " + record.getPrice() + ", " + record.getYuan() + ", " + record.getType()
+                + ", " + record.getGasSup() + ", " + record.getRemark() + ", " + record.getCarId() + ", " + record.getForget() + ", " +
+                record.getLightOn() + ", " + record.getStationId() + ");";
         record(sql);
 
     }
@@ -56,7 +59,7 @@ class RecordOperationSQL implements TableRecordOperation {
 
     @Override
     public void updateRecords(RecordEntity record) {
-        String sql = "update records_tbl set odometer = " + record.getOdometer() + ", price = " +record.getPrice() + ", where id = " + record.get_id() + " ";
+        String sql = "update records_tbl set odometer = " + record.getOdometer() + ", price = " + record.getPrice() + ", where id = " + record.get_id() + " ";
         record(sql);
     }
 
@@ -68,8 +71,7 @@ class RecordOperationSQL implements TableRecordOperation {
      */
 
     private List<RecordEntity> queryRecords(String sql) {
-
-        SQLiteDatabase db = mHelper.getWritableDatabase();
+        SQLiteDatabase db = mDatabaseManager.getWritableDatabase();
         Cursor cursor = db.rawQuery(sql, null);
         List<RecordEntity> recordEntities = new ArrayList<>();
 
@@ -103,7 +105,7 @@ class RecordOperationSQL implements TableRecordOperation {
                 int lightOn = cursor.getInt(indexLightOn);
                 int stationId = cursor.getInt(indexStationId);
 
-                RecordEntity recordEntity = new RecordEntity();
+                RecordEntity recordEntity = new RecordEntity(id);
                 recordEntity.setDate(date);
                 recordEntity.setOdometer(odometer);
                 recordEntity.setPrice(price);
@@ -118,16 +120,17 @@ class RecordOperationSQL implements TableRecordOperation {
                 recordEntities.add(recordEntity);
 
             } while (cursor.moveToNext());
-            cursor.close();
-        }
 
+            cursor.close();
+
+        }
+         mDatabaseManager.closeDatabase();
         return recordEntities;
     }
 
 
-    private List<RecordEntity> queryRecord(String sql) {
-
-        SQLiteDatabase db = mHelper.getWritableDatabase();
+    private List<RecordEntity> queryRecordsEachYear(String sql) {
+       SQLiteDatabase db = mDatabaseManager.getWritableDatabase();
         Cursor cursor = db.rawQuery(sql, null);
         List<RecordEntity> recordEntities = new ArrayList<>();
 
@@ -158,6 +161,7 @@ class RecordOperationSQL implements TableRecordOperation {
             } while (cursor.moveToNext());
             cursor.close();
         }
+        mDatabaseManager.closeDatabase();
 
         return recordEntities;
     }
@@ -173,14 +177,13 @@ class RecordOperationSQL implements TableRecordOperation {
         return queryRecords(sql);
     }
 
-   @Override
+    @Override
     public RecordEntity queryRecord(int id) {
-
-        RecordEntity recordEntity=new RecordEntity();
-        SQLiteDatabase db = mHelper.getWritableDatabase();
+        SQLiteDatabase db = mDatabaseManager.getWritableDatabase();
+        RecordEntity recordEntity = new RecordEntity();
         String selection = BearSQLiteValues.RECORD_ID + " = ? ";
         String[] selectionArgs = new String[]{String.valueOf(id)};
-        Cursor cursor = db.query(BearSQLiteValues.RECORDS_TBL,null,selection,selectionArgs,null,null,null);
+        Cursor cursor = db.query(BearSQLiteValues.RECORDS_TBL, null, selection, selectionArgs, null, null, null);
         if (null != cursor && cursor.moveToFirst()) {
 
             int indexDate = cursor.getColumnIndex(BearSQLiteValues.DATE);
@@ -223,9 +226,10 @@ class RecordOperationSQL implements TableRecordOperation {
             } while (cursor.moveToNext());
             cursor.close();
         }
+        mDatabaseManager.closeDatabase();
 
         return recordEntity;
-   }
+    }
 
     @Override
     public List<RecordEntity> queryRecordsEachYear() {
@@ -238,7 +242,7 @@ class RecordOperationSQL implements TableRecordOperation {
                 "A.carId = B.\"_id\"\n" +
                 "AND\n" +
                 "B.selected = 1;";
-        return queryRecord(sql);
+        return queryRecordsEachYear(sql);
     }
 
     @Override
@@ -252,21 +256,21 @@ class RecordOperationSQL implements TableRecordOperation {
                 "A.carId = B.\"_id\"\n" +
                 "AND\n" +
                 "B.selected = 1;";
-        return queryRecords(sql);
+        return queryRecordsEachYear(sql);
     }
 
     @Override
     public List<RecordEntity> queryRecordsThreeMonth() {
-        String sql = "SELECT A.date, A.odometer, A.price, A.yuan, A.carId, datetime(A.date / 1000, 'unixepoch')" +
-                "from records_tbl as A, cars_tbl as B" +
-                "WHERE A.date > (" +
-                "    strftime('%s', datetime('now', '-3 month')) * 1000" +
-                ")" +
-                "AND" +
-                "A.carId = B._id" +
-                "AND" +
+        String sql = "SELECT A.date, A.odometer, A.price, A.yuan, A.carId, datetime(A.date / 1000, 'unixepoch')\n" +
+                "from records_tbl as A, cars_tbl as B\n" +
+                "WHERE A.date > (\n" +
+                "    strftime('%s', datetime('now', '-3 month')) * 1000\n" +
+                ")\n" +
+                "AND\n" +
+                "A.carId = B.\"_id\"\n" +
+                "AND\n" +
                 "B.selected = 1;";
-        return queryRecords(sql);
+        return queryRecordsEachYear(sql);
     }
 
     /**
@@ -277,8 +281,7 @@ class RecordOperationSQL implements TableRecordOperation {
      */
     private List<MoneyEntity> queryRecordsMoney(String sql) {
         List<MoneyEntity> entities = new ArrayList<>();
-        SQLiteDatabase db = mHelper.getWritableDatabase();
-
+        SQLiteDatabase db = mDatabaseManager.getWritableDatabase();
         Cursor cursor = db.rawQuery(sql, null);
         if (cursor != null && cursor.moveToFirst()) {
 
@@ -297,6 +300,7 @@ class RecordOperationSQL implements TableRecordOperation {
             } while (cursor.moveToNext());
             cursor.close();
         }
+        mDatabaseManager.closeDatabase();
 
         return entities;
     }

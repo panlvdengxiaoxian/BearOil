@@ -21,8 +21,8 @@ public class DataCalculationUntil {
     public static float kmData(float nextYuan, float nextPrice, String currentOdometer,String nextOdometer) {
 
          return (nextYuan*100)/
-                 (nextPrice*( Float.parseFloat(nextOdometer)
-                         -Float.parseFloat(currentOdometer)
+                 (nextPrice*( Float.valueOf(nextOdometer)
+                         -Float.valueOf(currentOdometer)
                  ));
     }
 

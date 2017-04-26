@@ -1,34 +1,37 @@
 package net.lidongdong.bearoil.db;
 
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
-*
-* 
-*  @author lidongdong(一个帅的惊天动地的男人)
-*  @date 17/4/20
-*  @explain 
-*  @function 
-*  @version 1.0
-*   
-*/
+ * @author lidongdong(一个帅的惊天动地的男人)
+ * @version 1.0
+ * @ date 17/4/20
+ * @ explain
+ * @ function
+ */
 
-class DatabaseManager {
+public class DatabaseManager {
+
     private AtomicInteger mOpenCounter = new AtomicInteger();
     private static DatabaseManager instance;
-    private static BearSQLiteHelper mDatabaseHelper;
+    private static SQLiteOpenHelper mDatabaseHelper;
     private SQLiteDatabase mDatabase;
 
-    static synchronized void initializeInstance(BearSQLiteHelper helper) {
+    private DatabaseManager() {
+        mDatabase = mDatabaseHelper.getWritableDatabase();
+    }
+
+    public static synchronized void initializeInstance(SQLiteOpenHelper helper) {
         if (instance == null) {
-            instance = new DatabaseManager();
             mDatabaseHelper = helper;
+            instance = new DatabaseManager();
         }
     }
 
-    public static synchronized DatabaseManager getInstance(BearSQLiteHelper helper) {
+    public static synchronized DatabaseManager getInstance(SQLiteOpenHelper helper) {
         if (instance == null) {
             initializeInstance(helper);
         }
@@ -37,15 +40,15 @@ class DatabaseManager {
 
     public synchronized SQLiteDatabase getWritableDatabase() {
         if (mOpenCounter.incrementAndGet() == 1) {
-            // Opening new database
             mDatabase = mDatabaseHelper.getWritableDatabase();
         }
+
         return mDatabase;
     }
 
     public synchronized SQLiteDatabase getReadableDatabase() {
         if (mOpenCounter.incrementAndGet() == 1) {
-            // Opening new database
+            //open new database
             mDatabase = mDatabaseHelper.getReadableDatabase();
         }
         return mDatabase;
@@ -53,8 +56,9 @@ class DatabaseManager {
 
     public synchronized void closeDatabase() {
         if (mOpenCounter.decrementAndGet() == 0) {
-            // Closing database
-            mDatabase.close();
+            // close database
+         mDatabase.close();
         }
     }
+
 }

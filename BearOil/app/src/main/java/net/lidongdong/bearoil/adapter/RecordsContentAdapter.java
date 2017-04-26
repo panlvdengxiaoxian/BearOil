@@ -34,13 +34,6 @@ public class RecordsContentAdapter extends BaseAdapter {
     private List<RecordEntity> mData;
 
     private LayoutInflater mInflater;
-    private int mCurrentId;
-    private int mLastId;
-    private String mPrice;
-    private String mCurrentOdometer;
-    private float mNextYuan;
-    private float mNextPrice;
-    private String mNextOdometer;
 
     public RecordsContentAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
@@ -58,7 +51,7 @@ public class RecordsContentAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return mData.size();
+        return mData.get(position);
     }
 
     @Override
@@ -69,45 +62,44 @@ public class RecordsContentAdapter extends BaseAdapter {
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder = null;
+
+        ViewHolder mHolder = null;
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.item_records_content, parent, false);
-            holder = new ViewHolder(convertView);
-            convertView.setTag(holder);
+            mHolder = new ViewHolder(convertView);
+            convertView.setTag(mHolder);
         } else {
-            holder = (ViewHolder) convertView.getTag();
+            mHolder = (ViewHolder) convertView.getTag();
         }
 
-
-        ViewHolder finalHolder = holder;
-
         if (position > 0) {
-
+            ViewHolder finalMHolder = mHolder;
             ObservableSQLite.queryRecord((int) getItemId(position))
                     .zipWith(ObservableSQLite.queryRecord((int) getItemId(position - 1)),
                             (recordEntity, recordEntity2) -> {
-                        String data[] = new String[4];
-                        data[0] = String.valueOf(recordEntity2.getYuan());
-                        data[1] = String.valueOf(recordEntity2.getPrice());
-                        data[2] = String.valueOf(recordEntity.getOdometer());
-                        data[3] = String.valueOf(recordEntity2.getOdometer());
-
-                        return data;
-                    })
+                                String data[] = new String[4];
+                                data[0] = String.valueOf(recordEntity2.getYuan());
+                                data[1] = String.valueOf(recordEntity2.getPrice());
+                                data[2] = String.valueOf(recordEntity.getOdometer());
+                                data[3] = String.valueOf(recordEntity2.getOdometer());
+                                return data;
+                            })
                     .map(strings -> DataCalculationUntil.kmData(Float.valueOf(strings[0])
-                            , Float.valueOf(strings[1]), strings[2], strings[3])
-                    )
+                            , Float.valueOf(strings[1]), strings[2], strings[3]))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(km -> finalHolder.itemRecordsKm.setText(new DecimalFormat(".00").format(km)));
+                    .subscribe(km -> finalMHolder.itemRecordsKm.setText(new DecimalFormat(".00").format(km))
+                    );
         }
 
-        holder.itemRecordsDate.setText(TimeUntil.unixTimeStamp(Long.parseLong(mData.get(position).getDate())));
+        mHolder.itemRecordsDate.setText(TimeUntil.unixTimeStamp(Long.parseLong(mData.get(position).getDate())));
 
         if (position == 0) {
-            holder.itemRecordsKm.setText("?");
+            mHolder.itemRecordsKm.setText("?");
         }
-        holder.itemRecordsOdometer.setText(mData.get(position).getOdometer());
+
+        mHolder.itemRecordsOdometer.setText(mData.get(position).getOdometer());
+
         return convertView;
     }
 

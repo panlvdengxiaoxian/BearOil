@@ -40,8 +40,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -93,7 +91,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     private void initData() {
 
-        setQueryCarName();
+       setQueryCarName();
 
         mFragments.add(new FuelConsumptionsFragment());
         mFragments.add(new RankFragment());
@@ -126,14 +124,9 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         ObservableSQLite.querySelectedCar()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<CarEntity>() {
-                    @Override
-                    public void accept(@NonNull CarEntity carEntity) throws Exception {
-                        if (carEntity != null) {
-                            mainToolbarCarNameTv.setText(carEntity.getName());
-                        }
-                    }
-                });
+                .subscribe(carEntity -> mainToolbarCarNameTv.setText(carEntity.getName()));
+
+
     }
 
     private void initView(View v) {

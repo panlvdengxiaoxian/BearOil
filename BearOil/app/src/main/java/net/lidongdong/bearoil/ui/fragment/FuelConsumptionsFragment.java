@@ -120,7 +120,6 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
 
     }
 
-
     int count = 1;
     int num = 4;
 
@@ -223,12 +222,16 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
             fuelImg4.setImageResource(R.mipmap.shixinxiaoyuandian);
             fuelImg5.setImageResource(R.mipmap.shixinxiaoyuandian);
 
+            queryRecordEachHalfYear();
+
         } else if (count == 3) {
             fuelImg1.setImageResource(R.mipmap.shixinxiaoyuandian);
             fuelImg2.setImageResource(R.mipmap.shixinxiaoyuandian);
             fuelImg3.setImageResource(R.mipmap.shixinxiaoyuandian);
             fuelImg4.setImageResource(R.mipmap.baisexiaoyuandian);
             fuelImg5.setImageResource(R.mipmap.shixinxiaoyuandian);
+
+            queryRecordThreeMonth();
 
 
         } else if (count == 4) {
@@ -247,83 +250,7 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
         ObservableSQLite.queryRecords()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(recordEntities -> {
-                    if (recordEntities.size() > 0) {
-
-                        chartView.setTimeUnit(TimeUntil.unitChartTime(recordEntities));
-                        chartView.setList(TimeUntil.unixTimeUnit(recordEntities));
-
-                        float data[] = new float[recordEntities.size()];
-                        float sum = 0;
-                        float max = data[0];
-                        float min = data[0];
-                        float kmSum = 0;
-                        for (int i = 0; i < recordEntities.size(); i++) {
-                            if (i > 1) {
-                                String currentOdometer = recordEntities.get(i).getOdometer();
-                                float nextYuan = recordEntities.get(i - 1).getYuan();
-                                float nextPrice = recordEntities.get(i - 1).getPrice();
-                                String nextOdometer = recordEntities.get(i - 1).getOdometer();
-                                data[i] = DataCalculationUntil.kmData(nextYuan, nextPrice, currentOdometer, nextOdometer);
-                                //求油耗和
-                                sum = sum + data[i];
-
-                                //最大值
-                                if (data[i] > max) {
-                                    max = data[i];
-                                }
-                                //最小值
-                                if (min>0) {
-                                    if (data[i] < min) {
-                                        min = data[i];
-                                    }
-                                }
-                                //求公里数之和
-                                kmSum = kmSum + Float.valueOf(recordEntities.get(i).getOdometer());
-
-                                //最近油耗
-
-                                recentOilTv.setText(String.valueOf(new DecimalFormat(".00").format(data[2])));
-
-
-                            }
-                        }
-                        for (int stat = 0, end = data.length - 1; stat < end; stat++, end--) {
-                            float temp = data[end];
-                            data[end] = data[stat];
-                            data[stat] = temp;
-                        }
-
-                        //数据插入
-                        chartView.setDatas(data);
-
-                        //求平均数
-                        avgOilTv.setTextColor(Color.YELLOW);
-                        avgOilTv.setText(String.valueOf(new DecimalFormat(".00").format(sum / data.length)));
-
-                        //当前里程数
-                        currentKmTv.setText(recordEntities.get(0).getOdometer());
-
-                        //油耗的最大值
-                        maxOilTv.setText(String.valueOf(new DecimalFormat(".00").format(max)));
-
-                        //油耗最小值
-                        minOilTv.setText(String.valueOf(new DecimalFormat("0.00").format(min)));
-
-                        //总的里程数
-                        allKmTv.setText(String.valueOf(Float.valueOf(recordEntities.get(0).getOdometer())-10));
-
-                        //加油总量
-                        allOilTv.setText(String.valueOf(new DecimalFormat(".00").format(
-                                (sum/data.length)*(Float.valueOf(recordEntities.get(0).getOdometer())/100))));
-
-                        //里程平均
-                        avgKmTv.setText(String.valueOf(new DecimalFormat(".00").format(
-                                ((Float.valueOf(recordEntities.get(0).getOdometer()))-10)
-                                /(float)(365*2+31))));
-
-                    }
-                });
+                .subscribe(this::setDataSource);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -331,33 +258,102 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
         ObservableSQLite.queryRecordsEachYear()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(recordEntities -> {
-                    if (recordEntities.size() > 0) {
-                        chartView.setTimeUnit(TimeUntil.unitChartTime(recordEntities));
-                        chartView.setList(TimeUntil.unixTimeUnit(recordEntities));
-                        float data[] = new float[recordEntities.size()];
-                        for (int i = 0; i < recordEntities.size(); i++) {
+                .subscribe(this::setDataSource);
 
-                            if (i > 1) {
+    }
 
-                                String currentOdometer = recordEntities.get(i).getOdometer();
-                                float nextYuan = recordEntities.get(i - 1).getYuan();
-                                float nextPrice = recordEntities.get(i - 1).getPrice();
-                                String nextOdometer = recordEntities.get(i - 1).getOdometer();
-                                data[i] = DataCalculationUntil.kmData(nextYuan, nextPrice, currentOdometer, nextOdometer);
-                            }
-                        }
-                        //数组倒序
-                        for (int stat = 0, end = data.length - 1; stat < end; stat++, end--) {
-                            float temp = data[end];
-                            data[end] = data[stat];
-                            data[stat] = temp;
-                        }
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void queryRecordEachHalfYear() {
+        ObservableSQLite.queryRecordsEachHalfOfYear()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::setDataSource);
+    }
 
-                        chartView.setDatas(data);
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void queryRecordThreeMonth() {
+        ObservableSQLite.queryRecordsEachThreeMonth()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::setDataSource);
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void setDataSource(List<RecordEntity> recordEntities){
+        if (recordEntities.size() > 0) {
+
+            chartView.setTimeUnit(TimeUntil.unitChartTime(recordEntities));
+            chartView.setList(TimeUntil.unixTimeUnit(recordEntities));
+
+            float data[] = new float[recordEntities.size()];
+            float sum = 0;
+            float max = data[0];
+            float min = data[0];
+            float kmSum = 0;
+            for (int i = 0; i < recordEntities.size(); i++) {
+                if (i > 1) {
+                    String currentOdometer = recordEntities.get(i).getOdometer();
+                    float nextYuan = recordEntities.get(i - 1).getYuan();
+                    float nextPrice = recordEntities.get(i - 1).getPrice();
+                    String nextOdometer = recordEntities.get(i - 1).getOdometer();
+                    data[i] = DataCalculationUntil.kmData(nextYuan, nextPrice, currentOdometer, nextOdometer);
+                    //求油耗和
+                    sum = sum + data[i];
+
+                    //最大值
+                    if (data[i] > max) {
+                        max = data[i];
                     }
-                });
+                    //最小值
+                    if (min>0) {
+                        if (data[i] < min) {
+                            min = data[i];
+                        }
+                    }
+                    //求公里数之和
+                    kmSum = kmSum + Float.valueOf(recordEntities.get(i).getOdometer());
 
+                    //最近油耗
+                    recentOilTv.setText(String.valueOf(new DecimalFormat(".00").format(data[2])));
+
+                }
+            }
+            for (int stat = 0, end = data.length - 1; stat < end; stat++, end--) {
+                float temp = data[end];
+                data[end] = data[stat];
+                data[stat] = temp;
+            }
+
+            //数据插入
+            chartView.setDatas(data);
+
+            //求平均数
+            avgOilTv.setTextColor(Color.YELLOW);
+            avgOilTv.setText(String.valueOf(new DecimalFormat(".00").format(sum / data.length)));
+
+            //当前里程数
+            currentKmTv.setText(recordEntities.get(0).getOdometer());
+
+            //油耗的最大值
+            maxOilTv.setText(String.valueOf(new DecimalFormat(".00").format(max)));
+
+            //油耗最小值
+            minOilTv.setText(String.valueOf(new DecimalFormat("0.00").format(min)));
+
+            //总的里程数
+            allKmTv.setText(String.valueOf(Float.valueOf(recordEntities.get(0).getOdometer())-10));
+
+            //加油总量
+            allOilTv.setText(String.valueOf(new DecimalFormat(".00").format(
+                    (sum/data.length)*(Float.valueOf(recordEntities.get(0).getOdometer())/100))));
+
+            //里程平均
+            avgKmTv.setText(String.valueOf(new DecimalFormat(".00").format(
+                    ((Float.valueOf(recordEntities.get(0).getOdometer()))-10)
+                            /(float)(365*2+31))));
+
+        }
     }
 
 

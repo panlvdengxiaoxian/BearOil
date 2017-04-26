@@ -21,16 +21,16 @@ import java.util.List;
 *   
 */
 class CarOperationAndroid implements TableCarOperation {
-    private SQLiteOpenHelper mHelper;
+    private DatabaseManager mDatabaseManager;
 
     CarOperationAndroid(SQLiteOpenHelper helper) {
-        mHelper = helper;
+        mDatabaseManager = DatabaseManager.getInstance(helper);
     }
 
     @Override
     public void addCar(CarEntity car) {
 
-        SQLiteDatabase db = mHelper.getWritableDatabase();
+        SQLiteDatabase db = mDatabaseManager.getWritableDatabase();
         ContentValues values = new ContentValues();
         if (car.get_id() != 0) {
             values.put(BearSQLiteValues.CAR_ID, car.get_id());
@@ -40,19 +40,23 @@ class CarOperationAndroid implements TableCarOperation {
         values.put(BearSQLiteValues.MODEL, car.getModel());
         values.put(BearSQLiteValues.UUID, car.getUuid());
         db.insert(BearSQLiteValues.CARS_TBL, null, values);
+
+        mDatabaseManager.closeDatabase();
     }
 
     @Override
     public void removeCar(int id) {
-        SQLiteDatabase db = mHelper.getWritableDatabase();
+        SQLiteDatabase db = mDatabaseManager.getWritableDatabase();
         String whereClause = BearSQLiteValues.CAR_ID + " = ?";
         String[] whereArgs = new String[]{String.valueOf(id)};
         db.delete(BearSQLiteValues.CARS_TBL, whereClause, whereArgs);
+        mDatabaseManager.closeDatabase();
     }
 
     @Override
     public void updateCar(CarEntity car) {
-        updateCar(openDatabase(), car);
+        updateCar(mDatabaseManager.getWritableDatabase(), car);
+        mDatabaseManager.closeDatabase();
 
     }
 
@@ -70,7 +74,7 @@ class CarOperationAndroid implements TableCarOperation {
     @Override
     public List<CarEntity> queryCars() {
         List<CarEntity> cars = new ArrayList<>(5);
-        SQLiteDatabase db = mHelper.getWritableDatabase();
+        SQLiteDatabase db = mDatabaseManager.getWritableDatabase();
         Cursor cursor = db.query(BearSQLiteValues.CARS_TBL, null, null, null, null, null, null);
 
         if (cursor != null && cursor.moveToFirst()) {
@@ -95,12 +99,13 @@ class CarOperationAndroid implements TableCarOperation {
             } while (cursor.moveToNext());
             cursor.close();
         }
+        mDatabaseManager.closeDatabase();
         return cars;
     }
 
     @Override
     public CarEntity querySelectedCar() {
-        return querySelectedCar(openDatabase());
+        return querySelectedCar(mDatabaseManager.getWritableDatabase());
     }
 
     // 查询出当前选中的小车
@@ -116,6 +121,7 @@ class CarOperationAndroid implements TableCarOperation {
                 null,
                 null
         );
+
         if (cursor != null && cursor.moveToFirst()) {
             int indexId = cursor.getColumnIndex(BearSQLiteValues.CAR_ID);
             int indexName = cursor.getColumnIndex(BearSQLiteValues.NAME);
@@ -132,16 +138,18 @@ class CarOperationAndroid implements TableCarOperation {
             car.setSelect(selected);
             car.setModel(model);
             car.setUuid(uuid);
-            cursor.close();
             return car;
         }
+        assert cursor != null;
+        cursor.close();
+        mDatabaseManager.closeDatabase();
 
         return null;
     }
 
     @Override
     public void changeSelectedCar(int id) {
-        SQLiteDatabase db = openDatabase();
+        SQLiteDatabase db = mDatabaseManager.getWritableDatabase();
         // 先把原来选中的车辆设置为不选中
         CarEntity currentSelectedCar = querySelectedCar(db);
         if (currentSelectedCar != null) {
@@ -157,11 +165,12 @@ class CarOperationAndroid implements TableCarOperation {
                 values,
                 whereClause,
                 whereArgs);
+        mDatabaseManager.closeDatabase();
     }
 
     @Override
     public void changeSelectedCar(CarEntity newSelectedCar) {
-        SQLiteDatabase db = openDatabase();
+        SQLiteDatabase db = mDatabaseManager.getWritableDatabase();
         // 先把原来选中的车辆设置为不选中
         CarEntity currentSelectedCar = querySelectedCar(db);
         if (currentSelectedCar != null) {
@@ -171,11 +180,9 @@ class CarOperationAndroid implements TableCarOperation {
         // 将新选中的车设置为选中状态
         newSelectedCar.setSelect(1);
         updateCar(db,newSelectedCar);
+        mDatabaseManager.closeDatabase();
     }
 
-    private SQLiteDatabase openDatabase() {
-        return mHelper.getWritableDatabase();
-    }
 
 
 
