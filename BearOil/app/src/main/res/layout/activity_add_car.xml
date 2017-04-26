@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="net.lidongdong.bearoil.ui.aty.AddCarActivity">
+
+    <include
+        android:id="@+id/title"
+        layout="@layout/title"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/main_RadioGroup_height">
+
+        <TextView
+            android:id="@+id/tv"
+            style="@style/car_manager_name"
+            android:text="@string/carName"/>
+
+        <EditText
+            android:id="@+id/add_name_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tv"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/main_RadioGroup_height">
+
+        <TextView
+            android:id="@+id/tv1"
+            style="@style/car_manager_name"
+            android:layout_centerVertical="true"
+            android:text="@string/carBrand"/>
+
+        <TextView
+            android:id="@+id/add_brand_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_toRightOf="@id/tv1"
+            android:text="@string/add_car_noSelected"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/main_RadioGroup_height">
+
+        <TextView
+            android:id="@+id/tv2"
+            style="@style/car_manager_name"
+            android:text="@string/carCategory"/>
+
+        <TextView
+            android:clickable="false"
+            android:id="@+id/add_category_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tv2"
+            android:text="@string/add_car_noSelected"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/main_RadioGroup_height">
+
+        <TextView
+            android:id="@+id/tv3"
+            style="@style/car_manager_name"
+            android:text="@string/carModel"/>
+
+        <TextView
+            android:clickable="false"
+            android:id="@+id/add_model_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tv3"
+            android:text="@string/add_car_noSelected"/>
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:visibility="invisible"
+            android:gravity="center"
+            android:id="@+id/engine"
+            android:layout_width="0dp"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/main_toolbar_tv"
+            android:textSize="30sp"/>
+
+        <TextView
+            android:visibility="invisible"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:id="@+id/transmission"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/main_toolbar_tv"
+            android:textSize="30sp"/>
+    </LinearLayout>
+
+
+</LinearLayout>

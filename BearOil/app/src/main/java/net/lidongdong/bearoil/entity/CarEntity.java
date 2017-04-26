@@ -13,9 +13,9 @@ package net.lidongdong.bearoil.entity;
 
 public class CarEntity {
 
-    private final int _id;
+    private  int _id;
     private String name;
-    private int selected;
+    private int mSelect;
     private int model;
     private String uuid;
 
@@ -23,18 +23,17 @@ public class CarEntity {
         this._id = _id;
     }
 
-    public CarEntity(int _id, String name, int selected) {
-        this._id = _id;
-        this.name = name;
-        this.selected = selected;
+    public CarEntity() {
     }
 
     @Override
-    public String toString () {
+    public String toString() {
         return "CarEntity{" +
                 "_id=" + _id +
                 ", name='" + name + '\'' +
-                ", selected=" + selected +
+                ", mSelect=" + mSelect +
+                ", model=" + model +
+                ", uuid='" + uuid + '\'' +
                 '}';
     }
 
@@ -51,12 +50,12 @@ public class CarEntity {
         this.name = name;
     }
 
-    public int getSelected () {
-        return selected;
+    public int getSelect() {
+        return mSelect;
     }
 
-    public void setSelected(int selected) {
-        this.selected = selected;
+    public void setSelect(int select) {
+        mSelect = select;
     }
 
     public int getModel () {

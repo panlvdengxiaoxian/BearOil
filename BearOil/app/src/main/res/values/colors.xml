@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#1a1a1d</color>
+    <color name="colorPrimaryDark">#17171a</color>
     <color name="colorAccent">#FF4081</color>
+    
+    <color name="main_toolbar_tv">#f7f5f5</color>
+    <color name="main_rg_background">#0b0b0b</color>
 </resources>

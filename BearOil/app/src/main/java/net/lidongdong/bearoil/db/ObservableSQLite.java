@@ -40,7 +40,7 @@ public class ObservableSQLite {
             @Override
             public String apply(@NonNull Integer integer) throws Exception {
                 DatabaseTool.getInstance().removeCar(integer);
-                return null;
+                return "mm";
             }
         }).subscribeOn(Schedulers.io()).subscribe();
     }
@@ -56,23 +56,25 @@ public class ObservableSQLite {
         }).subscribeOn(Schedulers.io()).subscribe();
     }
 
+
+
     //query所有车
     public static Observable<List<CarEntity>> queryAllCar() {
         return Observable.just("").map(s -> DatabaseTool.getInstance().queryCars());
     }
 
     //query 当前选中的车
-    public static Observable<CarEntity> querySelecteCar(){
+    public static Observable<CarEntity> querySelectedCar(){
         return Observable.just("").map(s -> DatabaseTool.getInstance().querySelectedCar());
     }
 
     //change 当前选中的车(通过 id)
     public static void changeSelectCar(int id){
-        Observable.just(id).map(new Function<Integer, String>() {
+        Observable.just(id).map(new Function<Integer, Integer>() {
             @Override
-            public String apply(@NonNull Integer integer) throws Exception {
+            public Integer apply(@NonNull Integer integer) throws Exception {
                 DatabaseTool.getInstance().changeSelectedCar(integer);
-                return null;
+                return integer;
             }
         }).subscribeOn(Schedulers.io()).subscribe();
     }
@@ -83,7 +85,7 @@ public class ObservableSQLite {
             @Override
             public String apply(@NonNull CarEntity carEntity) throws Exception {
                 DatabaseTool.getInstance().changeSelectedCar(carEntity);
-                return null;
+                return "fff";
             }
         }).subscribeOn(Schedulers.io()).subscribe();
     }
@@ -93,18 +95,18 @@ public class ObservableSQLite {
      * record表相关
      **/
 
-    //添加当前record表
+    //添加当前record
     public static void addRecord(RecordEntity record) {
         Observable.just(record).map(new Function<RecordEntity, String>() {
             @Override
             public String apply(@NonNull RecordEntity recordEntity) throws Exception {
                 DatabaseTool.getInstance().addRecord(recordEntity);
-                return null;
+                return "我的大爷";
             }
         }).subscribeOn(Schedulers.io()).subscribe();
     }
 
-    //删除当前record 表
+    //删除当前record
     public static void deleteRecord(int id) {
         Observable.just(id).map(integer -> {
             DatabaseTool.getInstance().removeRecord(integer);
@@ -112,7 +114,7 @@ public class ObservableSQLite {
         }).subscribeOn(Schedulers.io()).subscribe();
     }
 
-    //update当前的 record 表
+    //update当前的 record
     public static void update(RecordEntity record) {
         Observable.just(record).map(new Function<RecordEntity, String>() {
             @Override
@@ -122,6 +124,11 @@ public class ObservableSQLite {
             }
         }).subscribeOn(Schedulers.io()).subscribe();
 
+    }
+    //根据 id 查询车的记录表
+
+    public static Observable<RecordEntity> queryRecord(int id){
+        return Observable.just(id).map(integer -> DatabaseTool.getInstance().queryRecord(integer));
     }
 
     //查询当前选中车辆的所有信息

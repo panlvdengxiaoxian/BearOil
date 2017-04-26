@@ -13,71 +13,72 @@ import java.util.List;
 /**
 *
 *
-*  @author lidongdong(一个帅的惊天动地的男人)
-*  @ date 17/4/13
-*  @ explain
-*  @ function
-*  @version 1.0
-*
+*  @authorlidongdong(A handsome man)
+*  @ date 17/4/25
+*  @ explain 
+*  @ function 
+*  @ version 1.0
+*   
 */
- class CarOperationAndroid implements TableCarOperation {
-    private SQLiteOpenHelper mHelper;
+class CarOperationAndroid implements TableCarOperation {
+    private DatabaseManager mDatabaseManager;
 
-     CarOperationAndroid(SQLiteOpenHelper helper) {
-        mHelper = helper;
+    CarOperationAndroid(SQLiteOpenHelper helper) {
+        mDatabaseManager = DatabaseManager.getInstance(helper);
     }
 
     @Override
     public void addCar(CarEntity car) {
-        SQLiteDatabase db = mHelper.getWritableDatabase();
+
+        SQLiteDatabase db = mDatabaseManager.getWritableDatabase();
         ContentValues values = new ContentValues();
         if (car.get_id() != 0) {
-            values.put(BearSQLiteValues._ID, car.get_id());
+            values.put(BearSQLiteValues.CAR_ID, car.get_id());
         }
         values.put(BearSQLiteValues.NAME, car.getName());
-        values.put(BearSQLiteValues.SELECTED, car.getSelected());
+        values.put(BearSQLiteValues.SELECTED, car.getSelect());
         values.put(BearSQLiteValues.MODEL, car.getModel());
         values.put(BearSQLiteValues.UUID, car.getUuid());
         db.insert(BearSQLiteValues.CARS_TBL, null, values);
-        db.close();
+
+        mDatabaseManager.closeDatabase();
     }
 
     @Override
     public void removeCar(int id) {
-        SQLiteDatabase db = mHelper.getWritableDatabase();
-        String whereClause = BearSQLiteValues._ID + " = ?";
+        SQLiteDatabase db = mDatabaseManager.getWritableDatabase();
+        String whereClause = BearSQLiteValues.CAR_ID + " = ?";
         String[] whereArgs = new String[]{String.valueOf(id)};
         db.delete(BearSQLiteValues.CARS_TBL, whereClause, whereArgs);
-        db.close();
+        mDatabaseManager.closeDatabase();
     }
 
     @Override
     public void updateCar(CarEntity car) {
-        updateCar(openDatabase(), true, car);
+        updateCar(mDatabaseManager.getWritableDatabase(), car);
+        mDatabaseManager.closeDatabase();
 
     }
-    private void updateCar (SQLiteDatabase db, boolean isClose, CarEntity car) {
+
+    private void updateCar(SQLiteDatabase db, CarEntity car) {
         ContentValues values = new ContentValues();
         values.put(BearSQLiteValues.NAME, car.getName());
-        values.put(BearSQLiteValues.SELECTED, car.getSelected());
+        values.put(BearSQLiteValues.SELECTED, car.getSelect());
         values.put(BearSQLiteValues.MODEL, car.getModel());
         values.put(BearSQLiteValues.UUID, car.getUuid());
-        String whereClause = BearSQLiteValues._ID + " = ?";
+        String whereClause = BearSQLiteValues.CAR_ID + " = ?";
         String[] whereArgs = new String[]{String.valueOf(car.get_id())};
         db.update(BearSQLiteValues.CARS_TBL, values, whereClause, whereArgs);
-        if (isClose) {
-            closeDatabase(db);
-        }
     }
 
     @Override
-    public List<CarEntity> queryCars () {
+    public List<CarEntity> queryCars() {
         List<CarEntity> cars = new ArrayList<>(5);
-        SQLiteDatabase db = mHelper.getWritableDatabase();
+        SQLiteDatabase db = mDatabaseManager.getWritableDatabase();
         Cursor cursor = db.query(BearSQLiteValues.CARS_TBL, null, null, null, null, null, null);
 
         if (cursor != null && cursor.moveToFirst()) {
-            int indexId = cursor.getColumnIndex(BearSQLiteValues._ID);
+            int indexId = cursor.getColumnIndex(BearSQLiteValues.CAR_ID);
             int indexName = cursor.getColumnIndex(BearSQLiteValues.NAME);
             int indexSelected = cursor.getColumnIndex(BearSQLiteValues.SELECTED);
             int indexModel = cursor.getColumnIndex(BearSQLiteValues.MODEL);
@@ -90,7 +91,7 @@ import java.util.List;
                 String uuid = cursor.getString(indexUUID);
                 CarEntity car = new CarEntity(id);
                 car.setName(name);
-                car.setSelected(selected);
+                car.setSelect(selected);
                 car.setModel(model);
                 car.setUuid(uuid);
 
@@ -98,16 +99,17 @@ import java.util.List;
             } while (cursor.moveToNext());
             cursor.close();
         }
-        db.close();
+        mDatabaseManager.closeDatabase();
         return cars;
     }
 
     @Override
     public CarEntity querySelectedCar() {
-        return querySelectedCar(openDatabase(), true);
+        return querySelectedCar(mDatabaseManager.getWritableDatabase());
     }
+
     // 查询出当前选中的小车
-    private CarEntity querySelectedCar(SQLiteDatabase db, boolean isClose){
+    private CarEntity querySelectedCar(SQLiteDatabase db) {
         String selection = BearSQLiteValues.SELECTED + " = ?";
         String[] selectionArgs = new String[]{String.valueOf(1)};
         Cursor cursor = db.query(
@@ -119,8 +121,9 @@ import java.util.List;
                 null,
                 null
         );
+
         if (cursor != null && cursor.moveToFirst()) {
-            int indexId = cursor.getColumnIndex(BearSQLiteValues._ID);
+            int indexId = cursor.getColumnIndex(BearSQLiteValues.CAR_ID);
             int indexName = cursor.getColumnIndex(BearSQLiteValues.NAME);
             int indexSelected = cursor.getColumnIndex(BearSQLiteValues.SELECTED);
             int indexModel = cursor.getColumnIndex(BearSQLiteValues.MODEL);
@@ -132,58 +135,55 @@ import java.util.List;
             String uuid = cursor.getString(indexUUID);
             CarEntity car = new CarEntity(id);
             car.setName(name);
-            car.setSelected(selected);
+            car.setSelect(selected);
             car.setModel(model);
             car.setUuid(uuid);
-            cursor.close();
             return car;
         }
-        if (isClose) {
-            closeDatabase(db);
-        }
+        assert cursor != null;
+        cursor.close();
+        mDatabaseManager.closeDatabase();
+
         return null;
     }
 
     @Override
     public void changeSelectedCar(int id) {
-        SQLiteDatabase db = openDatabase();
+        SQLiteDatabase db = mDatabaseManager.getWritableDatabase();
         // 先把原来选中的车辆设置为不选中
-        CarEntity currentSelectedCar = querySelectedCar(db, false);
-        currentSelectedCar.setSelected(0);
-        updateCar(currentSelectedCar);
+        CarEntity currentSelectedCar = querySelectedCar(db);
+        if (currentSelectedCar != null) {
+            currentSelectedCar.setSelect(0);
+            updateCar(db,  currentSelectedCar);
+        }
         // 将新选中的车设置为选中状态
         ContentValues values = new ContentValues();
         values.put(BearSQLiteValues.SELECTED, 1);
-        String whereClause = BearSQLiteValues._ID + " = ?";
+        String whereClause = BearSQLiteValues.CAR_ID + " = ?";
         String[] whereArgs = new String[]{String.valueOf(id)};
         db.update(BearSQLiteValues.CARS_TBL,
                 values,
                 whereClause,
                 whereArgs);
-        closeDatabase(db);
+        mDatabaseManager.closeDatabase();
     }
 
     @Override
     public void changeSelectedCar(CarEntity newSelectedCar) {
-        SQLiteDatabase db = openDatabase();
+        SQLiteDatabase db = mDatabaseManager.getWritableDatabase();
         // 先把原来选中的车辆设置为不选中
-        CarEntity currentSelectedCar = querySelectedCar(db, false);
-        currentSelectedCar.setSelected(0);
-        updateCar(db, false, currentSelectedCar);
-        // 将新选中的车设置为选中状态
-        newSelectedCar.setSelected(1);
-        updateCar(db, false, newSelectedCar);
-        closeDatabase(db);
-    }
-
-    private SQLiteDatabase openDatabase(){
-        return mHelper.getWritableDatabase();
-    }
-
-    private void closeDatabase(SQLiteDatabase db){
-        if (db != null) {
-            db.close();
+        CarEntity currentSelectedCar = querySelectedCar(db);
+        if (currentSelectedCar != null) {
+            currentSelectedCar.setSelect(0);
         }
+        updateCar(db, currentSelectedCar);
+        // 将新选中的车设置为选中状态
+        newSelectedCar.setSelect(1);
+        updateCar(db,newSelectedCar);
+        mDatabaseManager.closeDatabase();
     }
+
+
+
 
 }

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="main_titles">
+        <item>油耗</item>
+        <item>排名</item>
+        <item>油费</item>
+        <item>费用</item>
+    </string-array>
+
+    <string-array name="oil_chart">
+        <item>油耗统计曲线</item>
+        <item>最近一年油耗统计曲线</item>
+        <item>最近半年油耗统计曲线</item>
+        <item>最近三个月油耗统计曲线</item>
+        <item>同城同车型油耗基准线</item>
+    </string-array>
+</resources>

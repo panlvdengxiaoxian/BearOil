@@ -1,3 +1,58 @@
 <resources>
     <string name="app_name">BearOil</string>
+    <string name="toolbar_name_tv">小熊油耗</string>
+    <string name="toolbar_car_default_name">我的小车</string>
+    <string name="popupWindow_carManagement">车辆管理</string>
+    <string name="carName">车名</string>
+    <string name="carBrand">品牌</string>
+    <string name="carCategory">车系</string>
+    <string name="carModel">车型</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_example">Example action</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="fuel_oil_unit">(升/百公里)</string>
+    <string name="oil_unit">升/百公里</string>
+    <string name="km_unit">公里</string>
+    <string name="sh_unit">升</string>
+    <string name="km_day_unit">公里/天</string>
+
+    <string name="avg_oil">平均油耗:</string>
+    <string name="current_km">当前里程:</string>
+    <string name="max_oil">最高油耗:</string>
+    <string name="min_oil">最低油耗:</string>
+    <string name="recent_oil">最近油耗:</string>
+    <string name="all_km">统计里程:</string>
+    <string name="all_oil">加油总量:</string>
+    <string name="avg_km">里程平均:</string>
+    <string name="fuel_name_chart">油耗统计曲线</string>
+
+
+    <string name="date">date</string>
+    <string name="odometer">odometer</string>
+    <string name="price">price</string>
+    <string name="yuan">yuan</string>
+    <string name="type">type</string>
+    <string name="gassup">gassup</string>
+    <string name="remark">remark</string>
+    <string name="carId">carId</string>
+    <string name="forget">forget</string>
+    <string name="lightOn">lightOn</string>
+    <string name="stationId">stationId</string>
+    <string name="item_records_odometer_unit">公里</string>
+    <string name="item_records_km">升/百公里</string>
+    <string name="add_car_noSelected">未选</string>
 </resources>

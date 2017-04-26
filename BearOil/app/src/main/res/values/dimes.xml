@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="main_toolbar_name_sp">20sp</dimen>
+    <dimen name="main_toolbar_car_name_sp">17sp</dimen>
+    <dimen name="main_toolbar_margin">5dp</dimen>
+    <dimen name="main_RadioGroup_height">40dp</dimen>
+
+
+    <dimen name="addCar_padding">7dp</dimen>
+    <dimen name="main_tv_width">50dp</dimen>
+    <dimen name="oil_sp">15sp</dimen>
+
+    <dimen name="oil_margin">10dp</dimen>
+    <dimen name="oil_unit_sp">10sp</dimen>
+
+
+
+</resources>

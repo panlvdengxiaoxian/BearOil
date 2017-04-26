@@ -21,6 +21,7 @@ public class BearApplication extends Application {
     public void onCreate () {
         super.onCreate();
         sContext = this;
+//        DatabaseTool.getInstance();
     }
 
     public static Context getContext () {

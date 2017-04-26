@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="item_records_content_sp">17sp</dimen>
+    <dimen name="item_records_time_marginLeft">10dp</dimen>
+    <dimen name="addCarLetter_marginLeft">10dp</dimen>
+</resources>

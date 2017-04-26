@@ -1,11 +1,82 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="AppTheme.Base">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    <style name="AppTheme.Base" parent="Theme.AppCompat">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="style_main_Button">
+        <item name="android:layout_marginRight">20dp</item>
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:background">@color/main_rg_background</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="car_manager_name">
+        <item name="android:layout_width">@dimen/main_tv_width</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/main_toolbar_tv</item>
+        <item name="android:paddingLeft">@dimen/addCar_padding</item>
+        <item name="android:paddingRight">@dimen/addCar_padding</item>
+        <item name="android:textSize">@dimen/main_toolbar_car_name_sp</item>
+    </style>
+
+    <style name="oil_data">
+        <item name="android:layout_marginLeft">@dimen/oil_margin</item>
+        <item name="android:layout_marginRight">@dimen/oil_margin</item>
+        <item name="android:textColor">@color/main_toolbar_tv</item>
+        <item name="android:textSize">@dimen/oil_sp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="oil_tv">
+        <item name="android:textSize">@dimen/oil_sp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/main_toolbar_tv</item>
+    </style>
+
+    <style name="linearLayout_oil_data">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginLeft">40dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="linearLayout_left">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginLeft">25dp</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="records_unit">
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:textColor">@color/main_toolbar_tv</item>
+        <item name="android:textSize">@dimen/oil_sp</item>
+    </style>
+
+    <style name="item_records_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/item_records_content_sp</item>
+        <item name="android:textColor">#f7f3f3</item>
     </style>
 
 </resources>
