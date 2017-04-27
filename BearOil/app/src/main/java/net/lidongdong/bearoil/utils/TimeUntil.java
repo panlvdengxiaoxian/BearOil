@@ -4,6 +4,7 @@ import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
+import net.lidongdong.bearoil.entity.MoneyEntity;
 import net.lidongdong.bearoil.entity.RecordEntity;
 
 import java.text.ParseException;
@@ -37,10 +38,11 @@ public class TimeUntil {
 
     /**
      * 获取当前的时间
+     *
      * @return String 类型的时间
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public static String getCurrentTime(){
+    public static String getCurrentTime() {
         SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm");
         Date curDate = new Date(System.currentTimeMillis());
         return format.format(curDate);
@@ -98,9 +100,9 @@ public class TimeUntil {
 
         for (int i = 0; i < units.size(); i++) {
 
-            if (Integer.valueOf(units.get(i).substring(4,5)) == 0) {
+            if (Integer.valueOf(units.get(i).substring(4, 5)) == 0) {
                 dates[i] = units.get(i).substring(5, 6);
-            }else {
+            } else {
                 dates[i] = units.get(i).substring(4, 6);
             }
         }
@@ -108,4 +110,84 @@ public class TimeUntil {
 
 
     }
+
+    /**
+     * 将 num 的十位进一位
+     *
+     * @param num 参数 单位
+     * @return 完成的柱状图y轴的最大值单位
+     */
+    public static float unitHundred(float num) {
+        if (num > 999) {
+            float thousand = num / 1000;
+            float hundred = num / 100 - thousand * 10;
+            return thousand * 1000 + (hundred + 2) * 100;
+
+        } else {
+            float hundred = num / 100;
+            return (hundred + 1) * 100;
+        }
+
+    }
+
+
+    public static float maxMoney(List<MoneyEntity> moneyEntities) {
+
+         List<Float> money = new ArrayList<>();
+         for (int i = 0; i < moneyEntities.size(); i++) {
+            float max = moneyEntities.get(i).getMoney();
+            money.add(max);
+        }
+        return Collections.max(money);
+    }
+
+
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static List<String> unixYearUnit(List<MoneyEntity> moneyEntities) {
+
+        List<String> dates = new ArrayList<>();
+
+        for (int i = 0; i < moneyEntities.size()/3; i++) {
+                String time = moneyEntities.get(i).getTime();
+                dates.add(time);
+        }
+        return dates;
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static List<String> unixYearUnitTwo(List<MoneyEntity> moneyEntities) {
+
+        List<String> dates = new ArrayList<>();
+
+        for (int i = 0; i < moneyEntities.size(); i++) {
+            if (i > moneyEntities.size() / 3 && i < (moneyEntities.size() / 3 * 2 ) ){
+                String time = moneyEntities.get(i).getTime();
+                dates.add(time);
+            }
+
+        }
+        return dates;
+
+    }
+ @RequiresApi(api = Build.VERSION_CODES.N)
+    public static List<String> unixYearUnitThree(List<MoneyEntity> moneyEntities) {
+
+        List<String> dates = new ArrayList<>();
+
+        for (int i = 0; i < moneyEntities.size(); i++) {
+            if ( i > (moneyEntities.size() / 3 * 2 ) ){
+                String time = moneyEntities.get(i).getTime();
+                dates.add(time);
+            }
+
+        }
+        return dates;
+
+    }
+
+
+
+
 }

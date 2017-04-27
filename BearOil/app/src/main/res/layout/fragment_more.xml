@@ -1,13 +1,263 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="net.lidongdong.bearoil.ui.fragment.FuelCostsFragment">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context="net.lidongdong.bearoil.ui.fragment.FuelConsumptionsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"/>
+        android:layout_height="60dp"
+        android:layout_marginBottom="5dp">
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/fuel_img1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@mipmap/baisexiaoyuandian"/>
+
+            <ImageView
+                android:id="@+id/fuel_img2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/fuel_rote_select"/>
+
+            <ImageView
+                android:id="@+id/fuel_img3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/fuel_rote_select"/>
+
+            <ImageView
+                android:id="@+id/fuel_img4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/fuel_rote_select"/>
+
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_marginTop="@dimen/main_toolbar_margin"
+            android:id="@+id/fuel_consumptions_name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_oil_year"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="@dimen/main_toolbar_margin"
+            android:textColor="@color/main_toolbar_tv"
+            android:textSize="@dimen/main_toolbar_car_name_sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/oil_unit_sp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fuel_consumptions_name_tv"
+            android:layout_centerHorizontal="true"
+            android:text="@string/add_oil_cost"
+            android:textColor="@color/main_toolbar_tv"/>
+
+        <ImageView
+            android:id="@+id/fuel_consumptions_left_iv"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/to_left"/>
+
+        <ImageView
+            android:id="@+id/fuel_consumptions_right_iv"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/to_right"/>
+
+
+    </RelativeLayout>
+
+    <net.lidongdong.bearoil.ui.view.ColumnarView
+        android:id="@+id/chart_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <TextView
+        android:id="@+id/default_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/toolbar_car_default_name"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+            <LinearLayout
+                style="@style/linearLayout_left">
+                <TextView
+                    android:text="@string/oil_cost_all"
+                    style="@style/oil_tv"/>
+                <TextView
+                    android:id="@+id/avg_oil_tv"
+                    style="@style/oil_data"/>
+                <TextView
+                    style="@style/oil_tv"
+                    android:text="@string/oil_cost_all_unit"/>
+
+            </LinearLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            style="@style/linearLayout_oil_data">
+            <TextView
+                android:text="@string/current_km"
+                style="@style/oil_tv"/>
+            <TextView
+                android:id="@+id/current_km_tv"
+                style="@style/oil_data"/>
+            <TextView
+                style="@style/oil_tv"
+                android:text="@string/km_unit"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+            <LinearLayout
+                style="@style/linearLayout_left">
+                <TextView
+                    android:text="@string/oil_cost_avg"
+                    style="@style/oil_tv"/>
+                <TextView
+                    android:id="@+id/max_oil_tv"
+                    style="@style/oil_data"/>
+                <TextView
+                    style="@style/oil_tv"
+                    android:text="@string/oil_cost_month"/>
+
+            </LinearLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            style="@style/linearLayout_oil_data">
+            <TextView
+                android:text="@string/all_km"
+                style="@style/oil_tv"/>
+            <TextView
+                android:id="@+id/all_km_tv"
+                style="@style/oil_data"/>
+            <TextView
+                style="@style/oil_tv"
+                android:text="@string/km_unit"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+            <LinearLayout
+                style="@style/linearLayout_left">
+                <TextView
+                    android:text="@string/oil_cost_avg"
+                    style="@style/oil_tv"/>
+                <TextView
+                    android:id="@+id/min_oil_tv"
+                    style="@style/oil_data"/>
+                <TextView
+                    style="@style/oil_tv"
+                    android:text="@string/oil_cost_day"/>
+
+            </LinearLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            style="@style/linearLayout_oil_data">
+            <TextView
+                android:text="@string/all_oil"
+                style="@style/oil_tv"/>
+            <TextView
+                android:id="@+id/all_oil_tv"
+                style="@style/oil_data"/>
+            <TextView
+                style="@style/oil_tv"
+                android:text="@string/sh_unit"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+            <LinearLayout
+                style="@style/linearLayout_left">
+                <TextView
+                    android:text="@string/oil_cost_avg"
+                    style="@style/oil_tv"/>
+                <TextView
+                    android:id="@+id/recent_oil_tv"
+                    style="@style/oil_data"/>
+                <TextView
+                    style="@style/oil_tv"
+                    android:text="@string/oil_cost_km"/>
+
+            </LinearLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            style="@style/linearLayout_oil_data">
+            <TextView
+                android:text="@string/avg_km"
+                style="@style/oil_tv"/>
+            <TextView
+                android:id="@+id/avg__km_tv"
+                style="@style/oil_data"/>
+            <TextView
+                style="@style/oil_tv"
+                android:text="@string/km_day_unit"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

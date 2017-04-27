@@ -55,4 +55,12 @@
     <string name="item_records_odometer_unit">公里</string>
     <string name="item_records_km">升/百公里</string>
     <string name="add_car_noSelected">未选</string>
+    <string name="add_oil_year">加油费用年度统计表</string>
+    <string name="add_oil_cost">(元)</string>
+    <string name="oil_cost_all">油费总计</string>
+    <string name="oil_cost_avg">油费平均</string>
+    <string name="oil_cost_all_unit">元</string>
+    <string name="oil_cost_month">元/月</string>
+    <string name="oil_cost_day">元/天</string>
+    <string name="oil_cost_km">元/公里</string>
 </resources>
