@@ -28,6 +28,7 @@ public class InputOilRecordsActivity extends AppCompatActivity implements View.O
     private EditText recordsYuanEt;
     private EditText recordsGassupEt;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,9 +98,6 @@ public class InputOilRecordsActivity extends AppCompatActivity implements View.O
                                 ObservableSQLite.addRecord(recordEntity);
                             }
                         );
-
-
-
 
 
             //发送广播通知数据已保存,刷新 ui

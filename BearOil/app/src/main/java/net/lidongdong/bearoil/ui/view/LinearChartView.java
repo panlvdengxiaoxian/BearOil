@@ -8,8 +8,6 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
-import net.lidongdong.bearoil.entity.RecordEntity;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,17 +21,13 @@ import java.util.List;
 
 public class LinearChartView extends View {
 
-    private int[] nums;
+    private int[] mNum;
 
     private String[] mTimeUnit ;
     private int mWidth;
     private int mHeight;
 
-
-
-    private List<RecordEntity> mRecordEntities;
-
-    private float[] datas;
+    private float[] mData;
 
     private List<String> mList;
 
@@ -53,8 +47,8 @@ public class LinearChartView extends View {
 
     }
 
-    public void setDatas(float[] datas) {
-        this.datas = datas;
+    public void setData(float[] data) {
+        this.mData = data;
         invalidate();
     }
 
@@ -79,7 +73,7 @@ public class LinearChartView extends View {
     private void init() {
 
         mPoints = new ArrayList<>();
-        nums=new int[]{17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1};
+        mNum =new int[]{17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1};
 
     }
 
@@ -129,12 +123,12 @@ public class LinearChartView extends View {
 
     private void drawPoint(Canvas canvas, Paint paint) {
         paint.setColor(Color.YELLOW);
-        float length = (mWidth - PADDING_WIDTH * 2) / (datas.length + 1);
+        float length = (mWidth - PADDING_WIDTH * 2) / (mData.length + 1);
         float heightY = mHeight - PADDING_HEIGHT * 2;
         mPoints.clear();
-        for (int i = 0; i < datas.length; i++) {
+        for (int i = 0; i < mData.length; i++) {
             float cx = PADDING_WIDTH + length * (i + 1);
-            float cy = (18 - datas[i]) * heightY / 18 + PADDING_HEIGHT;
+            float cy = (18 - mData[i]) * heightY / 18 + PADDING_HEIGHT;
             float radius = 5;
             canvas.drawCircle(cx, cy, radius, paint);
             mPoints.add(new Point(cx, cy));
@@ -191,7 +185,7 @@ public class LinearChartView extends View {
             float y= startY+10;
             canvas.drawLine(startX, startY, stopX, startY, paint);
             paint.setTextSize(25);
-            canvas.drawText(String.valueOf(nums[i]),x,y,paint);
+            canvas.drawText(String.valueOf(mNum[i]),x,y,paint);
         }
         paint.setTextSize(30);
         canvas.drawText("油耗",PADDING_WIDTH-20,PADDING_HEIGHT-20,paint);
@@ -206,19 +200,15 @@ public class LinearChartView extends View {
     }
 
     private void drawAxisX(Canvas canvas, Paint paint) {
-        float startX = PADDING_WIDTH;
         float startY = mHeight - PADDING_HEIGHT;
         float stopX = mWidth - PADDING_WIDTH;
-        float stopY = startY;
-        canvas.drawLine(startX, startY, stopX, stopY, paint);
+        canvas.drawLine((float) PADDING_WIDTH, startY, stopX, startY, paint);
     }
 
     private void drawAxisY(Canvas canvas, Paint paint) {
-        float startY = PADDING_HEIGHT;
         float stopY = mHeight - PADDING_HEIGHT;
         float startX = PADDING_WIDTH;
-        float stopX = startX;
-        canvas.drawLine(startX, startY, stopX, stopY, paint);
+        canvas.drawLine(startX, (float) PADDING_HEIGHT, startX, stopY, paint);
     }
 
     private static class Point {

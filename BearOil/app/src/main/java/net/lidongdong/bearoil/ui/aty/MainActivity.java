@@ -14,19 +14,6 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
          mDrawerLayout = (DrawerLayout) findViewById(R.id.id_drawerLayout);
          mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-//
-//        ObservableSQLite.queryRecords()
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Consumer<List<RecordEntity>>() {
-//                    @RequiresApi(api = Build.VERSION_CODES.N)
-//                    @Override
-//                    public void accept(@NonNull List<RecordEntity> recordEntities) throws Exception {
-//                        Log.d("xxx", "TimeUntil.unixTimeYear(recordEntities):"
-//                                + TimeUntil.unitChartTime(recordEntities)[10]);
-//                    }
-//                });
-
 
     }
 

@@ -6,14 +6,16 @@
         android:id="@+id/item_dialog_tv"
         android:layout_width="wrap_content"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/bottom_dialog_add_car_iv"
         android:textSize="@dimen/main_toolbar_car_name_sp"
         android:textColor="@color/main_toolbar_tv"
         android:layout_height="wrap_content"/>
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher"
+        android:src="@mipmap/delete"
         android:id="@+id/delete_iv"
+        android:layout_margin="@dimen/bottom_dialog_add_car_iv"
         android:layout_alignParentRight="true"/>
 
 </RelativeLayout>

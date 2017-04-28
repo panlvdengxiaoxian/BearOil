@@ -42,8 +42,6 @@ public class FuelCostsFragment extends Fragment implements View.OnClickListener 
     private ImageView mFuelImg3;
     private ImageView mFuelImg4;
     private TextView mFuelConsumptionsNameTv;
-    private ImageView mFuelConsumptionsLeftIv;
-    private ImageView mFuelConsumptionsRightIv;
     private ColumnarView mChartView;
     private TextView mDefaultName;
     private TextView mAvgOilTv;
@@ -76,8 +74,8 @@ public class FuelCostsFragment extends Fragment implements View.OnClickListener 
         mFuelImg3 = (ImageView) view.findViewById(R.id.fuel_img3);
         mFuelImg4 = (ImageView) view.findViewById(R.id.fuel_img4);
         mFuelConsumptionsNameTv = (TextView) view.findViewById(R.id.fuel_consumptions_name_tv);
-        mFuelConsumptionsLeftIv = (ImageView) view.findViewById(R.id.fuel_consumptions_left_iv);
-        mFuelConsumptionsRightIv = (ImageView) view.findViewById(R.id.fuel_consumptions_right_iv);
+        ImageView fuelConsumptionsLeftIv = (ImageView) view.findViewById(R.id.fuel_consumptions_left_iv);
+        ImageView fuelConsumptionsRightIv = (ImageView) view.findViewById(R.id.fuel_consumptions_right_iv);
         mChartView = (ColumnarView) view.findViewById(R.id.chart_view);
         mDefaultName = (TextView) view.findViewById(R.id.default_name);
         mAvgOilTv = (TextView) view.findViewById(R.id.avg_oil_tv);
@@ -89,8 +87,8 @@ public class FuelCostsFragment extends Fragment implements View.OnClickListener 
         mRecentOilTv = (TextView) view.findViewById(R.id.recent_oil_tv);
         mAvgKmTv = (TextView) view.findViewById(R.id.avg__km_tv);
 
-        mFuelConsumptionsLeftIv.setOnClickListener(this);
-        mFuelConsumptionsRightIv.setOnClickListener(this);
+        fuelConsumptionsLeftIv.setOnClickListener(this);
+        fuelConsumptionsRightIv.setOnClickListener(this);
 
     }
 

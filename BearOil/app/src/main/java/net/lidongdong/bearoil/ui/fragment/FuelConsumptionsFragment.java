@@ -42,8 +42,6 @@ import io.reactivex.schedulers.Schedulers;
 public class FuelConsumptionsFragment extends Fragment implements View.OnClickListener {
 
     private TextView fuelConsumptionsNameTv;
-    private ImageView fuelConsumptionsLeftIv;
-    private ImageView fuelConsumptionsRightIv;
     private LinearChartView chartView;
     private TextView defaultName;
     private TextView avgOilTv;
@@ -79,8 +77,8 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
 
 
         fuelConsumptionsNameTv = (TextView) view.findViewById(R.id.fuel_consumptions_name_tv);
-        fuelConsumptionsLeftIv = (ImageView) view.findViewById(R.id.fuel_consumptions_left_iv);
-        fuelConsumptionsRightIv = (ImageView) view.findViewById(R.id.fuel_consumptions_right_iv);
+        ImageView fuelConsumptionsLeftIv = (ImageView) view.findViewById(R.id.fuel_consumptions_left_iv);
+        ImageView fuelConsumptionsRightIv = (ImageView) view.findViewById(R.id.fuel_consumptions_right_iv);
         chartView = (LinearChartView) view.findViewById(R.id.chart_view);
         defaultName = (TextView) view.findViewById(R.id.default_name);
         avgOilTv = (TextView) view.findViewById(R.id.avg_oil_tv);
@@ -273,7 +271,7 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
             }
 
             //数据插入
-            chartView.setDatas(data);
+            chartView.setData(data);
 
             //求平均数
             avgOilTv.setTextColor(Color.YELLOW);

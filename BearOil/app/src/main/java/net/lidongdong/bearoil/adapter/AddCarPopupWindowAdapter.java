@@ -14,9 +14,9 @@ import net.lidongdong.bearoil.entity.BrandEntity;
 *
 *
 *  @author lidongdong(一个帅的惊天动地的男人)
-*  @date 17/4/18
-*  @explain
-*  @function
+*  @ date 17/4/18
+*  @ explain
+*  @ function
 *  @version 1.0
 *
 */
@@ -49,9 +49,10 @@ public class AddCarPopupWindowAdapter extends BaseAdapter {
         return position;
     }
 
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder=null;
+        ViewHolder holder;
         if (convertView==null){
             convertView=mInflater.inflate(R.layout.item_add_car_brand,parent,false);
             holder = new ViewHolder(convertView);

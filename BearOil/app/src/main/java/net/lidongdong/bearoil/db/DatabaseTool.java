@@ -11,9 +11,9 @@ import java.util.List;
 /**
  * @author lidongdong(一个帅的惊天动地的男人)
  * @version 1.0
- * @date 17/4/13
- * @explain
- * @function
+ * @ date 17/4/13
+ * @ explain
+ * @ function
  */
 
 public class DatabaseTool implements TableRecordOperation, TableCarOperation {
@@ -48,15 +48,14 @@ public class DatabaseTool implements TableRecordOperation, TableCarOperation {
 //    }
 
 
-    private BearSQLiteHelper mHelper;
     private TableCarOperation mTableCarOperation;
-    private  RecordOperationSQL mOperationSQL;
+    private RecordOperationSQL mOperationSQL;
 
     //单例私有构造方法
     private DatabaseTool() {
-        mHelper = new BearSQLiteHelper(BearApplication.getContext());
-        mTableCarOperation = new CarOperationAndroid(mHelper);
-        mOperationSQL = new RecordOperationSQL(mHelper);
+        BearSQLiteHelper helper = new BearSQLiteHelper(BearApplication.getContext());
+        mTableCarOperation = new CarOperationAndroid(helper);
+        mOperationSQL = new RecordOperationSQL(helper);
     }
 
     //记录表相关

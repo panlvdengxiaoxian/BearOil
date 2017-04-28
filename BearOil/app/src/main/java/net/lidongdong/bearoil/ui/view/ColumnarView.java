@@ -141,14 +141,13 @@ public class ColumnarView extends View {
 
     private void drawAxisX(Canvas canvas) {
 
-        float startX = PADDING_WIDTH;
         float stopX = mWidth - PADDING_WIDTH_RIGHT;
         float stopY = mHeight - PADDING_HEIGHT;
 
         mPaint.setColor(Color.WHITE);
         mPaint.setStrokeWidth(2);
 
-        canvas.drawLine(startX, stopY, stopX, stopY, mPaint);
+        canvas.drawLine((float) PADDING_WIDTH, stopY, stopX, stopY, mPaint);
         //箭头(上)
         canvas.drawLine(stopX, stopY, stopX - 10, stopY - 10, mPaint);
         //箭头(下)

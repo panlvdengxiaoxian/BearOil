@@ -4,9 +4,9 @@ package net.lidongdong.bearoil.db;
 *
 *
 *  @author lidongdong(一个帅的惊天动地的男人)
-*  @date 17/4/13
-*  @explain
-*  @function
+*  @ date 17/4/13
+*  @ explain
+*  @ function
 *  @version 1.0
 *
 */

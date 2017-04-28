@@ -12,15 +12,12 @@ import net.lidongdong.bearoil.entity.CarEntity;
 import java.util.List;
 
 /**
-*
-*
-*  @author lidongdong(一个帅的惊天动地的男人)
-*  @date 17/4/18
-*  @explain
-*  @function
-*  @version 1.0
-*
-*/
+ * @author lidongdong(一个帅的惊天动地的男人)
+ * @version 1.0
+ * @ date 17/4/18
+ * @ explain
+ * @ function
+ */
 
 public class PopupWindowAdapter extends BaseAdapter {
     private List<CarEntity> cars;
@@ -37,7 +34,7 @@ public class PopupWindowAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return cars==null?0:cars.size();
+        return cars == null ? 0 : cars.size();
     }
 
     @Override
@@ -52,10 +49,10 @@ public class PopupWindowAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView==null){
-            convertView=mInflater.inflate(android.R.layout.simple_list_item_1,parent,false);
+        if (convertView == null) {
+            convertView = mInflater.inflate(android.R.layout.simple_list_item_1, parent, false);
         }
-        TextView tv= (TextView) convertView;
+        TextView tv = (TextView) convertView;
         tv.setText(cars.get(position).getName());
         return convertView;
     }

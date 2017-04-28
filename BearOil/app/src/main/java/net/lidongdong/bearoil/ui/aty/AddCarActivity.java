@@ -1,6 +1,5 @@
 package net.lidongdong.bearoil.ui.aty;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
@@ -114,9 +113,7 @@ public class AddCarActivity extends AppCompatActivity implements View.OnClickLis
                 HttpManger.getInstance().getBearOilApi().getCarSeries(mIndex)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(brandEntity -> {
-                            showPopup(v, brandEntity);
-                        });
+                        .subscribe(brandEntity -> showPopup(v, brandEntity));
                 addModelEt.setText("未选");
 
                 break;
@@ -124,9 +121,7 @@ public class AddCarActivity extends AppCompatActivity implements View.OnClickLis
                 HttpManger.getInstance().getBearOilApi().getCarType(mIndex, mNum)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(brandEntity -> {
-                            showPopup(v, brandEntity);
-                        });
+                        .subscribe(brandEntity -> showPopup(v, brandEntity));
 
 
                 break;
@@ -148,10 +143,10 @@ public class AddCarActivity extends AppCompatActivity implements View.OnClickLis
         popupWindow.setFocusable(true);
         //设置 popupWindow 弹出窗体的背景
         popupWindow.setBackgroundDrawable(new BitmapDrawable(null, ""));
-        WindowManager manager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+   //     WindowManager manager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
         @SuppressWarnings("deprecation")
         //获取 xOff
-                int xPos = manager.getDefaultDisplay().getWidth() / 2 - popupWindow.getWidth() / 2;
+      //          int xPos = manager.getDefaultDisplay().getWidth() / 2 - popupWindow.getWidth() / 2;
         //xOff,yOff基于 anchor 的左下角进行偏移.
         TextView tv = (TextView) LayoutInflater.from(this).inflate(android.R.layout.simple_list_item_1, null);
         tv.setText("未选");

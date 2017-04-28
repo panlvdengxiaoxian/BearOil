@@ -52,13 +52,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MainFragment extends Fragment implements View.OnClickListener {
 
-    private RelativeLayout mainAccountRl;
-    private RelativeLayout mainCarNameRl;
     private TextView mainToolbarCarNameTv;
-    private ImageButton mainAddBtn;
-    private ImageButton mainContentBtn;
-    private ImageButton mainMoreBtn;
-    private ImageButton mainShareBtn;
     private TabLayout mainTl;
     private ViewPager mainVp;
     private String[] titles;
@@ -90,8 +84,8 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initData() {
-
-       setQueryCarName();
+        //设置查询到的小车名
+        setQueryCarName();
 
         mFragments.add(new FuelConsumptionsFragment());
         mFragments.add(new RankFragment());
@@ -131,13 +125,13 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     private void initView(View v) {
 
-        mainAccountRl = (RelativeLayout) v.findViewById(R.id.main_account_rl);
-        mainCarNameRl = (RelativeLayout) v.findViewById(R.id.main_car_name_rl);
+        RelativeLayout mainAccountRl = (RelativeLayout) v.findViewById(R.id.main_account_rl);
+        RelativeLayout mainCarNameRl = (RelativeLayout) v.findViewById(R.id.main_car_name_rl);
         mainToolbarCarNameTv = (TextView) v.findViewById(R.id.main_toolbar_car_name_tv);
-        mainAddBtn = (ImageButton) v.findViewById(R.id.main_add_btn);
-        mainContentBtn = (ImageButton) v.findViewById(R.id.main_content_btn);
-        mainMoreBtn = (ImageButton) v.findViewById(R.id.main_more_btn);
-        mainShareBtn = (ImageButton) v.findViewById(R.id.main_share_btn);
+        ImageButton mainAddBtn = (ImageButton) v.findViewById(R.id.main_add_btn);
+        ImageButton mainContentBtn = (ImageButton) v.findViewById(R.id.main_content_btn);
+        ImageButton mainMoreBtn = (ImageButton) v.findViewById(R.id.main_more_btn);
+        ImageButton mainShareBtn = (ImageButton) v.findViewById(R.id.main_share_btn);
         mainTl = (TabLayout) v.findViewById(R.id.main_tl);
         mainVp = (ViewPager) v.findViewById(R.id.main_vp);
         mFragments = new ArrayList<>();
@@ -192,6 +186,11 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * 显示 popupWindow ,自定义的组件
+     * @param parent 是处于哪个组件下方
+     */
+
     private void showPopupWindow(View parent) {
         //加载布局
         LinearLayout layout = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.list_popup_window, null);
@@ -239,7 +238,6 @@ public class MainFragment extends Fragment implements View.OnClickListener {
             mPopupWindow = null;
 
             if (id == 50) {
-
                 showBottomSheet();
 
             } else {
@@ -254,6 +252,12 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
 
     }
+
+    /**
+     *
+     * 显示一个从最下方弹出的 dialog ,是新组件,个人感觉挺好用
+     *
+     */
 
     private void showBottomSheet() {
         View layout = LayoutInflater.from(getContext()).inflate(R.layout.list_popup_window, null);
@@ -288,6 +292,9 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     }
 
+    /**
+     * 添加车辆的广播接受者
+     */
 
     private class AddCarBroadcastReceiver extends BroadcastReceiver {
 
@@ -306,6 +313,10 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
         }
     }
+
+    /**
+     * 删除车辆的广播接受者
+     */
 
     private class RemoveCarBroadcastReceiver extends BroadcastReceiver {
 
