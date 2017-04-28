@@ -1,5 +1,6 @@
 package net.lidongdong.bearoil.ui.fragment;
 
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -53,6 +54,7 @@ public class FuelCostsFragment extends Fragment implements View.OnClickListener 
     private TextView mAllOilTv;
     private TextView mRecentOilTv;
     private TextView mAvgKmTv;
+    private float mKm;
 
     public FuelCostsFragment() {
 
@@ -98,17 +100,15 @@ public class FuelCostsFragment extends Fragment implements View.OnClickListener 
         super.onActivityCreated(savedInstanceState);
 
         oilCostYear();
+        setCostOil();
 
         ObservableSQLite.queryRecords()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::setDataSource);
-
-
     }
 
     int count = 1;
-
     int num = 3;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -320,7 +320,7 @@ public class FuelCostsFragment extends Fragment implements View.OnClickListener 
                 data[end] = data[stat];
                 data[stat] = temp;
             }
-
+            mKm = Float.valueOf(recordEntities.get(0).getOdometer());
             //当前里程数
             mCurrentKmTv.setText(recordEntities.get(0).getOdometer());
 
@@ -340,9 +340,35 @@ public class FuelCostsFragment extends Fragment implements View.OnClickListener 
     }
 
     //计算花了多少钱
-    private void setCostOil(List<MoneyEntity> moneyEntities){
+    private void setCostOil() {
 
-      //  mAvgKmTv.setText();
+        ObservableSQLite.queryRecordMoneyEachYear()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(moneyEntities -> {
+                    if (moneyEntities.size() > 0) {
+                        float money = 0;
+                        float[] data = new float[moneyEntities.size()];
+                        for (int i = 0; i < moneyEntities.size(); i++) {
+                            data[i] = moneyEntities.get(i).getMoney();
+                            money = money + data[i];
+                        }
+                        //油费总计
+                        mAvgOilTv.setText(String.valueOf(new DecimalFormat(".00").format(money)));
+                        //油费平均(元/月)
+                        mMaxOilTv.setTextColor(Color.YELLOW);
+                        mMaxOilTv.setText(String.valueOf(new DecimalFormat(".00").format(money/25)));
+                        //油费平均(元/天)
+                        mMinOilTv.setText(String.valueOf(new DecimalFormat(".00").format(money/760)));
+                        //油费平均(元/公里)
+                        mRecentOilTv.setText(String.valueOf(new DecimalFormat("0.00").format(money/mKm)));
+
+                    }
+                });
+
+
+
+
     }
 
 

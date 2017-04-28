@@ -44,7 +44,6 @@ public class ColumnarView extends View {
     }
 
 
-    // 这两个数据是随便写的, 实际上应该根据不同的屏幕确定不同的值
     private static final int PADDING_WIDTH = 20;
     private static final int PADDING_WIDTH_RIGHT = 80;
     private static final int PADDING_HEIGHT = 80;
@@ -109,7 +108,7 @@ public class ColumnarView extends View {
             float startY = (mHeight - PADDING_HEIGHT) - mAllMoney[i] * lengthY;
             mPaint.setColor(Color.WHITE);
             mPaint.setTextSize(20);
-            canvas.drawText(String.valueOf(mAllMoney[i]), startX +20, startY - 20, mPaint);
+            canvas.drawText(String.valueOf(mAllMoney[i]), startX , startY - 20, mPaint);
 
         }
 
@@ -134,7 +133,7 @@ public class ColumnarView extends View {
         mPaint.setColor(Color.WHITE);
         mPaint.setTextSize(25);
         for (int i = 0; i < mUnitChartTime.size(); i++) {
-            canvas.drawText(mUnitChartTime.get(i), (PADDING_WIDTH + length * i) ,
+            canvas.drawText(mUnitChartTime.get(i), (PADDING_WIDTH + length * i+10) ,
                     mHeight - PADDING_HEIGHT +30, mPaint);
 
         }
