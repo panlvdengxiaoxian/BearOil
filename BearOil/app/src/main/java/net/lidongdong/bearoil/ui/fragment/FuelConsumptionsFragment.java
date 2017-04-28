@@ -22,6 +22,7 @@ import net.lidongdong.bearoil.db.ObservableSQLite;
 import net.lidongdong.bearoil.entity.RecordEntity;
 import net.lidongdong.bearoil.ui.view.LinearChartView;
 import net.lidongdong.bearoil.utils.DataCalculationUntil;
+import net.lidongdong.bearoil.utils.RotationUntil;
 import net.lidongdong.bearoil.utils.TimeUntil;
 
 import java.text.DecimalFormat;
@@ -65,7 +66,6 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
     public FuelConsumptionsFragment() {
 
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -126,36 +126,34 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onClick(View v) {
-        String[] strings = getResources().getStringArray(R.array.oil_chart);
+
 
         switch (v.getId()) {
 
             case R.id.fuel_consumptions_right_iv:
                 if (count == 0) {
-                    switchRound(count);
-                    fuelConsumptionsNameTv.setText(strings[count]);
+                    RotationUntil .switchRound(getContext(),count,fuelConsumptionsNameTv,fuelImg1,fuelImg2,fuelImg3,fuelImg4,fuelImg5);
+                    queryAllRecords();
                     num = 4;
                     count = 1;
-
                 } else if (count == 1) {
-                    switchRound(count);
-                    fuelConsumptionsNameTv.setText(strings[count]);
+                    RotationUntil .switchRound(getContext(),count,fuelConsumptionsNameTv,fuelImg1,fuelImg2,fuelImg3,fuelImg4,fuelImg5);
+                    queryRecordsEachYear();
                     num = 0;
                     count = 2;
 
                 } else if (count == 2) {
-                    switchRound(count);
-                    fuelConsumptionsNameTv.setText(strings[count]);
+                    RotationUntil .switchRound(getContext(),count,fuelConsumptionsNameTv,fuelImg1,fuelImg2,fuelImg3,fuelImg4,fuelImg5);
+                    queryRecordEachHalfYear();
                     num = 1;
                     count = 3;
                 } else if (count == 3) {
-                    switchRound(count);
-                    fuelConsumptionsNameTv.setText(strings[count]);
+                    RotationUntil .switchRound(getContext(),count,fuelConsumptionsNameTv,fuelImg1,fuelImg2,fuelImg3,fuelImg4,fuelImg5);
+                    queryRecordThreeMonth();
                     num = 2;
                     count = 4;
                 } else if (count == 4) {
-                    switchRound(count);
-                    fuelConsumptionsNameTv.setText(strings[count]);
+                    RotationUntil .switchRound(getContext(),count,fuelConsumptionsNameTv,fuelImg1,fuelImg2,fuelImg3,fuelImg4,fuelImg5);
                     num = 3;
                     count = 0;
                 }
@@ -164,28 +162,27 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
 
             case R.id.fuel_consumptions_left_iv:
                 if (num == 0) {
-                    switchRound(num);
-                    fuelConsumptionsNameTv.setText(strings[num]);
+                    RotationUntil .switchRound(getContext(),num,fuelConsumptionsNameTv,fuelImg1,fuelImg2,fuelImg3,fuelImg4,fuelImg5);
+                    queryAllRecords();
                     count = 1;
                     num = 4;
                 } else if (num == 4) {
-                    switchRound(num);
-                    fuelConsumptionsNameTv.setText(strings[num]);
+                    RotationUntil .switchRound(getContext(),num,fuelConsumptionsNameTv,fuelImg1,fuelImg2,fuelImg3,fuelImg4,fuelImg5);
                     count = 0;
                     num = 3;
                 } else if (num == 3) {
-                    switchRound(num);
-                    fuelConsumptionsNameTv.setText(strings[num]);
+                    RotationUntil .switchRound(getContext(),num,fuelConsumptionsNameTv,fuelImg1,fuelImg2,fuelImg3,fuelImg4,fuelImg5);
+                    queryRecordThreeMonth();
                     count = 4;
                     num = 2;
                 } else if (num == 2) {
-                    switchRound(num);
-                    fuelConsumptionsNameTv.setText(strings[num]);
+                    RotationUntil .switchRound(getContext(),num,fuelConsumptionsNameTv,fuelImg1,fuelImg2,fuelImg3,fuelImg4,fuelImg5);
+                    queryRecordEachHalfYear();
                     count = 3;
                     num = 1;
                 } else if (num == 1) {
-                    switchRound(num);
-                    fuelConsumptionsNameTv.setText(strings[num]);
+                    RotationUntil .switchRound(getContext(),num,fuelConsumptionsNameTv,fuelImg1,fuelImg2,fuelImg3,fuelImg4,fuelImg5);
+                 queryRecordsEachYear();
                     count = 2;
                     num = 0;
                 }
@@ -193,57 +190,7 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private void switchRound(int count) {
 
-        if (count == 0) {
-            fuelImg1.setImageResource(R.mipmap.baisexiaoyuandian);
-            fuelImg2.setImageResource(R.mipmap.shixinxiaoyuandian);
-            fuelImg3.setImageResource(R.mipmap.shixinxiaoyuandian);
-            fuelImg4.setImageResource(R.mipmap.shixinxiaoyuandian);
-            fuelImg5.setImageResource(R.mipmap.shixinxiaoyuandian);
-
-            queryAllRecords();
-
-
-        } else if (count == 1) {
-            fuelImg1.setImageResource(R.mipmap.shixinxiaoyuandian);
-            fuelImg2.setImageResource(R.mipmap.baisexiaoyuandian);
-            fuelImg3.setImageResource(R.mipmap.shixinxiaoyuandian);
-            fuelImg4.setImageResource(R.mipmap.shixinxiaoyuandian);
-            fuelImg5.setImageResource(R.mipmap.shixinxiaoyuandian);
-
-            queryRecordsEachYear();
-
-        } else if (count == 2) {
-            fuelImg1.setImageResource(R.mipmap.shixinxiaoyuandian);
-            fuelImg2.setImageResource(R.mipmap.shixinxiaoyuandian);
-            fuelImg3.setImageResource(R.mipmap.baisexiaoyuandian);
-            fuelImg4.setImageResource(R.mipmap.shixinxiaoyuandian);
-            fuelImg5.setImageResource(R.mipmap.shixinxiaoyuandian);
-
-            queryRecordEachHalfYear();
-
-        } else if (count == 3) {
-            fuelImg1.setImageResource(R.mipmap.shixinxiaoyuandian);
-            fuelImg2.setImageResource(R.mipmap.shixinxiaoyuandian);
-            fuelImg3.setImageResource(R.mipmap.shixinxiaoyuandian);
-            fuelImg4.setImageResource(R.mipmap.baisexiaoyuandian);
-            fuelImg5.setImageResource(R.mipmap.shixinxiaoyuandian);
-
-            queryRecordThreeMonth();
-
-
-        } else if (count == 4) {
-            fuelImg1.setImageResource(R.mipmap.shixinxiaoyuandian);
-            fuelImg2.setImageResource(R.mipmap.shixinxiaoyuandian);
-            fuelImg3.setImageResource(R.mipmap.shixinxiaoyuandian);
-            fuelImg4.setImageResource(R.mipmap.shixinxiaoyuandian);
-            fuelImg5.setImageResource(R.mipmap.baisexiaoyuandian);
-
-        }
-
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void queryAllRecords() {
@@ -355,6 +302,7 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
 
         }
     }
+
 
 
     private class UpdateChartBroadcastReceiver extends BroadcastReceiver {

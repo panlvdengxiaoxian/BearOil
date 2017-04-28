@@ -14,4 +14,10 @@
         <item>最近三个月油耗统计曲线</item>
         <item>同城同车型油耗基准线</item>
     </string-array>
+    <string-array name="cost_chart">
+        <item>加油费用年度统计图</item>
+        <item>加油费用月度统计图</item>
+        <item>加油费用月度统计图</item>
+        <item>加油费用月度统计图</item>
+    </string-array>
 </resources>

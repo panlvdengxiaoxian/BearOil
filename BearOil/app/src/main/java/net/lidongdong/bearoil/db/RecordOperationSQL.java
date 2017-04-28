@@ -285,11 +285,10 @@ public class RecordOperationSQL implements TableRecordOperation {
         Cursor cursor = db.rawQuery(sql, null);
         if (cursor != null && cursor.moveToFirst()) {
 
-            int indexTime = cursor.getColumnIndex("time");
+            int indexTime = cursor.getColumnIndex("date_t");
             int indexMoney = cursor.getColumnIndex("money");
 
             do {
-
                 String time = cursor.getString(indexTime);
                 float money = cursor.getFloat(indexMoney);
                 MoneyEntity moneyEntity = new MoneyEntity();
@@ -307,26 +306,26 @@ public class RecordOperationSQL implements TableRecordOperation {
 
     @Override
     public List<MoneyEntity> queryRecordsMoneyEachYear() {
-        String sql = "select" +
-                "strftime('%Y-%m',datetime(A.date / 1000, 'unixepoch'),'localtime') time," +
-                "sum(A.yuan) money" +
-                "from records_tbl as A, cars_tbl as B" +
-                "    where A.carId = B._id and B.selected = 1" +
-                "GROUP BY tome" +
-                "ORDER BY time;";
+        String sql = "select\n" +
+                "strftime('%Y', datetime(A.date / 1000, 'unixepoch'),'localtime') date_t,\n" +
+                "sum(A.yuan) money\n" +
+                "from records_tbl as A, cars_tbl as B\n" +
+                "where A.carId = B._id and B.selected = 1\n" +
+                "GROUP BY date_t\n" +
+                "ORDER BY date_t;";
 
         return queryRecordsMoney(sql);
     }
 
     @Override
     public List<MoneyEntity> queryRecordMoneyEachMonth() {
-        String sql = "select" +
-                "strftime('%Y-%m',datetime(A.date / 1000, 'unixepoch'),'localtime') time," +
-                "sum(A.yuan) money" +
-                "from records_tbl as A, cars_tbl as B" +
-                "    where A.carId = B._id and B.selected = 1" +
-                "GROUP BY tome" +
-                "ORDER BY time;";
+        String sql = "select\n" +
+                "strftime('%Y-%m',datetime(A.date / 1000, 'unixepoch'),'localtime') date_t,\n" +
+                "sum(A.yuan) money\n" +
+                "from records_tbl as A, cars_tbl as B\n" +
+                "    where A.carId = B._id and B.selected = 1\n" +
+                "GROUP BY date_t\n" +
+                "ORDER BY date_t;";
 
         return queryRecordsMoney(sql);
     }
