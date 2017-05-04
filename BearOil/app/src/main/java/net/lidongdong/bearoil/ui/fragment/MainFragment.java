@@ -32,6 +32,7 @@ import net.lidongdong.bearoil.adapter.PopupWindowAdapter;
 import net.lidongdong.bearoil.db.DatabaseTool;
 import net.lidongdong.bearoil.db.ObservableSQLite;
 import net.lidongdong.bearoil.entity.CarEntity;
+import net.lidongdong.bearoil.entity.RecordEntity;
 import net.lidongdong.bearoil.ui.aty.AddCarActivity;
 import net.lidongdong.bearoil.ui.aty.InputOilRecordsActivity;
 import net.lidongdong.bearoil.ui.aty.ShowAllRecordsActivity;
@@ -85,6 +86,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     private void initData() {
         //设置查询到的小车名
+
         setQueryCarName();
 
         mFragments.add(new FuelConsumptionsFragment());
@@ -115,12 +117,14 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     //设置查询到的小车名
     private void setQueryCarName() {
-        ObservableSQLite.querySelectedCar()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(carEntity -> mainToolbarCarNameTv.setText(carEntity.getName()));
-
-
+//        ObservableSQLite.querySelectedCar()
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(carEntity -> mainToolbarCarNameTv.setText(carEntity.getName()));
+        if (DatabaseTool.getInstance().querySelectedCar() != null) {
+            String name = DatabaseTool.getInstance().querySelectedCar().getName();
+            mainToolbarCarNameTv.setText(name);
+        }
     }
 
     private void initView(View v) {
@@ -188,6 +192,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
     /**
      * 显示 popupWindow ,自定义的组件
+     *
      * @param parent 是处于哪个组件下方
      */
 
@@ -205,7 +210,6 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 CarEntity myCar = new CarEntity(1);
                 myCar.setName("我的小车");
                 myCar.setSelect(1);
-                carEntities.add(0, myCar);
                 DatabaseTool.getInstance().addCar(myCar);
             }
             return carEntities;
@@ -239,13 +243,15 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
             if (id == 50) {
                 showBottomSheet();
-
             } else {
-                ObservableSQLite.changeSelectCar((int) id);
-                Intent intent = new Intent();
-                intent.setAction("UPDATE_CHART");
-                getContext().sendBroadcast(intent);
-                mainToolbarCarNameTv.setText(mCarEntities.get(position).getName());
+                ObservableSQLite.changeSelectCar((int) id)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(integer -> {
+                            Intent intent = new Intent();
+                            intent.setAction("UPDATE_CHART");
+                            getContext().sendBroadcast(intent);
+                            mainToolbarCarNameTv.setText(mCarEntities.get(position).getName());
+                        });
             }
 
         });
@@ -254,9 +260,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     }
 
     /**
-     *
      * 显示一个从最下方弹出的 dialog ,是新组件,个人感觉挺好用
-     *
      */
 
     private void showBottomSheet() {
@@ -305,11 +309,33 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(carEntities -> {
+                        //保存一辆车的同时要有一张 record 表
+                        int[] id = new int[carEntities.size()];
+                        int max = 0;
+                        for (int i = 0; i < carEntities.size(); i++) {
+                            id[i] = carEntities.get(i).get_id();
+                            if (id[i] > max) {
+                                max = id[i];
+                            }
+                        }
+                        RecordEntity recordEntity = new RecordEntity();
+                        recordEntity.setCarId(max);
+                        recordEntity.setDate("0");
+                        recordEntity.setOdometer("0");
+                        recordEntity.setPrice(0);
+                        recordEntity.setGasSup("0");
+                        recordEntity.setType(98);
+                        recordEntity.setLightOn(1);
+                        recordEntity.setForget(0);
+                        recordEntity.setStationId(0);
+                        ObservableSQLite.addRecord(recordEntity);
+
                         mCarEntities.clear();
                         mCarEntities.addAll(carEntities);
                         mDialogAdapter.notifyDataSetChanged();
 
                     });
+
 
         }
     }

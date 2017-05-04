@@ -57,30 +57,26 @@ public class ObservableSQLite {
     }
 
 
-
     //query所有车
     public static Observable<List<CarEntity>> queryAllCar() {
         return Observable.just("").map(s -> DatabaseTool.getInstance().queryCars());
     }
 
     //query 当前选中的车
-    public static Observable<CarEntity> querySelectedCar(){
+    public static Observable<CarEntity> querySelectedCar() {
         return Observable.just("").map(s -> DatabaseTool.getInstance().querySelectedCar());
     }
 
     //change 当前选中的车(通过 id)
-    public static void changeSelectCar(int id){
-        Observable.just(id).map(new Function<Integer, Integer>() {
-            @Override
-            public Integer apply(@NonNull Integer integer) throws Exception {
-                DatabaseTool.getInstance().changeSelectedCar(integer);
-                return integer;
-            }
-        }).subscribeOn(Schedulers.io()).subscribe();
+    public static Observable<Integer> changeSelectCar(int id) {
+        return Observable.just(id).map(integer -> {
+            DatabaseTool.getInstance().changeSelectedCar(integer);
+            return integer;
+        }).subscribeOn(Schedulers.io());
     }
 
     //change 当前选中的车(参数是 CarEntity)
-    public static void changeSelectCar(CarEntity car){
+    public static void changeSelectCar(CarEntity car) {
         Observable.just(car).map(new Function<CarEntity, String>() {
             @Override
             public String apply(@NonNull CarEntity carEntity) throws Exception {
@@ -97,12 +93,16 @@ public class ObservableSQLite {
 
     //添加当前record
     public static void addRecord(RecordEntity record) {
-        Observable.just(record).map(new Function<RecordEntity, String>() {
-            @Override
-            public String apply(@NonNull RecordEntity recordEntity) throws Exception {
-                DatabaseTool.getInstance().addRecord(recordEntity);
-                return "我的大爷";
-            }
+        Observable.just(record).map(recordEntity -> {
+            DatabaseTool.getInstance().addRecord(recordEntity);
+            return "我的大爷";
+        }).subscribeOn(Schedulers.io()).subscribe();
+    }
+
+    public static void addRecord(int carId) {
+        Observable.just(carId).map(integer -> {
+            DatabaseTool.getInstance().addRecord(integer);
+            return "都是人";
         }).subscribeOn(Schedulers.io()).subscribe();
     }
 
@@ -127,7 +127,7 @@ public class ObservableSQLite {
     }
     //根据 id 查询车的记录表
 
-    public static Observable<RecordEntity> queryRecord(int id){
+    public static Observable<RecordEntity> queryRecord(int id) {
         return Observable.just(id).map(integer -> DatabaseTool.getInstance().queryRecord(integer));
     }
 

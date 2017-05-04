@@ -16,6 +16,7 @@ import java.util.List;
 public interface TableRecordOperation {
 
     void addRecord(RecordEntity record);
+    void addRecord(int carId);
 
     void removeRecord(int id);
 

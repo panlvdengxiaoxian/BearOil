@@ -1,11 +1,16 @@
 package net.lidongdong.bearoil.ui.fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +58,7 @@ public class FuelCostsFragment extends Fragment implements View.OnClickListener 
     private TextView mRecentOilTv;
     private TextView mAvgKmTv;
     private float mKm;
+    private UpdateChartBroadcastReceiver mReceiver;
 
     public FuelCostsFragment() {
 
@@ -89,6 +95,10 @@ public class FuelCostsFragment extends Fragment implements View.OnClickListener 
 
         fuelConsumptionsLeftIv.setOnClickListener(this);
         fuelConsumptionsRightIv.setOnClickListener(this);
+
+        mReceiver = new UpdateChartBroadcastReceiver();
+        IntentFilter filter = new IntentFilter("UPDATE_CHART");
+        getContext().registerReceiver(mReceiver,filter);
 
     }
 
@@ -169,7 +179,13 @@ public class FuelCostsFragment extends Fragment implements View.OnClickListener 
         ObservableSQLite.queryRecordMoneyEachYear()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::oilCostTime);
+                .subscribe(moneyEntities -> {
+                    if (moneyEntities != null) {
+                        oilCostTime(moneyEntities);
+                    }else {
+                        Log.d("zzz", "没数据");
+                    }
+                });
 
     }
 
@@ -178,7 +194,13 @@ public class FuelCostsFragment extends Fragment implements View.OnClickListener 
         ObservableSQLite.queryRecordMoneyEachMonth()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::oilCostMonth);
+                .subscribe(moneyEntities -> {
+                    if (moneyEntities != null){
+                        oilCostMonth(moneyEntities);
+                    }else {
+                        Log.d("zzz", "没数据");
+                    }
+                });
 
     }
 
@@ -187,7 +209,13 @@ public class FuelCostsFragment extends Fragment implements View.OnClickListener 
         ObservableSQLite.queryRecordMoneyEachMonth()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::oilCostMonthTwo);
+                .subscribe(moneyEntities -> {
+                    if (moneyEntities != null){
+                        oilCostMonthTwo(moneyEntities);
+                    }else {
+                        Log.d("zzz", "没数据");
+                    }
+                });
 
     }
 
@@ -196,7 +224,13 @@ public class FuelCostsFragment extends Fragment implements View.OnClickListener 
         ObservableSQLite.queryRecordMoneyEachMonth()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::oilCostMonthThree);
+                .subscribe(moneyEntities -> {
+                    if (moneyEntities != null){
+                        oilCostMonthThree(moneyEntities);
+                    }else {
+                        Log.d("xxx", "没数据");
+                    }
+                });
 
     }
 
@@ -355,19 +389,32 @@ public class FuelCostsFragment extends Fragment implements View.OnClickListener 
                         mAvgOilTv.setText(String.valueOf(new DecimalFormat(".00").format(money)));
                         //油费平均(元/月)
                         mMaxOilTv.setTextColor(Color.YELLOW);
-                        mMaxOilTv.setText(String.valueOf(new DecimalFormat(".00").format(money/25)));
+                        mMaxOilTv.setText(String.valueOf(new DecimalFormat(".00").format(money / 25)));
                         //油费平均(元/天)
-                        mMinOilTv.setText(String.valueOf(new DecimalFormat(".00").format(money/760)));
+                        mMinOilTv.setText(String.valueOf(new DecimalFormat(".00").format(money / 760)));
                         //油费平均(元/公里)
-                        mRecentOilTv.setText(String.valueOf(new DecimalFormat("0.00").format(money/mKm)));
+                        mRecentOilTv.setText(String.valueOf(new DecimalFormat("0.00").format(money / mKm)));
 
                     }
                 });
 
 
-
-
     }
 
+    private class UpdateChartBroadcastReceiver extends BroadcastReceiver {
 
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            RotationUntil.switchRound(getContext(), 0, mFuelConsumptionsNameTv, mFuelImg1, mFuelImg1, mFuelImg1, mFuelImg1);
+            oilCostYear();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getContext().unregisterReceiver(mReceiver);
+
+    }
 }

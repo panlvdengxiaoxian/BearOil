@@ -54,57 +54,92 @@
         </LinearLayout>
 
         <TextView
-            android:layout_marginTop="@dimen/main_toolbar_margin"
             android:id="@+id/fuel_consumptions_name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/fuel_name_chart"
             android:layout_centerInParent="true"
             android:layout_marginBottom="@dimen/main_toolbar_margin"
+            android:layout_marginTop="@dimen/main_toolbar_margin"
+            android:text="@string/fuel_name_chart"
             android:textColor="@color/main_toolbar_tv"
             android:textSize="@dimen/main_toolbar_car_name_sp"/>
 
         <TextView
             android:layout_width="wrap_content"
-            android:textSize="@dimen/oil_unit_sp"
             android:layout_height="wrap_content"
             android:layout_below="@id/fuel_consumptions_name_tv"
             android:layout_centerHorizontal="true"
             android:text="@string/fuel_oil_unit"
-            android:textColor="@color/main_toolbar_tv"/>
+            android:textColor="@color/main_toolbar_tv"
+            android:textSize="@dimen/oil_unit_sp"/>
 
         <ImageView
             android:id="@+id/fuel_consumptions_left_iv"
-            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:src="@mipmap/to_left"/>
 
         <ImageView
             android:id="@+id/fuel_consumptions_right_iv"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:src="@mipmap/to_right"/>
 
 
     </RelativeLayout>
 
-    <net.lidongdong.bearoil.ui.view.LinearChartView
-        android:id="@+id/chart_view"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1">
+
+        <net.lidongdong.bearoil.ui.view.LinearChartView
+            android:id="@+id/chart_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/prompt_tv"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:maxLines="3"
+                android:text="@string/prompt_content_str"
+                android:textColor="#00ff48"
+                android:textSize="@dimen/fuelConsumptions_prompt_sp"
+                android:visibility="invisible"/>
+
+            <Button
+                android:id="@+id/click_input_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/prompt_tv"
+                android:layout_centerHorizontal="true"
+                android:text="@string/click_input_str"
+                android:visibility="invisible"/>
+
+        </RelativeLayout>
+
+
+    </FrameLayout>
+
 
     <TextView
         android:id="@+id/default_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/toolbar_car_default_name"
         android:layout_gravity="center"
+        android:layout_marginBottom="5dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="5dp"/>
+        android:text="@string/toolbar_car_default_name"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="20dp"
@@ -112,16 +147,20 @@
 
         <RelativeLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
             <LinearLayout
                 style="@style/linearLayout_left">
+
                 <TextView
-                    android:text="@string/avg_oil"
-                    style="@style/oil_tv"/>
+                    style="@style/oil_tv"
+                    android:text="@string/avg_oil"/>
+
                 <TextView
                     android:id="@+id/avg_oil_tv"
                     style="@style/oil_data"/>
+
                 <TextView
                     style="@style/oil_tv"
                     android:text="@string/oil_unit"/>
@@ -129,19 +168,22 @@
             </LinearLayout>
         </RelativeLayout>
 
-            <LinearLayout
-                style="@style/linearLayout_oil_data">
-                <TextView
-                    android:text="@string/current_km"
-                    style="@style/oil_tv"/>
-                <TextView
-                    android:id="@+id/current_km_tv"
-                    style="@style/oil_data"/>
-                <TextView
-                    style="@style/oil_tv"
-                    android:text="@string/km_unit"/>
+        <LinearLayout
+            style="@style/linearLayout_oil_data">
 
-            </LinearLayout>
+            <TextView
+                style="@style/oil_tv"
+                android:text="@string/current_km"/>
+
+            <TextView
+                android:id="@+id/current_km_tv"
+                style="@style/oil_data"/>
+
+            <TextView
+                style="@style/oil_tv"
+                android:text="@string/km_unit"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -152,16 +194,20 @@
 
         <RelativeLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
             <LinearLayout
                 style="@style/linearLayout_left">
+
                 <TextView
-                    android:text="@string/max_oil"
-                    style="@style/oil_tv"/>
+                    style="@style/oil_tv"
+                    android:text="@string/max_oil"/>
+
                 <TextView
                     android:id="@+id/max_oil_tv"
                     style="@style/oil_data"/>
+
                 <TextView
                     style="@style/oil_tv"
                     android:text="@string/oil_unit"/>
@@ -169,19 +215,22 @@
             </LinearLayout>
         </RelativeLayout>
 
-            <LinearLayout
-                style="@style/linearLayout_oil_data">
-                <TextView
-                    android:text="@string/all_km"
-                    style="@style/oil_tv"/>
-                <TextView
-                    android:id="@+id/all_km_tv"
-                    style="@style/oil_data"/>
-                <TextView
-                    style="@style/oil_tv"
-                    android:text="@string/km_unit"/>
+        <LinearLayout
+            style="@style/linearLayout_oil_data">
 
-            </LinearLayout>
+            <TextView
+                style="@style/oil_tv"
+                android:text="@string/all_km"/>
+
+            <TextView
+                android:id="@+id/all_km_tv"
+                style="@style/oil_data"/>
+
+            <TextView
+                style="@style/oil_tv"
+                android:text="@string/km_unit"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -192,16 +241,20 @@
 
         <RelativeLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
             <LinearLayout
                 style="@style/linearLayout_left">
+
                 <TextView
-                    android:text="@string/min_oil"
-                    style="@style/oil_tv"/>
+                    style="@style/oil_tv"
+                    android:text="@string/min_oil"/>
+
                 <TextView
                     android:id="@+id/min_oil_tv"
                     style="@style/oil_data"/>
+
                 <TextView
                     style="@style/oil_tv"
                     android:text="@string/oil_unit"/>
@@ -209,19 +262,22 @@
             </LinearLayout>
         </RelativeLayout>
 
-            <LinearLayout
-               style="@style/linearLayout_oil_data">
-                <TextView
-                    android:text="@string/all_oil"
-                    style="@style/oil_tv"/>
-                <TextView
-                    android:id="@+id/all_oil_tv"
-                    style="@style/oil_data"/>
-                <TextView
-                    style="@style/oil_tv"
-                    android:text="@string/sh_unit"/>
+        <LinearLayout
+            style="@style/linearLayout_oil_data">
 
-            </LinearLayout>
+            <TextView
+                style="@style/oil_tv"
+                android:text="@string/all_oil"/>
+
+            <TextView
+                android:id="@+id/all_oil_tv"
+                style="@style/oil_data"/>
+
+            <TextView
+                style="@style/oil_tv"
+                android:text="@string/sh_unit"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -232,16 +288,20 @@
 
         <RelativeLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
             <LinearLayout
                 style="@style/linearLayout_left">
+
                 <TextView
-                    android:text="@string/recent_oil"
-                    style="@style/oil_tv"/>
+                    style="@style/oil_tv"
+                    android:text="@string/recent_oil"/>
+
                 <TextView
                     android:id="@+id/recent_oil_tv"
                     style="@style/oil_data"/>
+
                 <TextView
                     style="@style/oil_tv"
                     android:text="@string/oil_unit"/>
@@ -249,19 +309,22 @@
             </LinearLayout>
         </RelativeLayout>
 
-            <LinearLayout
-                style="@style/linearLayout_oil_data">
-                <TextView
-                    android:text="@string/avg_km"
-                    style="@style/oil_tv"/>
-                <TextView
-                    android:id="@+id/avg__km_tv"
-                    style="@style/oil_data"/>
-                <TextView
-                    style="@style/oil_tv"
-                    android:text="@string/km_day_unit"/>
+        <LinearLayout
+            style="@style/linearLayout_oil_data">
 
-            </LinearLayout>
+            <TextView
+                style="@style/oil_tv"
+                android:text="@string/avg_km"/>
+
+            <TextView
+                android:id="@+id/avg__km_tv"
+                style="@style/oil_data"/>
+
+            <TextView
+                style="@style/oil_tv"
+                android:text="@string/km_day_unit"/>
+
+        </LinearLayout>
 
 
     </LinearLayout>

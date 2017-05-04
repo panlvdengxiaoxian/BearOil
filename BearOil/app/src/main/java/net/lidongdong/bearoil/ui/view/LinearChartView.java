@@ -23,7 +23,7 @@ public class LinearChartView extends View {
 
     private int[] mNum;
 
-    private String[] mTimeUnit ;
+    private String[] mTimeUnit;
     private int mWidth;
     private int mHeight;
 
@@ -54,13 +54,13 @@ public class LinearChartView extends View {
 
     public void setList(List<String> list) {
         mList = list;
+
     }
 
 
     public void setTimeUnit(String[] timeUnit) {
         mTimeUnit = timeUnit;
     }
-
 
 
     // 这两个数据是随便写的, 实际上应该根据不同的屏幕确定不同的值
@@ -73,7 +73,7 @@ public class LinearChartView extends View {
     private void init() {
 
         mPoints = new ArrayList<>();
-        mNum =new int[]{17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1};
+        mNum = new int[]{17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
 
     }
 
@@ -107,7 +107,9 @@ public class LinearChartView extends View {
         drawLine(canvas, paint);
 
 
+
     }
+
 
     private void drawLine(Canvas canvas, Paint paint) {
         paint.setColor(Color.RED);
@@ -119,59 +121,68 @@ public class LinearChartView extends View {
             }
             lastPoint = currentP;
         }
+        mPoints.clear();
+
     }
 
     private void drawPoint(Canvas canvas, Paint paint) {
-        paint.setColor(Color.YELLOW);
-        float length = (mWidth - PADDING_WIDTH * 2) / (mData.length + 1);
-        float heightY = mHeight - PADDING_HEIGHT * 2;
-        mPoints.clear();
-        for (int i = 0; i < mData.length; i++) {
-            float cx = PADDING_WIDTH + length * (i + 1);
-            float cy = (18 - mData[i]) * heightY / 18 + PADDING_HEIGHT;
-            float radius = 5;
-            canvas.drawCircle(cx, cy, radius, paint);
-            mPoints.add(new Point(cx, cy));
+        if (mData != null) {
+            paint.setColor(Color.YELLOW);
+            float length = (mWidth - PADDING_WIDTH * 2) / (mData.length + 1);
+            float heightY = mHeight - PADDING_HEIGHT * 2;
+            mPoints.clear();
+            for (int i = 0; i < mData.length; i++) {
+                float cx = PADDING_WIDTH + length * (i + 1);
+                float cy = (18 - mData[i]) * heightY / 18 + PADDING_HEIGHT;
+                float radius = 5;
+                canvas.drawCircle(cx, cy, radius, paint);
+                mPoints.add(new Point(cx, cy));
 
+            }
         }
     }
 
     private void drawMarkX(Canvas canvas, Paint paint) {
 
-        float length = (mWidth - PADDING_WIDTH * 2) / (mList.size() + 1);
+        if (mList != null) {
+            float length = (mWidth - PADDING_WIDTH * 2) / (mList.size() + 1);
 
-        for (int i = 0; i < mList.size(); i++) {
-            float startX = PADDING_WIDTH + length * (i + 1);
-            float startY = mHeight - PADDING_HEIGHT - 10;
-            float stopY = mHeight - PADDING_HEIGHT;
-            canvas.drawLine(startX, startY, startX, stopY, paint);
+            for (int i = 0; i < mList.size(); i++) {
+                float startX = PADDING_WIDTH + length * (i + 1);
+                float startY = mHeight - PADDING_HEIGHT - 10;
+                float stopY = mHeight - PADDING_HEIGHT;
+                canvas.drawLine(startX, startY, startX, stopY, paint);
 
+            }
+            //画箭头
+            //上
+            canvas.drawLine(mWidth - PADDING_WIDTH, mHeight - PADDING_HEIGHT, mWidth - PADDING_WIDTH - 10, mHeight - PADDING_HEIGHT - 10, paint);
+            //下
+            canvas.drawLine(mWidth - PADDING_WIDTH, mHeight - PADDING_HEIGHT, mWidth - PADDING_WIDTH - 10, mHeight - PADDING_HEIGHT + 10, paint);
+            //画月份
+            paint.setTextSize(30);
+            canvas.drawText("月份", mWidth - PADDING_WIDTH - 40, mHeight - PADDING_HEIGHT + 40, paint);
         }
-        //画箭头
-        //上
-        canvas.drawLine(mWidth-PADDING_WIDTH,mHeight-PADDING_HEIGHT,mWidth-PADDING_WIDTH-10,mHeight-PADDING_HEIGHT-10,paint);
-        //下
-        canvas.drawLine(mWidth-PADDING_WIDTH,mHeight-PADDING_HEIGHT,mWidth-PADDING_WIDTH-10,mHeight-PADDING_HEIGHT+10,paint);
-        //画月份
-        paint.setTextSize(30);
-        canvas.drawText("月份",mWidth-PADDING_WIDTH-40,mHeight-PADDING_HEIGHT+40,paint);
 
     }
 
+
+
+
     private void drawTextX(Canvas canvas, Paint paint) {
-        float length = (mWidth - PADDING_WIDTH * 2) / (mTimeUnit.length );
-    //    Log.d("xxx", "mTimeUnit.length:" + mTimeUnit.length);
-        for (int i = 0; i < mTimeUnit.length; i++) {
-            float startX = PADDING_WIDTH + length * (i);
-            float stopY = mHeight - PADDING_HEIGHT;
-            float x = startX - 15;
-            float y = stopY + 35;
-            paint.setTextSize(25);
+        if (mTimeUnit != null) {
+            float length = (mWidth - PADDING_WIDTH * 2) / (mTimeUnit.length);
+            //    Log.d("xxx", "mTimeUnit.length:" + mTimeUnit.length);
+            for (int i = 0; i < mTimeUnit.length; i++) {
+                float startX = PADDING_WIDTH + length * (i);
+                float stopY = mHeight - PADDING_HEIGHT;
+                float x = startX - 15;
+                float y = stopY + 35;
+                paint.setTextSize(25);
 
-            canvas.drawText(mTimeUnit[i], x, y, paint);
+                canvas.drawText(mTimeUnit[i], x, y, paint);
+            }
         }
-
-
     }
 
     private void drawMarkY(Canvas canvas, Paint paint) {
@@ -180,21 +191,21 @@ public class LinearChartView extends View {
         for (int i = 0; i < COUNT_Y_MARK; i++) {
             float startX = PADDING_WIDTH;
             float startY = PADDING_HEIGHT + length * (i + 1);
-            float stopX = PADDING_WIDTH +10;
-            float x = startX-35;
-            float y= startY+10;
+            float stopX = PADDING_WIDTH + 10;
+            float x = startX - 35;
+            float y = startY + 10;
             canvas.drawLine(startX, startY, stopX, startY, paint);
             paint.setTextSize(25);
-            canvas.drawText(String.valueOf(mNum[i]),x,y,paint);
+            canvas.drawText(String.valueOf(mNum[i]), x, y, paint);
         }
         paint.setTextSize(30);
-        canvas.drawText("油耗",PADDING_WIDTH-20,PADDING_HEIGHT-20,paint);
+        canvas.drawText("油耗", PADDING_WIDTH - 20, PADDING_HEIGHT - 20, paint);
 
         //画箭头
         //左
-        canvas.drawLine(PADDING_WIDTH,PADDING_HEIGHT,PADDING_WIDTH-10,PADDING_HEIGHT+10,paint);
+        canvas.drawLine(PADDING_WIDTH, PADDING_HEIGHT, PADDING_WIDTH - 10, PADDING_HEIGHT + 10, paint);
         //右
-        canvas.drawLine(PADDING_WIDTH,PADDING_HEIGHT,PADDING_WIDTH+10,PADDING_HEIGHT+10,paint);
+        canvas.drawLine(PADDING_WIDTH, PADDING_HEIGHT, PADDING_WIDTH + 10, PADDING_HEIGHT + 10, paint);
 
 
     }
@@ -212,10 +223,10 @@ public class LinearChartView extends View {
     }
 
     private static class Point {
-         final float x;
-         final float y;
+        final float x;
+        final float y;
 
-         Point(float x, float y) {
+        Point(float x, float y) {
             this.x = x;
             this.y = y;
         }

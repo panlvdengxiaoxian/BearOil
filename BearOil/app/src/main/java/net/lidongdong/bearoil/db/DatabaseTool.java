@@ -66,6 +66,11 @@ public class DatabaseTool implements TableRecordOperation, TableCarOperation {
     }
 
     @Override
+    public void addRecord(int carId) {
+        mOperationSQL.addRecord(carId);
+    }
+
+    @Override
     public void removeRecord(int id) {
         mOperationSQL.removeRecord(id);
     }

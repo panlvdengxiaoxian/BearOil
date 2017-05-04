@@ -9,22 +9,26 @@
 
     <fragment
         android:id="@+id/main_fragment"
+        android:name="net.lidongdong.bearoil.ui.fragment.MainFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:name="net.lidongdong.bearoil.ui.fragment.MainFragment"/>
+        android:layout_height="match_parent"/>
+
     <RelativeLayout
-        android:layout_gravity="left"
         android:id="@+id/id_left_menu"
         android:layout_width="250dp"
-        android:background="#b39b9b"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_gravity="left"
+        android:background="#0dea7f">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="我是你爹"/>
+            android:layout_centerHorizontal="true"
+            android:text="@string/login"/>
 
 
     </RelativeLayout>
+
 
 
 </android.support.v4.widget.DrawerLayout>

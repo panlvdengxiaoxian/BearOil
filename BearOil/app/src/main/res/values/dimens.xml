@@ -4,4 +4,5 @@
     <dimen name="item_records_time_marginLeft">10dp</dimen>
     <dimen name="addCarLetter_marginLeft">10dp</dimen>
     <dimen name="bottom_dialog_add_car_iv">10dp</dimen>
+    <dimen name="fuelConsumptions_prompt_sp">20sp</dimen>
 </resources>

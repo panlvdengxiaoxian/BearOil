@@ -43,17 +43,33 @@ public class RecordOperationSQL implements TableRecordOperation {
     @Override
     public void addRecord(RecordEntity record) {
         String sql;
-        sql = "insert into records_tbl values (" + record.get_id() + ", " +
-                record.getDate() + ", " + record.getOdometer() + ", " + record.getPrice() + ", " + record.getYuan() + ", " + record.getType()
-                + ", " + record.getGasSup() + ", " + record.getRemark() + ", " + record.getCarId() + ", " + record.getForget() + ", " +
-                record.getLightOn() + ", " + record.getStationId() + ");";
+        if (record.get_id() == 0) {
+            sql = "insert into records_tbl (date, odometer, price, yuan, type, gassup, remark, carId, forget, lightOn, stationId) values (" +
+                    record.getDate() + ", " + record.getOdometer() + ", " + record.getPrice() + ", " + record.getYuan() + ", " + record.getType()
+                    + ", " + record.getGasSup() + ", " + record.getRemark() + ", " + record.getCarId() + ", " + record.getForget() + ", " +
+                    record.getLightOn() + ", " + record.getStationId() + ");";
+        } else {
+            sql = "insert into records_tbl values (" + record.get_id() + ", " +
+                    record.getDate() + ", " + record.getOdometer() + ", " + record.getPrice() + ", " + record.getYuan() + ", " + record.getType()
+                    + ", " + record.getGasSup() + ", " + record.getRemark() + ", " + record.getCarId() + ", " + record.getForget() + ", " +
+                    record.getLightOn() + ", " + record.getStationId() + ");";
+        }
         record(sql);
 
+    }
+    public void addRecord(int  carId) {
+    //        sql = "insert into records_tbl values (" + carId + ");";
+
+    String sql = "insert into records_tbl (date, odometer, price, yuan, type, gassup, remark, carId, forget, lightOn, stationId) values (" +
+                null + ", " + null + ", " + null + ", " + null + ", " + null
+                + ", " + null + ", " + null + ", " + carId + ", " + null + ", " +
+                null + ", " + null + ");";
+        record(sql);
     }
 
     @Override
     public void removeRecord(int id) {
-        String sql = "delete from records_tbl where recordId = " + id + " ";
+        String sql = "delete from records_tbl where _id = " + id + " ";
         record(sql);
     }
 
@@ -124,13 +140,13 @@ public class RecordOperationSQL implements TableRecordOperation {
             cursor.close();
 
         }
-         mDatabaseManager.closeDatabase();
+        mDatabaseManager.closeDatabase();
         return recordEntities;
     }
 
 
     private List<RecordEntity> queryRecordsEachYear(String sql) {
-       SQLiteDatabase db = mDatabaseManager.getWritableDatabase();
+        SQLiteDatabase db = mDatabaseManager.getWritableDatabase();
         Cursor cursor = db.rawQuery(sql, null);
         List<RecordEntity> recordEntities = new ArrayList<>();
 
@@ -162,6 +178,10 @@ public class RecordOperationSQL implements TableRecordOperation {
             cursor.close();
         }
         mDatabaseManager.closeDatabase();
+
+//        if (recordEntities.size() == 0) {
+//            throw new IllegalArgumentException("size is 0");
+//        }
 
         return recordEntities;
     }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -48,13 +49,16 @@ public class AddCarActivity extends AppCompatActivity implements View.OnClickLis
     private TextView mTransmission;
     private AddCarPopupWindowAdapter mAdapter;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_car);
         initView();
+        saveCarData();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void saveCarData() {
 
         saveIv.setOnClickListener(v -> {
@@ -66,7 +70,9 @@ public class AddCarActivity extends AppCompatActivity implements View.OnClickLis
                 carEntity.setModel(10010);
                 carEntity.setUuid("10086");
                 ObservableSQLite.addCar(carEntity);
+
             }
+
 
             Intent updateUIIntent = new Intent();
             updateUIIntent.setAction("UPDATE_UI");

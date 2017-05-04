@@ -63,4 +63,7 @@
     <string name="oil_cost_month">元/月</string>
     <string name="oil_cost_day">元/天</string>
     <string name="oil_cost_km">元/公里</string>
+    <string name="prompt_content_str">暂时无法计算油耗,加油满两次,才能计算出一次油耗,或者等油灯警告一亮就去加油,加两次才能算出一次油耗</string>
+    <string name="click_input_str">点击输出</string>
+    <string name="login">登陆</string>
 </resources>

@@ -13,36 +13,6 @@ package net.lidongdong.bearoil.entity;
 
 public class CarDetailEntity {
 
-
-    /**
-     * status : 1
-     * id : 25901
-     * chexi : 3170
-     * cheXiName : 奥迪A3
-     * pinpai : 33
-     * pinPaiName : 奥迪
-     * name : 奥迪A3 2016款 Sportback 40 TFSI 风尚型
-     * displacement : 1.8
-     * engine : 1.8T 180马力 L4
-     * gearbox : 7挡双离合
-     * tank : 50
-     * refConsumption : 6.6
-     * is_auto : 1
-     * is_turbo : 1
-     * car_type : 紧凑型车
-     * weight : 1435
-     * engineType : EA888
-     * engineInflow : 涡轮增压
-     * compressionRate : 0
-     * fuelType : 汽油
-     * gasType : 97号(京95号)
-     * envGrade : 国V
-     * factoryPrice : 24.9899997711
-     * maintIntervalDistance : 5000
-     * csptRangeMin : 4
-     * csptRangeMax : 25.2
-     */
-
     private int status;
     private int id;
     private int chexi;

@@ -7,7 +7,6 @@ import android.support.annotation.RequiresApi;
 import net.lidongdong.bearoil.entity.MoneyEntity;
 import net.lidongdong.bearoil.entity.RecordEntity;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -49,14 +48,32 @@ public class TimeUntil {
     }
 
     /**
-     * 将当前的时间转化为 unix 时间戳
+     * 日期格式字符串转换成时间戳
      *
-     * @return long类型的 unix 时间戳
+     * @param dateStr 字符串日期
+     * @param format   如：yyyy-MM-dd HH:mm:ss
+     *
+     * @ return 日期
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public static long setUnixTime() throws ParseException {
-        Date epoch = new SimpleDateFormat("yyyy/MM/dd HH:mm").parse(getCurrentTime());
-        return Long.valueOf(String.valueOf(epoch));
+    public static String DateTimeStamp(String dateStr, String format) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(format);
+            return String.valueOf(sdf.parse(dateStr).getTime() / 1000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    /**
+     * 取得当前时间戳（精确到秒）
+     *
+     * @return nowTimeStamp
+     */
+    public static String getNowTimeStamp() {
+        long time = System.currentTimeMillis();
+        return String.valueOf(time / 1000);
     }
 
     /**

@@ -91,25 +91,27 @@ public class ColumnarView extends View {
     }
 
     private void drawDataRect(Canvas canvas) {
-        mPaint.setColor(Color.YELLOW);
-        float length = (mWidth - PADDING_WIDTH - PADDING_WIDTH_RIGHT) / mUnitChartTime.size();
-        float lengthY = (mHeight- PADDING_HEIGHT * 2 ) / mMaxMoney;
-        for (int i = 0; i < mAllMoney.length; i++) {
-            float startX = PADDING_WIDTH + length * i + 10;
-            float stopX = PADDING_WIDTH + length * i + 80;
-            float startY = (mHeight - PADDING_HEIGHT) - mAllMoney[i] * lengthY;
-            float stopY = mHeight - PADDING_HEIGHT;
-            canvas.drawRect(startX, startY, stopX, stopY, mPaint);
+        if (mUnitChartTime.size() > 0) {
+            mPaint.setColor(Color.YELLOW);
+            float length = (mWidth - PADDING_WIDTH - PADDING_WIDTH_RIGHT) / mUnitChartTime.size();
+            float lengthY = (mHeight - PADDING_HEIGHT * 2) / mMaxMoney;
+            for (int i = 0; i < mAllMoney.length; i++) {
+                float startX = PADDING_WIDTH + length * i + 10;
+                float stopX = PADDING_WIDTH + length * i + 80;
+                float startY = (mHeight - PADDING_HEIGHT) - mAllMoney[i] * lengthY;
+                float stopY = mHeight - PADDING_HEIGHT;
+                canvas.drawRect(startX, startY, stopX, stopY, mPaint);
 
-        }
+            }
 
-        for (int i = 0; i < mAllMoney.length; i++) {
-            float startX = PADDING_WIDTH + length * i + 20;
-            float startY = (mHeight - PADDING_HEIGHT) - mAllMoney[i] * lengthY;
-            mPaint.setColor(Color.WHITE);
-            mPaint.setTextSize(20);
-            canvas.drawText(String.valueOf(mAllMoney[i]), startX , startY - 20, mPaint);
+            for (int i = 0; i < mAllMoney.length; i++) {
+                float startX = PADDING_WIDTH + length * i + 20;
+                float startY = (mHeight - PADDING_HEIGHT) - mAllMoney[i] * lengthY;
+                mPaint.setColor(Color.WHITE);
+                mPaint.setTextSize(20);
+                canvas.drawText(String.valueOf(mAllMoney[i]), startX, startY - 20, mPaint);
 
+            }
         }
 
 
@@ -128,14 +130,15 @@ public class ColumnarView extends View {
 //    }
 
     private void drawTextX(Canvas canvas) {
+        if (mUnitChartTime .size() > 0 ) {
+            float length = (mWidth - PADDING_WIDTH - PADDING_WIDTH_RIGHT) / mUnitChartTime.size();
+            mPaint.setColor(Color.WHITE);
+            mPaint.setTextSize(25);
+            for (int i = 0; i < mUnitChartTime.size(); i++) {
+                canvas.drawText(mUnitChartTime.get(i), (PADDING_WIDTH + length * i + 10),
+                        mHeight - PADDING_HEIGHT + 30, mPaint);
 
-        float length = (mWidth - PADDING_WIDTH - PADDING_WIDTH_RIGHT) / mUnitChartTime.size();
-        mPaint.setColor(Color.WHITE);
-        mPaint.setTextSize(25);
-        for (int i = 0; i < mUnitChartTime.size(); i++) {
-            canvas.drawText(mUnitChartTime.get(i), (PADDING_WIDTH + length * i+10) ,
-                    mHeight - PADDING_HEIGHT +30, mPaint);
-
+            }
         }
     }
 
@@ -155,6 +158,10 @@ public class ColumnarView extends View {
         //日期
 
         mPaint.setTextSize(30);
-        canvas.drawText(mStr, stopX + 10, stopY +10 , mPaint);
+        if (mStr != null) {
+            canvas.drawText(mStr, stopX + 10, stopY + 10, mPaint);
+        }else {
+            canvas.drawText("没数据,瞎写的", stopX + 10, stopY + 10, mPaint);
+        }
     }
 }

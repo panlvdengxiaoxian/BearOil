@@ -46,10 +46,12 @@ class CarOperationAndroid implements TableCarOperation {
 
     @Override
     public void removeCar(int id) {
+
         SQLiteDatabase db = mDatabaseManager.getWritableDatabase();
         String whereClause = BearSQLiteValues.CAR_ID + " = ?";
         String[] whereArgs = new String[]{String.valueOf(id)};
         db.delete(BearSQLiteValues.CARS_TBL, whereClause, whereArgs);
+
         mDatabaseManager.closeDatabase();
     }
 
@@ -105,6 +107,7 @@ class CarOperationAndroid implements TableCarOperation {
 
     @Override
     public CarEntity querySelectedCar() {
+    //    mDatabaseManager.closeDatabase();
         return querySelectedCar(mDatabaseManager.getWritableDatabase());
     }
 
@@ -142,7 +145,6 @@ class CarOperationAndroid implements TableCarOperation {
         }
         assert cursor != null;
         cursor.close();
-        mDatabaseManager.closeDatabase();
 
         return null;
     }

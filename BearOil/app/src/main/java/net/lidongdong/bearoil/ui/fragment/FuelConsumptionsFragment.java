@@ -14,10 +14,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import net.lidongdong.bearoil.R;
+import net.lidongdong.bearoil.db.DatabaseTool;
 import net.lidongdong.bearoil.db.ObservableSQLite;
 import net.lidongdong.bearoil.entity.RecordEntity;
 import net.lidongdong.bearoil.ui.view.LinearChartView;
@@ -59,7 +61,8 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
     private ImageView fuelImg4;
     private ImageView fuelImg5;
     private UpdateChartBroadcastReceiver mReceiver;
-    private List<RecordEntity> mRecordEntityList;
+    private TextView mPromptTv;
+    private Button mPromptBtn;
 
     public FuelConsumptionsFragment() {
 
@@ -90,6 +93,9 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
         recentOilTv = (TextView) view.findViewById(R.id.recent_oil_tv);
         avgKmTv = (TextView) view.findViewById(R.id.avg__km_tv);
 
+        mPromptTv = (TextView) view.findViewById(R.id.prompt_tv);
+        mPromptBtn = (Button) view.findViewById(R.id.click_input_btn);
+
 
         fuelImg1 = (ImageView) view.findViewById(R.id.fuel_img1);
         fuelImg2 = (ImageView) view.findViewById(R.id.fuel_img2);
@@ -100,8 +106,6 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
 
         fuelConsumptionsLeftIv.setOnClickListener(this);
         fuelConsumptionsRightIv.setOnClickListener(this);
-
-        mRecordEntityList = new ArrayList<>();
 
         mReceiver = new UpdateChartBroadcastReceiver();
         IntentFilter filter = new IntentFilter("UPDATE_CHART");
@@ -125,33 +129,32 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
     @Override
     public void onClick(View v) {
 
-
         switch (v.getId()) {
 
             case R.id.fuel_consumptions_right_iv:
                 if (count == 0) {
-                    RotationUntil .switchRound(getContext(),count,fuelConsumptionsNameTv,fuelImg1,fuelImg2,fuelImg3,fuelImg4,fuelImg5);
+                    RotationUntil.switchRound(getContext(), count, fuelConsumptionsNameTv, fuelImg1, fuelImg2, fuelImg3, fuelImg4, fuelImg5);
                     queryAllRecords();
                     num = 4;
                     count = 1;
                 } else if (count == 1) {
-                    RotationUntil .switchRound(getContext(),count,fuelConsumptionsNameTv,fuelImg1,fuelImg2,fuelImg3,fuelImg4,fuelImg5);
+                    RotationUntil.switchRound(getContext(), count, fuelConsumptionsNameTv, fuelImg1, fuelImg2, fuelImg3, fuelImg4, fuelImg5);
                     queryRecordsEachYear();
                     num = 0;
                     count = 2;
 
                 } else if (count == 2) {
-                    RotationUntil .switchRound(getContext(),count,fuelConsumptionsNameTv,fuelImg1,fuelImg2,fuelImg3,fuelImg4,fuelImg5);
+                    RotationUntil.switchRound(getContext(), count, fuelConsumptionsNameTv, fuelImg1, fuelImg2, fuelImg3, fuelImg4, fuelImg5);
                     queryRecordEachHalfYear();
                     num = 1;
                     count = 3;
                 } else if (count == 3) {
-                    RotationUntil .switchRound(getContext(),count,fuelConsumptionsNameTv,fuelImg1,fuelImg2,fuelImg3,fuelImg4,fuelImg5);
+                    RotationUntil.switchRound(getContext(), count, fuelConsumptionsNameTv, fuelImg1, fuelImg2, fuelImg3, fuelImg4, fuelImg5);
                     queryRecordThreeMonth();
                     num = 2;
                     count = 4;
                 } else if (count == 4) {
-                    RotationUntil .switchRound(getContext(),count,fuelConsumptionsNameTv,fuelImg1,fuelImg2,fuelImg3,fuelImg4,fuelImg5);
+                    RotationUntil.switchRound(getContext(), count, fuelConsumptionsNameTv, fuelImg1, fuelImg2, fuelImg3, fuelImg4, fuelImg5);
                     num = 3;
                     count = 0;
                 }
@@ -160,27 +163,27 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
 
             case R.id.fuel_consumptions_left_iv:
                 if (num == 0) {
-                    RotationUntil .switchRound(getContext(),num,fuelConsumptionsNameTv,fuelImg1,fuelImg2,fuelImg3,fuelImg4,fuelImg5);
+                    RotationUntil.switchRound(getContext(), num, fuelConsumptionsNameTv, fuelImg1, fuelImg2, fuelImg3, fuelImg4, fuelImg5);
                     queryAllRecords();
                     count = 1;
                     num = 4;
                 } else if (num == 4) {
-                    RotationUntil .switchRound(getContext(),num,fuelConsumptionsNameTv,fuelImg1,fuelImg2,fuelImg3,fuelImg4,fuelImg5);
+                    RotationUntil.switchRound(getContext(), num, fuelConsumptionsNameTv, fuelImg1, fuelImg2, fuelImg3, fuelImg4, fuelImg5);
                     count = 0;
                     num = 3;
                 } else if (num == 3) {
-                    RotationUntil .switchRound(getContext(),num,fuelConsumptionsNameTv,fuelImg1,fuelImg2,fuelImg3,fuelImg4,fuelImg5);
+                    RotationUntil.switchRound(getContext(), num, fuelConsumptionsNameTv, fuelImg1, fuelImg2, fuelImg3, fuelImg4, fuelImg5);
                     queryRecordThreeMonth();
                     count = 4;
                     num = 2;
                 } else if (num == 2) {
-                    RotationUntil .switchRound(getContext(),num,fuelConsumptionsNameTv,fuelImg1,fuelImg2,fuelImg3,fuelImg4,fuelImg5);
+                    RotationUntil.switchRound(getContext(), num, fuelConsumptionsNameTv, fuelImg1, fuelImg2, fuelImg3, fuelImg4, fuelImg5);
                     queryRecordEachHalfYear();
                     count = 3;
                     num = 1;
                 } else if (num == 1) {
-                    RotationUntil .switchRound(getContext(),num,fuelConsumptionsNameTv,fuelImg1,fuelImg2,fuelImg3,fuelImg4,fuelImg5);
-                 queryRecordsEachYear();
+                    RotationUntil.switchRound(getContext(), num, fuelConsumptionsNameTv, fuelImg1, fuelImg2, fuelImg3, fuelImg4, fuelImg5);
+                    queryRecordsEachYear();
                     count = 2;
                     num = 0;
                 }
@@ -189,13 +192,12 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
     }
 
 
-
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void queryAllRecords() {
         ObservableSQLite.queryRecords()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::setDataSource);
+                .subscribe(this::updateChart);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -203,7 +205,7 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
         ObservableSQLite.queryRecordsEachYear()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::setDataSource);
+                .subscribe(this::updateChart);
 
     }
 
@@ -212,7 +214,44 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
         ObservableSQLite.queryRecordsEachHalfOfYear()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::setDataSource);
+                .subscribe(this::updateChart);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void updateChart(List<RecordEntity> recordEntities) {
+        if (recordEntities.size() > 1) {
+            mPromptTv.setVisibility(View.INVISIBLE);
+            mPromptBtn.setVisibility(View.INVISIBLE);
+            setDataSource(recordEntities);
+        } else {
+            List<String> data = new ArrayList<>();
+            data.add("0");
+            data.add("0");
+            data.add("0");
+            data.add("0");
+            data.add("0");
+            data.add("0");
+            data.add("0");
+            data.add("0");
+            data.add("0");
+            data.add("0");
+            data.add("0");
+            data.add("0");
+            mPromptTv.setVisibility(View.VISIBLE);
+            mPromptBtn.setVisibility(View.VISIBLE);
+            chartView.setTimeUnit(new String[]{"5", "7", "9", "11", "2016", "1", "3", "5", "7", "9", "11", "2017"});
+            chartView.setList(data);
+            chartView.setData(null);
+            allKmTv.setText(null);
+            avgOilTv.setText(null);
+            currentKmTv.setText(null);
+            maxOilTv.setText(null);
+            minOilTv.setText(null);
+            recentOilTv.setText(null);
+            avgKmTv.setText(null);
+            allOilTv.setText(null);
+
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -220,12 +259,12 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
         ObservableSQLite.queryRecordsEachThreeMonth()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::setDataSource);
+                .subscribe(this::updateChart);
     }
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void setDataSource(List<RecordEntity> recordEntities){
+    private void setDataSource(List<RecordEntity> recordEntities) {
         if (recordEntities.size() > 0) {
 
             chartView.setTimeUnit(TimeUntil.unitChartTime(recordEntities));
@@ -251,7 +290,7 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
                         max = data[i];
                     }
                     //最小值
-                    if (min>0) {
+                    if (min > 0) {
                         if (data[i] < min) {
                             min = data[i];
                         }
@@ -287,20 +326,18 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
             minOilTv.setText(String.valueOf(new DecimalFormat("0.00").format(min)));
 
             //总的里程数
-            allKmTv.setText(String.valueOf(Float.valueOf(recordEntities.get(0).getOdometer())-10));
-
+            allKmTv.setText(String.valueOf(Float.valueOf(recordEntities.get(0).getOdometer()) - 10));
             //加油总量
             allOilTv.setText(String.valueOf(new DecimalFormat(".00").format(
-                    (sum/data.length)*(Float.valueOf(recordEntities.get(0).getOdometer())/100))));
+                    (sum / data.length) * (Float.valueOf(recordEntities.get(0).getOdometer()) / 100))));
 
             //里程平均
             avgKmTv.setText(String.valueOf(new DecimalFormat(".00").format(
-                    ((Float.valueOf(recordEntities.get(0).getOdometer()))-10)
-                            /(float)(365*2+31))));
+                    ((Float.valueOf(recordEntities.get(0).getOdometer())) - 10)
+                            / (float) (365 * 2 + 31))));
 
         }
     }
-
 
 
     private class UpdateChartBroadcastReceiver extends BroadcastReceiver {
@@ -308,13 +345,13 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
         @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         public void onReceive(Context context, Intent intent) {
-            mRecordEntityList.clear();
-        }
-    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
+            RotationUntil.switchRound(context, 0, fuelConsumptionsNameTv, fuelImg1, fuelImg2, fuelImg3, fuelImg4, fuelImg5);
+            queryAllRecords();
+            String name = DatabaseTool.getInstance().querySelectedCar().getName();
+            defaultName.setText(name);
+
+        }
     }
 
     @Override
