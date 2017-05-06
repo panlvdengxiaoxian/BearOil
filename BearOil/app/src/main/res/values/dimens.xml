@@ -5,4 +5,8 @@
     <dimen name="addCarLetter_marginLeft">10dp</dimen>
     <dimen name="bottom_dialog_add_car_iv">10dp</dimen>
     <dimen name="fuelConsumptions_prompt_sp">20sp</dimen>
+    <dimen name="item_record_content_km_per_yuan">15sp</dimen>
+    <dimen name="item_record_content_margin">5dp</dimen>
+    <dimen name="oil_category_sp">14sp</dimen>
+    <dimen name="oil_category_margin">5dp</dimen>
 </resources>

@@ -63,6 +63,7 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
     private UpdateChartBroadcastReceiver mReceiver;
     private TextView mPromptTv;
     private Button mPromptBtn;
+    private RemoveCarBroadcastReceiver mRemoveCarBroadcastReceiver;
 
     public FuelConsumptionsFragment() {
 
@@ -110,6 +111,10 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
         mReceiver = new UpdateChartBroadcastReceiver();
         IntentFilter filter = new IntentFilter("UPDATE_CHART");
         getContext().registerReceiver(mReceiver, filter);
+
+        mRemoveCarBroadcastReceiver = new RemoveCarBroadcastReceiver();
+        IntentFilter removeFilter = new IntentFilter("REMOVE_UPDATE_UI");
+        getContext().registerReceiver(mRemoveCarBroadcastReceiver,removeFilter);
 
 
     }
@@ -354,10 +359,23 @@ public class FuelConsumptionsFragment extends Fragment implements View.OnClickLi
         }
     }
 
+    private class RemoveCarBroadcastReceiver extends BroadcastReceiver {
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            RotationUntil.switchRound(context, 0, fuelConsumptionsNameTv, fuelImg1, fuelImg2, fuelImg3, fuelImg4, fuelImg5);
+            queryAllRecords();
+            String name = DatabaseTool.getInstance().querySelectedCar().getName();
+            defaultName.setText(name);
+        }
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         getContext().unregisterReceiver(mReceiver);
+        getContext().unregisterReceiver(mRemoveCarBroadcastReceiver);
     }
 
 }

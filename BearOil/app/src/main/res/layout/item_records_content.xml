@@ -1,43 +1,197 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="40dp">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
 
-    <TextView
-        android:layout_centerVertical="true"
-        android:id="@+id/item_records_date"
-        android:layout_marginLeft="@dimen/item_records_time_marginLeft"
-        style="@style/item_records_style"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
 
-    <TextView
-        android:id="@+id/item_records_odometer"
-        style="@style/item_records_style"
-        android:layout_centerInParent="true"/>
+        <TextView
+            android:id="@+id/item_records_date"
+            style="@style/item_records_style"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/item_records_time_marginLeft"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/item_records_time_marginLeft"
-        android:layout_toRightOf="@id/item_records_odometer"
-        android:text="@string/item_records_odometer_unit"
-        android:textColor="#a37c7c"/>
+        <TextView
+            android:id="@+id/item_records_odometer"
+            style="@style/item_records_style"
+            android:layout_centerInParent="true"/>
 
-    <TextView
-        android:id="@+id/km"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/item_records_time_marginLeft"
-        android:text="@string/item_records_km"
-        android:textColor="#a37c7c"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/item_records_time_marginLeft"
+            android:layout_toRightOf="@id/item_records_odometer"
+            android:text="@string/item_records_odometer_unit"
+            android:textColor="#936c6c"/>
 
-    <TextView
-        android:id="@+id/item_records_km"
-        style="@style/item_records_style"
-        android:layout_centerVertical="true"
-        android:layout_toLeftOf="@id/km"/>
+        <TextView
+            android:id="@+id/km"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/item_records_time_marginLeft"
+            android:text="@string/item_records_km"
+            android:textColor="#a37c7c"/>
+
+        <TextView
+            android:id="@+id/item_records_km"
+            style="@style/item_records_style"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/km"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/records_two_rl"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/item_records_yuan_per_km"
+            style="@style/item_records_style"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/item_records_time_marginLeft"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/item_records_time_marginLeft"
+            android:layout_toRightOf="@id/item_records_yuan_per_km"
+            android:text="@string/yuan_per_km"
+            android:textColor="#936c6c"/>
 
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/item_records_change_odometer"
+            style="@style/item_records_style"
+            android:layout_centerInParent="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/item_records_time_marginLeft"
+            android:layout_toRightOf="@id/item_records_change_odometer"
+            android:text="@string/item_records_odometer_unit"
+            android:textColor="#936c6c"/>
+
+        <TextView
+            android:id="@+id/km_two"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/item_records_time_marginLeft"
+            android:text="@string/item_records_km"
+            android:textColor="#a37c7c"/>
+
+        <TextView
+            android:id="@+id/item_records_change_km"
+            style="@style/item_records_style"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/km_two"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/records_three_rl"
+
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/item_records_yuan_per_rise"
+            style="@style/item_records_style"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/item_records_time_marginLeft"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/item_records_time_marginLeft"
+            android:layout_toRightOf="@id/item_records_yuan_per_rise"
+            android:text="@string/yuan_per_rise"
+            android:textColor="#936c6c"/>
+
+
+        <TextView
+            android:id="@+id/item_records_change_yuan"
+            style="@style/item_records_style"
+            android:layout_centerInParent="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/item_records_time_marginLeft"
+            android:layout_toRightOf="@id/item_records_change_yuan"
+            android:text="@string/yuan_change"
+            android:textColor="#936c6c"/>
+
+        <TextView
+            android:id="@+id/km_three"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/item_records_time_marginLeft"
+            android:text="@string/unit_rise"
+            android:textColor="#a37c7c"/>
+
+        <TextView
+            android:id="@+id/item_records_rise"
+            style="@style/item_records_style"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/km_three"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/records_four_rl"
+
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <TextView
+            style="@style/item_records_style"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/item_records_time_marginLeft"
+            android:text="@string/add_oil_station"/>
+
+        <TextView
+            android:id="@+id/category_oil"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/oil_category_margin"
+            android:textColor="#e9f1e9"
+            android:textSize="@dimen/oil_category_sp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/records_five_rl"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <TextView
+            style="@style/item_records_style"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/item_records_time_marginLeft"
+            android:text="@string/remarks_str"/>
+
+    </RelativeLayout>
+
+
+</LinearLayout>

@@ -114,6 +114,13 @@ public class ObservableSQLite {
         }).subscribeOn(Schedulers.io()).subscribe();
     }
 
+    public static void removeRecord(int carId) {
+        Observable.just(carId).map(integer -> {
+            DatabaseTool.getInstance().removeSelectRecord(integer);
+            return "小二上酒";
+        }).subscribeOn(Schedulers.io()).subscribe();
+    }
+
     //update当前的 record
     public static void update(RecordEntity record) {
         Observable.just(record).map(new Function<RecordEntity, String>() {

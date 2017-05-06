@@ -19,6 +19,7 @@ public interface TableRecordOperation {
     void addRecord(int carId);
 
     void removeRecord(int id);
+    void removeSelectRecord(int carId);
 
     void updateRecords(RecordEntity record);
 

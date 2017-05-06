@@ -14,15 +14,12 @@ import net.lidongdong.bearoil.entity.CarEntity;
 import java.util.List;
 
 /**
-*
-*
-*  @author lidongdong(一个帅的惊天动地的男人)
-*  @date 17/4/18
-*  @explain
-*  @function
-*  @version 1.0
-*
-*/
+ * @author lidongdong(一个帅的惊天动地的男人)
+ * @version 1.0
+ * @date 17/4/18
+ * @explain
+ * @function
+ */
 
 public class DialogAdapter extends BaseAdapter {
     private List<CarEntity> cars;
@@ -44,7 +41,7 @@ public class DialogAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return cars==null?0:cars.size();
+        return cars == null ? 0 : cars.size();
     }
 
     @Override
@@ -59,23 +56,25 @@ public class DialogAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder=null;
-        if (convertView==null){
-            convertView=mInflater.inflate(R.layout.item_dialog,parent,false);
-            holder=new ViewHolder(convertView);
+        ViewHolder holder = null;
+        if (convertView == null) {
+            convertView = mInflater.inflate(R.layout.item_dialog, parent, false);
+            holder = new ViewHolder(convertView);
             convertView.setTag(holder);
-        }else {
-            holder= (ViewHolder) convertView.getTag();
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
         holder.tv.setText(cars.get(position).getName());
         holder.iv.setOnClickListener(v ->
                 mListener.setDeleteListener((int) getItemId(position)));
         return convertView;
     }
-    private class ViewHolder{
+
+    private class ViewHolder {
         private TextView tv;
         private ImageView iv;
-        public ViewHolder(View view) {
+
+        ViewHolder(View view) {
             tv = (TextView) view.findViewById(R.id.item_dialog_tv);
             iv = (ImageView) view.findViewById(R.id.delete_iv);
 

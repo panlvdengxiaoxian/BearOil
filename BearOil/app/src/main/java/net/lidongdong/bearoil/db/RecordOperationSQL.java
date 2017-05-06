@@ -74,6 +74,12 @@ public class RecordOperationSQL implements TableRecordOperation {
     }
 
     @Override
+    public void removeSelectRecord(int carId) {
+        String sql = "delete from records_tbl where carId = " + carId + " ";
+        record(sql);
+    }
+
+    @Override
     public void updateRecords(RecordEntity record) {
         String sql = "update records_tbl set odometer = " + record.getOdometer() + ", price = " + record.getPrice() + ", where id = " + record.get_id() + " ";
         record(sql);

@@ -1,12 +1,14 @@
 package net.lidongdong.bearoil.adapter;
 
 import android.content.Context;
+import android.icu.text.DecimalFormat;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import net.lidongdong.bearoil.R;
@@ -15,7 +17,6 @@ import net.lidongdong.bearoil.entity.RecordEntity;
 import net.lidongdong.bearoil.utils.DataCalculationUntil;
 import net.lidongdong.bearoil.utils.TimeUntil;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -34,6 +35,8 @@ public class RecordsContentAdapter extends BaseAdapter {
     private List<RecordEntity> mData;
 
     private LayoutInflater mInflater;
+    private boolean mIsTrue = false;
+
 
     public RecordsContentAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
@@ -43,6 +46,7 @@ public class RecordsContentAdapter extends BaseAdapter {
         mData = data;
         notifyDataSetChanged();
     }
+
 
     @Override
     public int getCount() {
@@ -90,17 +94,19 @@ public class RecordsContentAdapter extends BaseAdapter {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(km -> finalMHolder.itemRecordsKm.setText(new DecimalFormat(".00").format(km))
                     );
+
         }
 
         mHolder.itemRecordsDate.setText(TimeUntil.unixTimeStamp(Long.parseLong(mData.get(position).getDate())));
 
+
         if (position == 0) {
             mHolder.itemRecordsKm.setText("?");
         }
-
         mHolder.itemRecordsOdometer.setText(mData.get(position).getOdometer());
-
         return convertView;
+
+
     }
 
     private class ViewHolder {
@@ -109,7 +115,35 @@ public class RecordsContentAdapter extends BaseAdapter {
         private TextView itemRecordsOdometer;
         private TextView itemRecordsKm;
 
+        private RelativeLayout recordsTwoRl;
+        private TextView itemRecordsYuanPerKm;
+        private TextView itemRecordsChangeOdometer;
+        private TextView itemRecordsChangeKm;
+        private RelativeLayout recordsThreeRl;
+        private TextView itemRecordsYuanPerRise;
+        private TextView itemRecordsChangeYuan;
+        private TextView itemRecordsRise;
+        private RelativeLayout recordsFourRl;
+        private TextView categoryOil;
+        private RelativeLayout recordsFiveRl;
+
+
+
         ViewHolder(View view) {
+
+            recordsTwoRl = (RelativeLayout) view.findViewById(R.id.records_two_rl);
+            itemRecordsYuanPerKm = (TextView) view.findViewById(R.id.item_records_yuan_per_km);
+            itemRecordsChangeOdometer = (TextView) view.findViewById(R.id.item_records_change_odometer);
+            itemRecordsChangeKm = (TextView) view.findViewById(R.id.item_records_change_km);
+            recordsThreeRl = (RelativeLayout) view.findViewById(R.id.records_three_rl);
+            itemRecordsYuanPerRise = (TextView) view.findViewById(R.id.item_records_yuan_per_rise);
+            itemRecordsChangeYuan = (TextView) view.findViewById(R.id.item_records_change_yuan);
+            itemRecordsRise = (TextView) view.findViewById(R.id.item_records_rise);
+            recordsFourRl = (RelativeLayout) view.findViewById(R.id.records_four_rl);
+            categoryOil = (TextView) view.findViewById(R.id.category_oil);
+            recordsFiveRl = (RelativeLayout) view.findViewById(R.id.records_five_rl);
+
+
 
             itemRecordsDate = (TextView) view.findViewById(R.id.item_records_date);
             itemRecordsOdometer = (TextView) view.findViewById(R.id.item_records_odometer);

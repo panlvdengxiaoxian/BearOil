@@ -13,8 +13,6 @@ import io.reactivex.schedulers.Schedulers;
 
 public class ShowAllRecordsActivity extends AppCompatActivity {
 
-    private ListView mListView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,15 +24,17 @@ public class ShowAllRecordsActivity extends AppCompatActivity {
 
     private void initView() {
 
-        mListView = (ListView) findViewById(R.id.content_records_lv);
-        RecordsContentAdapter adapter=new RecordsContentAdapter(this);
+        ListView listView = (ListView) findViewById(R.id.content_records_lv);
+        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        RecordsContentAdapter adapter = new RecordsContentAdapter(this);
 
         ObservableSQLite.queryRecords()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(adapter::setData);
 
-        mListView.setAdapter(adapter);
+        listView.setAdapter(adapter);
+
 
     }
 }

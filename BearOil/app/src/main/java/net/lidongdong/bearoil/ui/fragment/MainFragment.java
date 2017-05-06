@@ -288,9 +288,16 @@ public class MainFragment extends Fragment implements View.OnClickListener {
 
             //删除车辆
             ObservableSQLite.removeCar(id);
-            Intent intent = new Intent();
-            intent.setAction("REMOVE_UPDATE_UI");
-            getContext().sendBroadcast(intent);
+            ObservableSQLite.removeRecord(id);
+            ObservableSQLite.changeSelectCar(1)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(integer -> {
+                Intent intent = new Intent();
+                intent.setAction("REMOVE_UPDATE_UI");
+                getContext().sendBroadcast(intent);
+            });
+
+
         });
         bottomSheetDialog.show();
 
@@ -358,6 +365,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                         mDialogAdapter.notifyDataSetChanged();
 
                     });
+           setQueryCarName();
 
         }
     }
